@@ -1,7 +1,6 @@
 import os
 import can
 
-from PyQt6.QtCore import QDateTime
 from ner_processing.message import Message
 from ner_processing.master_mapping import MESSAGE_IDS
 from ner_processing.master_mapping import DATA_IDS
@@ -19,8 +18,7 @@ try:
         msg = can0.recv(10.0)
 
         if msg.arbitration_id in MESSAGE_IDS:
-            timestamp = QDateTime.fromMSecsSinceEpoch(
-                int(float(msg.timestamp)*1000))
+            timestamp = int(float(msg.timestamp)*1000)
             id = int(msg.arbitration_id)
             length = int(msg.dlc)
             data = [int(x) for x in msg.data]
