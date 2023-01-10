@@ -26,7 +26,8 @@ try:
             decodedList = msg.decode()
             for data in decodedList:
                 current_data[data.id] = data.value
-                print(data.id + " (" + DATA_IDS[data.id] + "): " + data.value)
+                print(str(data.id) +
+                      " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
 
         if msg is None:
             print('Timeout occurred, no message.')
