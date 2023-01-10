@@ -17,7 +17,8 @@ try:
     while True:
         msg = can0.recv(10.0)
 
-        if msg.arbitration_id in MESSAGE_IDS:
+        # if msg.arbitration_id in MESSAGE_IDS:
+        if msg.arbitration_id == 165:
             timestamp = int(float(msg.timestamp)*1000)
             id = int(msg.arbitration_id)
             length = int(msg.dlc)
