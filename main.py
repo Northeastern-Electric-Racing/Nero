@@ -12,6 +12,8 @@ os.system('sudo ifconfig can0 up')
 can0 = can.interface.Bus(
     channel='can0', bustype='socketcan')  # socketcan_native
 
+current_data = [None] * len(DATA_IDS)
+
 try:
     while True:
         msg = can0.recv(10.0)
@@ -25,6 +27,7 @@ try:
             msg = Message(timestamp, id, data)
             decodedList = msg.decode()
             for data in decodedList:
+                current_data[data.id] = data.value
                 print(data.id + " (" + DATA_IDS[data.id] + "): " + data.value)
 
         if msg is None:
