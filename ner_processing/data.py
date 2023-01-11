@@ -1,5 +1,4 @@
 from typing import List, Any
-from PyQt6.QtCore import QDateTime
 
 
 class Data:
@@ -7,7 +6,7 @@ class Data:
     Wrapper class for an individual piece of data.
     """
 
-    def __init__(self, timestamp: QDateTime, id: int, value: Any):
+    def __init__(self, timestamp: int, id: int, value: Any):
         self.timestamp = timestamp
         self.id = id
         self.value = value
@@ -18,7 +17,7 @@ class Data:
         """
         return f"ID {self.id} - {self.timestamp} - {self.value}"
 
-    
+
 class ProcessData:
     """
     Utility functions to process message data.
@@ -29,7 +28,7 @@ class ProcessData:
         """
         Splits the given data bytes into lists of specified length.
         """
-        return [data_bytes[i : i + group_length] for i in range(0, len(data_bytes), group_length)]
+        return [data_bytes[i: i + group_length] for i in range(0, len(data_bytes), group_length)]
 
     @staticmethod
     def twosComp(val: int, bits: int = 16) -> int:
