@@ -55,7 +55,7 @@ class App(customtkinter.CTk):
 
     def check_can(self):
         msg = can0.recv(10.0)
-
+        print("fuck")
         # if msg.arbitration_id in MESSAGE_IDS:
         if msg.arbitration_id == 165:
             timestamp = int(float(msg.timestamp)*1000)
