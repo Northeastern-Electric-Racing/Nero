@@ -87,6 +87,7 @@ class App(customtkinter.CTk):
                 current_data[data.id] = data.value
                 print(str(data.id) +
                       " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
+                self.mph.configure(text=str(data.value))
 
         if msg is None:
             print('Timeout occurred, no message.')
