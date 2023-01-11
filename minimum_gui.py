@@ -47,7 +47,7 @@ class App(customtkinter.CTk):
             master=self, text="Speed:", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.speed.grid(row=1, column=1)
         self.mph = customtkinter.CTkLabel(
-            master=self, text="45 mph", font=customtkinter.CTkFont(size=36, weight="bold"))
+            master=self, text="69 mph", font=customtkinter.CTkFont(size=36, weight="bold"))
         
         self.mph.grid(row=2, column=1)
         self.mph.after(100, self.update_speed)
@@ -87,12 +87,11 @@ class App(customtkinter.CTk):
                 current_data[data.id] = data.value
                 print(str(data.id) +
                       " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
-                self.mph.configure(text=str(data.value))
 
         if msg is None:
             print('Timeout occurred, no message.')
 
-        self.mph.configure(text=str(current_data[45]))
+        self.mph.configure(text=str(30))
         self.mph.after(0, self.update_speed)
 
     def button_callback(self):
