@@ -55,7 +55,6 @@ class App(customtkinter.CTk):
 
     def check_can(self):
         msg = can0.recv(10.0)
-        print("fuck")
         # if msg.arbitration_id in MESSAGE_IDS:
         if msg.arbitration_id == 165:
             timestamp = int(float(msg.timestamp)*1000)
@@ -71,6 +70,8 @@ class App(customtkinter.CTk):
 
         if msg is None:
             print('Timeout occurred, no message.')
+        
+        self.after(0, self.check_can)
 
     def update_speed(self):
         self.mph.configure(text=str(current_data[45]))
