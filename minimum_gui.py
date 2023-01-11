@@ -55,6 +55,7 @@ class App(customtkinter.CTk):
 
     def check_can(self):
         msg = can0.recv(10.0)
+
         # if msg.arbitration_id in MESSAGE_IDS:
         if msg.arbitration_id == 165:
             timestamp = int(float(msg.timestamp)*1000)
@@ -66,7 +67,8 @@ class App(customtkinter.CTk):
             for data in decodedList:
                 current_data[data.id] = data.value
                 print(str(data.id) +
-                    " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
+                      " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
+
         if msg is None:
             print('Timeout occurred, no message.')
 
