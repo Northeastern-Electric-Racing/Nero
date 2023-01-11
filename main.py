@@ -5,7 +5,6 @@ from ner_processing.message import Message
 from ner_processing.master_mapping import MESSAGE_IDS
 from ner_processing.master_mapping import DATA_IDS
 
-os.system('sudo ifconfig can0 down')
 os.system('sudo ip link set can0 type can bitrate 1000000')
 os.system('sudo ifconfig can0 up')
 
