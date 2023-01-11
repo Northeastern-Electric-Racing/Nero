@@ -39,6 +39,10 @@ class App(customtkinter.CTk):
             master=self, text="NERO", font=customtkinter.CTkFont(size=36, weight="bold"), anchor="w")
         self.logo_label.grid(row=0, column=0, sticky="w", padx=20, pady=10)
 
+        self.button = customtkinter.CTkButton(
+            master=self, command=self.button_callback)
+        self.button.grid(row=1, column=0)
+
         self.speed = customtkinter.CTkLabel(
             master=self, text="Speed:", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.speed.grid(row=1, column=1)
@@ -50,29 +54,30 @@ class App(customtkinter.CTk):
         self.after(0, self.check_can)
 
     def check_can(self):
-        try:
-            msg = can0.recv(10.0)
-            # if msg.arbitration_id in MESSAGE_IDS:
-            if msg.arbitration_id == 165:
-                timestamp = int(float(msg.timestamp)*1000)
-                id = int(msg.arbitration_id)
-                length = int(msg.dlc)
-                data = [int(x) for x in msg.data]
-                msg = Message(timestamp, id, data)
-                decodedList = msg.decode()
-                for data in decodedList:
-                    current_data[data.id] = data.value
-                    print(str(data.id) +
-                        " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
-            if msg is None:
-                print('Timeout occurred, no message.')
-        except KeyboardInterrupt:
-            print('Terminating script')
-            os.system('sudo ifconfig can0 down')
+        msg = can0.recv(10.0)
+        # if msg.arbitration_id in MESSAGE_IDS:
+        if msg.arbitration_id == 165:
+            timestamp = int(float(msg.timestamp)*1000)
+            id = int(msg.arbitration_id)
+            length = int(msg.dlc)
+            data = [int(x) for x in msg.data]
+            msg = Message(timestamp, id, data)
+            decodedList = msg.decode()
+            for data in decodedList:
+                current_data[data.id] = data.value
+                print(str(data.id) +
+                    " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
+        if msg is None:
+            print('Timeout occurred, no message.')
 
     def update_speed(self):
         self.mph.configure(text=str(current_data[45]))
         self.mph.after(100, self.update_speed)
+
+    def button_callback(self):
+        print("button pressed")
+        print('Terminating can')
+        os.system('sudo ifconfig can0 down')
 
 if __name__ == "__main__":
     app = App()
