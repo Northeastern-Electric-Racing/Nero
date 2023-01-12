@@ -52,6 +52,7 @@ class App(customtkinter.CTk):
         
         self.mph.grid(row=2, column=1)
 
+        self.check_can()
         self.update_speed()
 
     def check_can(self):
@@ -72,28 +73,11 @@ class App(customtkinter.CTk):
         if msg is None:
             print('Timeout occurred, no message.')
         
-        self.after(0, self.check_can)
+        self.after(1, self.check_can)
 
     def update_speed(self):
-        msg = can0.recv(10.0)
-        # if msg.arbitration_id in MESSAGE_IDS:
-        if msg.arbitration_id == 165:
-            timestamp = int(float(msg.timestamp)*1000)
-            id = int(msg.arbitration_id)
-            length = int(msg.dlc)
-            data = [int(x) for x in msg.data]
-            msg = Message(timestamp, id, data)
-            decodedList = msg.decode()
-            for data in decodedList:
-                current_data[data.id] = data.value
-                print(str(data.id) +
-                      " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
-
-        if msg is None:
-            print('Timeout occurred, no message.')
-
         self.mph.configure(text=str(current_data[45]))
-        self.mph.after(1, self.update_speed)
+        self.mph.after(100, self.update_speed)
 
     def button_callback(self):
         print("button pressed")
