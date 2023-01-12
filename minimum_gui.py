@@ -50,8 +50,7 @@ class App(customtkinter.CTk):
             master=self, text="69 mph", font=customtkinter.CTkFont(size=36, weight="bold"))
         
         self.mph.grid(row=2, column=1)
-        self.mph.after(100, self.update_speed)
-        # self.after(0, self.check_can)
+        self.update_speed()
 
     def check_can(self):
         msg = can0.recv(10.0)
@@ -74,22 +73,22 @@ class App(customtkinter.CTk):
         self.after(0, self.check_can)
 
     def update_speed(self):
-        msg = can0.recv(10.0)
-        # if msg.arbitration_id in MESSAGE_IDS:
-        if msg.arbitration_id == 165:
-            timestamp = int(float(msg.timestamp)*1000)
-            id = int(msg.arbitration_id)
-            length = int(msg.dlc)
-            data = [int(x) for x in msg.data]
-            msg = Message(timestamp, id, data)
-            decodedList = msg.decode()
-            for data in decodedList:
-                current_data[data.id] = data.value
-                print(str(data.id) +
-                      " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
+        # msg = can0.recv(10.0)
+        # # if msg.arbitration_id in MESSAGE_IDS:
+        # if msg.arbitration_id == 165:
+        #     timestamp = int(float(msg.timestamp)*1000)
+        #     id = int(msg.arbitration_id)
+        #     length = int(msg.dlc)
+        #     data = [int(x) for x in msg.data]
+        #     msg = Message(timestamp, id, data)
+        #     decodedList = msg.decode()
+        #     for data in decodedList:
+        #         current_data[data.id] = data.value
+        #         print(str(data.id) +
+        #               " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
 
-        if msg is None:
-            print('Timeout occurred, no message.')
+        # if msg is None:
+        #     print('Timeout occurred, no message.')
 
         self.mph.configure(text=str(30))
         self.mph.after(0, self.update_speed)
