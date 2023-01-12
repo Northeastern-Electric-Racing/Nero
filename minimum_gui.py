@@ -1,7 +1,8 @@
+import os
+os.chdir('/path/to/home/ner/Desktop/Nero/')
+
 import tkinter
 import customtkinter
-
-import os
 import can
 import time
 
