@@ -91,7 +91,7 @@ class App(customtkinter.CTk):
         # if msg is None:
         #     print('Timeout occurred, no message.')
 
-        self.mph.configure(text=str(time.time())))
+        self.mph.configure(text=str(time.time()))
         self.mph.after(0, self.update_speed)
 
     def button_callback(self):
