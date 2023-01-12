@@ -92,7 +92,7 @@ class App(customtkinter.CTk):
         #     print('Timeout occurred, no message.')
 
         self.mph.configure(text=str(time.time()))
-        self.mph.after(0, self.update_speed)
+        self.mph.after(1, self.update_speed)
 
     def button_callback(self):
         print("button pressed")
