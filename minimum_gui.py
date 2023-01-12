@@ -1,5 +1,7 @@
 import os
 
+os.system('echo $PWD')
+
 import tkinter
 import customtkinter
 import can
