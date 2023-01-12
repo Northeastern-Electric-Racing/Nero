@@ -1,5 +1,4 @@
 import os
-os.chdir('/path/to/home/ner/Desktop/Nero/')
 
 import tkinter
 import customtkinter
