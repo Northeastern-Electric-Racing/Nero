@@ -50,6 +50,7 @@ class App(customtkinter.CTk):
             master=self, text="69 mph", font=customtkinter.CTkFont(size=36, weight="bold"))
         
         self.mph.grid(row=2, column=1)
+
         self.update_speed()
 
     def check_can(self):
@@ -90,7 +91,7 @@ class App(customtkinter.CTk):
         # if msg is None:
         #     print('Timeout occurred, no message.')
 
-        self.mph.configure(text=str(30))
+        self.mph.configure(text=str(time.time())))
         self.mph.after(0, self.update_speed)
 
     def button_callback(self):
