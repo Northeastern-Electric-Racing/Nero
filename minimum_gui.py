@@ -15,9 +15,8 @@ from ner_processing.message import Message
 from ner_processing.master_mapping import MESSAGE_IDS
 from ner_processing.master_mapping import DATA_IDS
 
-if os.environ.get('DISPLAY','') == '':
-    print('no display found. Using :0.0')
-    os.environ.__setitem__('DISPLAY', ':0.0')
+
+os.environ.__setitem__('DISPLAY', ':0.0')
 
 os.system('sudo ifconfig can0 down')
 os.system('sudo ip link set can0 type can bitrate 1000000')
