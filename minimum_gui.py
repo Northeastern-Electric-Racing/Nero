@@ -1,6 +1,10 @@
 import os
+import sys
 
 os.system('echo $PWD')
+#/home/ner/Desktop/Nero/
+
+# sudo python3 /home/ner/Desktop/Nero/minimum_gui.py
 
 import tkinter
 import customtkinter
@@ -10,6 +14,10 @@ import time
 from ner_processing.message import Message
 from ner_processing.master_mapping import MESSAGE_IDS
 from ner_processing.master_mapping import DATA_IDS
+
+if os.environ.get('DISPLAY','') == '':
+    print('no display found. Using :0.0')
+    os.environ.__setitem__('DISPLAY', ':0.0')
 
 os.system('sudo ifconfig can0 down')
 os.system('sudo ip link set can0 type can bitrate 1000000')
