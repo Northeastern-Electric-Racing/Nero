@@ -90,7 +90,7 @@ class App(customtkinter.CTk):
 
     def update_speed(self):
         if current_data[45] is not None:
-            self.mph.configure(text=str(current_data[45] * 0.01272))
+            self.mph.configure(text=str(round(current_data[45] * 0.01272)))
         self.mph.after(100, self.update_speed)
 
     def button_callback(self):
