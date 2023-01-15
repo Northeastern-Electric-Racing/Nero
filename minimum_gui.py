@@ -52,26 +52,38 @@ class App(customtkinter.CTk):
             master=self, text="NERO", font=customtkinter.CTkFont(size=36, weight="bold"), anchor="w")
         self.logo_label.grid(row=0, column=0, sticky="w", padx=20, pady=10)
 
-        self.button = customtkinter.CTkButton(
-            master=self, command=self.button_callback)
-        self.button.grid(row=1, column=0)
-
         self.speed = customtkinter.CTkLabel(
             master=self, text="Speed:", font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.speed.grid(row=1, column=1)
+        self.speed.grid(row=0, column=2)
         self.mph = customtkinter.CTkLabel(
             master=self, text="69 mph", font=customtkinter.CTkFont(size=36, weight="bold"))
+        self.mph.grid(row=1, column=2)
+            
+        self.status = customtkinter.CTkLabel(
+            master=self, text="Status:", font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.status.grid(row=1, column=0)
+        self.statusD = customtkinter.CTkLabel(
+            master=self, text="NO DATA", font=customtkinter.CTkFont(size=36, weight="bold"))
+        self.statusD.grid(row=1, column=1)
         
-        self.mph.grid(row=2, column=1)
+        self.dir = customtkinter.CTkLabel(
+            master=self, text="Direction:", font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.dir.grid(row=2, column=0)
+        self.dirD = customtkinter.CTkLabel(
+            master=self, text="NO DATA", font=customtkinter.CTkFont(size=36, weight="bold"))
+        self.dirD.grid(row=2, column=1)
+        
 
         self.check_can()
         self.update_speed()
+        self.update_status()
+        self.update_dir()
 
     def check_can(self):
         msg = can0.recv(10.0)
 
-        # if msg.arbitration_id in MESSAGE_IDS:
-        if msg.arbitration_id == 165:
+        if msg.arbitration_id in MESSAGE_IDS:
+        # if msg.arbitration_id == 165:
             timestamp = int(float(msg.timestamp)*1000)
             id = int(msg.arbitration_id)
             length = int(msg.dlc)
@@ -92,11 +104,23 @@ class App(customtkinter.CTk):
         if current_data[45] is not None:
             self.mph.configure(text=str(round(current_data[45] * 0.01272)))
         self.mph.after(100, self.update_speed)
-
-    def button_callback(self):
-        print("button pressed")
-        print('Terminating can')
-        os.system('sudo ifconfig can0 down')
+        
+    def update_status(self):
+        if current_data[85] is not None:
+            if current_data[85] == 1:
+                self.statusD.configure(text="ON")
+            else:
+                self.statusD.configure(text="OFF")
+        self.statusD.after(100, self.update_status)
+        
+    def update_dir(self):
+        if current_data[84] is not None:
+            if current_data[84] == 1:
+                self.dirD.configure(text="FORWARD")
+            else:
+                self.dirD.configure(text="REVERSE")
+        self.dirD.after(100, self.update_dir)
+        
 
 if __name__ == "__main__":
     app = App()
