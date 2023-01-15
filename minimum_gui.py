@@ -89,7 +89,8 @@ class App(customtkinter.CTk):
         self.after(1, self.check_can)
 
     def update_speed(self):
-        self.mph.configure(text=str(float(current_data[45]) * 0.01272))
+        if not isinstance(current_data[45], None):
+            self.mph.configure(text=str(float(current_data[45]) * 0.01272))
         self.mph.after(100, self.update_speed)
 
     def button_callback(self):
