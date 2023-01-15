@@ -1,21 +1,19 @@
+from ner_processing.master_mapping import DATA_IDS
+from ner_processing.master_mapping import MESSAGE_IDS
+from ner_processing.message import Message
+import time
+import can
+import customtkinter
+import tkinter
 import os
 import sys
 
 os.system('echo $PWD')
 os.chdir("/home/ner/Desktop/Nero/")
 os.system("echo $PWD")
-#/home/ner/Desktop/Nero/
+# /home/ner/Desktop/Nero/
 
 # sudo python3 /home/ner/Desktop/Nero/minimum_gui.py
-
-import tkinter
-import customtkinter
-import can
-import time
-
-from ner_processing.message import Message
-from ner_processing.master_mapping import MESSAGE_IDS
-from ner_processing.master_mapping import DATA_IDS
 
 
 os.environ.__setitem__('DISPLAY', ':0.0')
@@ -58,32 +56,39 @@ class App(customtkinter.CTk):
         self.mph = customtkinter.CTkLabel(
             master=self, text="69 mph", font=customtkinter.CTkFont(size=36, weight="bold"))
         self.mph.grid(row=1, column=2)
-            
+
         self.status = customtkinter.CTkLabel(
             master=self, text="Status:", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.status.grid(row=1, column=0)
         self.statusD = customtkinter.CTkLabel(
             master=self, text="NO DATA", font=customtkinter.CTkFont(size=36, weight="bold"))
         self.statusD.grid(row=1, column=1)
-        
+
         self.dir = customtkinter.CTkLabel(
             master=self, text="Direction:", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.dir.grid(row=2, column=0)
         self.dirD = customtkinter.CTkLabel(
             master=self, text="NO DATA", font=customtkinter.CTkFont(size=36, weight="bold"))
         self.dirD.grid(row=2, column=1)
-        
+
+        self.curr = customtkinter.CTkLabel(
+            master=self, text="Current:", font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.curr.grid(row=3, column=0)
+        self.currD = customtkinter.CTkLabel(
+            master=self, text="NO DATA", font=customtkinter.CTkFont(size=36, weight="bold"))
+        self.currD.grid(row=3, column=1)
 
         self.check_can()
         self.update_speed()
         self.update_status()
         self.update_dir()
+        self.update_curr()
 
     def check_can(self):
         msg = can0.recv(10.0)
 
         if msg.arbitration_id in MESSAGE_IDS:
-        # if msg.arbitration_id == 165:
+            # if msg.arbitration_id == 165:
             timestamp = int(float(msg.timestamp)*1000)
             id = int(msg.arbitration_id)
             length = int(msg.dlc)
@@ -97,14 +102,14 @@ class App(customtkinter.CTk):
 
         if msg is None:
             print('Timeout occurred, no message.')
-        
+
         self.after(1, self.check_can)
 
     def update_speed(self):
         if current_data[45] is not None:
             self.mph.configure(text=str(round(current_data[45] * 0.01272)))
         self.mph.after(100, self.update_speed)
-        
+
     def update_status(self):
         if current_data[85] is not None:
             if current_data[85] == 1:
@@ -112,7 +117,7 @@ class App(customtkinter.CTk):
             else:
                 self.statusD.configure(text="OFF")
         self.statusD.after(100, self.update_status)
-        
+
     def update_dir(self):
         if current_data[84] is not None:
             if current_data[84] == 1:
@@ -120,7 +125,12 @@ class App(customtkinter.CTk):
             else:
                 self.dirD.configure(text="REVERSE")
         self.dirD.after(100, self.update_dir)
-        
+
+    def update_curr(self):
+        if current_data[2] is not None:
+            self.currD.configure(text=str(current_data[2]))
+        self.currD.after(100, self.update_curr)
+
 
 if __name__ == "__main__":
     app = App()
