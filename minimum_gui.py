@@ -89,7 +89,7 @@ class App(customtkinter.CTk):
         self.after(1, self.check_can)
 
     def update_speed(self):
-        if isinstance(current_data[45], float):
+        if current_data[45] is not None:
             self.mph.configure(text=str(current_data[45] * 0.01272))
         self.mph.after(100, self.update_speed)
 
