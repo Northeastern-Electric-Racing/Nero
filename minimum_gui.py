@@ -24,7 +24,6 @@ os.system('sudo ifconfig can0 down')
 os.system('sudo ip link set can0 type can bitrate 1000000')
 os.system('sudo ifconfig can0 up')
 
-os.system('echo $DISPLAY')
 
 can0 = can.interface.Bus(
     channel='can0', bustype='socketcan')  # socketcan_native
@@ -70,6 +69,7 @@ class App(customtkinter.CTk):
 
     def check_can(self):
         msg = can0.recv(10.0)
+
         # if msg.arbitration_id in MESSAGE_IDS:
         if msg.arbitration_id == 165:
             timestamp = int(float(msg.timestamp)*1000)
