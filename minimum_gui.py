@@ -2,6 +2,8 @@ import os
 import sys
 
 os.system('echo $PWD')
+os.chdir("/home/ner/Desktop/Nero/")
+os.system("echo $PWD")
 #/home/ner/Desktop/Nero/
 
 # sudo python3 /home/ner/Desktop/Nero/minimum_gui.py
@@ -22,6 +24,8 @@ os.system('sudo ifconfig can0 down')
 os.system('sudo ip link set can0 type can bitrate 1000000')
 os.system('sudo ifconfig can0 up')
 
+os.system('echo $DISPLAY')
+
 can0 = can.interface.Bus(
     channel='can0', bustype='socketcan')  # socketcan_native
 
@@ -30,7 +34,7 @@ current_data = [None] * len(DATA_IDS)
 # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_appearance_mode("dark")
 # Themes: "blue" (standard), "green", "dark-blue"
-customtkinter.set_default_color_theme("./themes/ner.json")
+customtkinter.set_default_color_theme("/home/ner/Desktop/Nero/themes/ner.json")
 
 
 class App(customtkinter.CTk):
