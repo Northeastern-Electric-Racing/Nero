@@ -78,11 +78,19 @@ class App(customtkinter.CTk):
             master=self, text="NO DATA", font=customtkinter.CTkFont(size=36, weight="bold"))
         self.currD.grid(row=3, column=1)
 
+        self.LVBatt = customtkinter.CTkLabel(
+            master=self, text="LV Batt Volt:", font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.LVBatt.grid(row=4, column=0)
+        self.LVBattD = customtkinter.CTkLabel(
+            master=self, text="NO DATA", font=customtkinter.CTkFont(size=36, weight="bold"))
+        self.LVBattD.grid(row=4, column=1)
+
         self.check_can()
         self.update_speed()
         self.update_status()
         self.update_dir()
         self.update_curr()
+        self.update_LVBatt()
 
     def check_can(self):
         msg = can0.recv(10.0)
@@ -130,6 +138,11 @@ class App(customtkinter.CTk):
         if current_data[2] is not None:
             self.currD.configure(text=str(current_data[2]))
         self.currD.after(100, self.update_curr)
+
+    def update_LVBatt(self):
+        if current_data[63] is not None:
+            self.LVBattD.configure(text=str(current_data[63]))
+        self.LVBattD.after(100, self.update_LVBatt)
 
 
 if __name__ == "__main__":
