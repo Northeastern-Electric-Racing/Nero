@@ -247,4 +247,6 @@ class App(customtkinter.CTk):
 
 if __name__ == "__main__":
     app = App()
+    if(platform.platform()[0:5] == "Linux"):
+        app.attributes('-fullscreen', True)
     app.mainloop()
