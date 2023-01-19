@@ -105,10 +105,10 @@ class App(customtkinter.CTk):
         self.mph_frame = Frame(self.top_left_frame,
                                width=550, height=150, bg="black")
         self.mph = customtkinter.CTkLabel(
-            master=self.mph_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.mph_frame, text="N/A", font=customtkinter.CTkFont(family="Barlow Semi Condensed", size=150, weight="bold"))
 
         self.mph_label = customtkinter.CTkLabel(
-            master=self.mph_frame, text="mph", font=customtkinter.CTkFont(size=20))
+            master=self.mph_frame, text="mph", font=customtkinter.CTkFont(family="Lato", size=20))
 
         self.mph_frame.grid(row=0, column=0, sticky="s")
         self.mph.grid(row=0, column=0)
@@ -117,9 +117,9 @@ class App(customtkinter.CTk):
         self.km_frame = Frame(self.top_left_frame,
                               width=550, height=150, bg="black")
         self.km = customtkinter.CTkLabel(
-            master=self.km_frame, text=self.calculate_kph(), font=customtkinter.CTkFont(size=25))
+            master=self.km_frame, text=self.calculate_kph(), font=customtkinter.CTkFont(family="Lato", size=25))
         self.km_label = customtkinter.CTkLabel(
-            master=self.km_frame, text=" kmph", font=customtkinter.CTkFont(size=25))
+            master=self.km_frame, text=" kmph", font=customtkinter.CTkFont(family="Lato", size=25))
 
         self.km_frame.grid(row=1, column=0, sticky="n")
         self.km.grid(row=0, column=0)
@@ -127,37 +127,37 @@ class App(customtkinter.CTk):
 
         # create top right frame
         self.status = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=100, weight="bold"))
+            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(family="Barlow Semi Condensed", size=100, weight="bold"))
 
         self.dir = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=75, weight="bold"))
+            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(family="Barlow Semi Condensed", size=75, weight="bold"))
 
         self.status.grid(row=0, column=0, sticky="s")
         self.dir.grid(row=1, column=0, sticky="n")
 
         # create bottom left frame
         self.pack_temp = customtkinter.CTkLabel(
-            master=self.bottom_left_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_left_frame, text="N/A", font=customtkinter.CTkFont(family="Barlow Semi Condensed", size=150, weight="bold"))
         self.pack_temp_label = customtkinter.CTkLabel(
-            master=self.bottom_left_frame, text="Pack Temperature", font=customtkinter.CTkFont(size=20))
+            master=self.bottom_left_frame, text="Pack Temperature", font=customtkinter.CTkFont(family="Lato", size=20))
 
         self.pack_temp.grid(row=0, column=0, sticky="s")
         self.pack_temp_label.grid(row=1, column=0, sticky="n")
 
         # create bottom middle frame
         self.motor_temp = customtkinter.CTkLabel(
-            master=self.bottom_middle_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_middle_frame, text="N/A", font=customtkinter.CTkFont(family="Barlow Semi Condensed", size=150, weight="bold"))
         self.motor_temp_label = customtkinter.CTkLabel(
-            master=self.bottom_middle_frame, text="Motor Temperature", font=customtkinter.CTkFont(size=20))
+            master=self.bottom_middle_frame, text="Motor Temperature", font=customtkinter.CTkFont(family="Lato", size=20))
 
         self.motor_temp.grid(row=0, column=0, sticky="s")
         self.motor_temp_label.grid(row=1, column=0, sticky="n")
 
         # create bottom right frame
         self.state_charge = customtkinter.CTkLabel(
-            master=self.bottom_right_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_right_frame, text="N/A", font=customtkinter.CTkFont(family="Barlow Semi Condensed", size=150, weight="bold"))
         self.state_charge_label = customtkinter.CTkLabel(
-            master=self.bottom_right_frame, text="State of Charge", font=customtkinter.CTkFont(size=20))
+            master=self.bottom_right_frame, text="State of Charge", font=customtkinter.CTkFont(family="Lato", size=20))
 
         self.state_charge.grid(row=0, column=0, sticky="s")
         self.state_charge_label.grid(row=1, column=0, sticky="n")
@@ -226,7 +226,7 @@ class App(customtkinter.CTk):
 
     def update_motor_temp(self):
         if current_data[28] is not None:
-            self.motor_temp.configure(text=str(int(current_data[28]))+ "°")
+            self.motor_temp.configure(text=str(int(current_data[28])) + "°")
         self.motor_temp.after(100, self.update_motor_temp)
 
     def update_state_charge(self):
@@ -247,6 +247,6 @@ class App(customtkinter.CTk):
 
 if __name__ == "__main__":
     app = App()
-    if(platform.platform()[0:5] == "Linux"):
+    if (platform.platform()[0:5] == "Linux"):
         app.attributes('-fullscreen', True)
     app.mainloop()
