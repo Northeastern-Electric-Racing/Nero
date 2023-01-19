@@ -105,7 +105,7 @@ class App(customtkinter.CTk):
         self.mph_frame = Frame(self.top_left_frame,
                                width=550, height=150, bg="black")
         self.mph = customtkinter.CTkLabel(
-            master=self.mph_frame, text="NO DATA", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.mph_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
 
         self.mph_label = customtkinter.CTkLabel(
             master=self.mph_frame, text="mph", font=customtkinter.CTkFont(size=20))
@@ -127,17 +127,17 @@ class App(customtkinter.CTk):
 
         # create top right frame
         self.status = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="NO DATA", font=customtkinter.CTkFont(size=100, weight="bold"))
+            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=100, weight="bold"))
 
         self.dir = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="NO DATA", font=customtkinter.CTkFont(size=100, weight="bold"))
+            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=75, weight="bold"))
 
         self.status.grid(row=0, column=0, sticky="s")
         self.dir.grid(row=1, column=0, sticky="n")
 
         # create bottom left frame
         self.pack_temp = customtkinter.CTkLabel(
-            master=self.bottom_left_frame, text="NO DATA", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_left_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
         self.pack_temp_label = customtkinter.CTkLabel(
             master=self.bottom_left_frame, text="Pack Temperature", font=customtkinter.CTkFont(size=20))
 
@@ -146,7 +146,7 @@ class App(customtkinter.CTk):
 
         # create bottom middle frame
         self.motor_temp = customtkinter.CTkLabel(
-            master=self.bottom_middle_frame, text="NO DATA", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_middle_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
         self.motor_temp_label = customtkinter.CTkLabel(
             master=self.bottom_middle_frame, text="Motor Temperature", font=customtkinter.CTkFont(size=20))
 
@@ -155,7 +155,7 @@ class App(customtkinter.CTk):
 
         # create bottom right frame
         self.state_charge = customtkinter.CTkLabel(
-            master=self.bottom_right_frame, text="NO DATA", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_right_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
         self.state_charge_label = customtkinter.CTkLabel(
             master=self.bottom_right_frame, text="State of Charge", font=customtkinter.CTkFont(size=20))
 
@@ -193,9 +193,9 @@ class App(customtkinter.CTk):
         self.after(1, self.check_can)
 
     def calculate_kph(self):
-        if self.mph._text != "NO DATA":
+        if self.mph._text != "N/A":
             return int(int(self.mph._text) * 1.60934)
-        return "NO DATA"
+        return "N/A"
 
     def update_speed(self):
         if current_data[45] is not None:
@@ -221,17 +221,17 @@ class App(customtkinter.CTk):
 
     def update_pack_temp(self):
         if current_data[10] is not None:
-            self.pack_temp.configure(text=str(current_data[4]) + "°")
+            self.pack_temp.configure(text=str(int(current_data[10])) + "°")
         self.pack_temp.after(100, self.update_pack_temp)
 
     def update_motor_temp(self):
         if current_data[28] is not None:
-            self.motor_temp.configure(text=str(current_data[5]) + "°")
+            self.motor_temp.configure(text=str(int(current_data[28]))+ "°")
         self.motor_temp.after(100, self.update_motor_temp)
 
     def update_state_charge(self):
         if current_data[4] is not None:
-            self.state_charge.configure(text=str(current_data[6]) + "%")
+            self.state_charge.configure(text=str(current_data[4]) + "%")
         self.state_charge.after(100, self.update_state_charge)
 
     def update_curr(self):
