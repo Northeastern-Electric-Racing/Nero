@@ -4,28 +4,6 @@ title: '[Area] - Short Description'
 labels: [bug]
 body:
   - type: dropdown
-    id: browser
-    attributes:
-      label: Browser(s)
-      description: Which browsers does this affect?
-      multiple: true
-      options:
-        - Chrome
-        - Firefox
-        - Safari
-        - Other (specify below)
-  - type: dropdown
-    id: platform
-    attributes:
-      label: Platform(s)
-      description: Which platforms does this affect?
-      multiple: true
-      options:
-        - Desktop
-        - iOS
-        - Android
-        - Other (specify below)
-  - type: dropdown
     id: version
     attributes:
       label: Version(s)
