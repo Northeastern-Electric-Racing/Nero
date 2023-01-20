@@ -134,18 +134,18 @@
     },
     "CTkFont": {
       "macOS": {
-        "family": "SF Display",
-        "size": 13,
+        "family": "Barlow Semi Condensed",
+        "size": 150,
         "weight": "normal"
       },
       "Windows": {
-        "family": "Roboto",
-        "size": 13,
+        "family": "Barlow Semi Condensed",
+        "size": 150,
         "weight": "normal"
       },
       "Linux": {
-        "family": "Roboto",
-        "size": 13,
+        "family": "Barlow Semi Condensed",
+        "size": 150,
         "weight": "normal"
       }
     }
