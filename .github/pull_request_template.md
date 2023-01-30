@@ -14,9 +14,7 @@ _Any other notes go here_
 
 ## Screenshots
 
-_If you made UI changes you must post a screenshot of the whole page for each change in 1) a normal sized window and 2) the smallest possible window_
-
-_If you did any manual testing (e.g., with Postman), put screenshots of the http request and before and after of the db_
+_If you made UI changes you must post a screenshot_
 
 _If none of this applies, you can delete this section_
 
@@ -35,13 +33,12 @@ Please request reviewers and ping on slack only after you've gone through this w
 
 - [ ] All commits are tagged with the ticket number
 - [ ] No linting errors / newline at end of file warnings
-- [ ] All code follows repository-configured prettier formatting
+- [ ] All code follows repository-configured formatting
 - [ ] No merge conflicts
 - [ ] All checks passing
 - [ ] Screenshots of UI changes (see Screenshots section)
 - [ ] Remove any non-applicable sections of this template
 - [ ] Assign the PR to yourself
-- [ ] No `yarn.lock` changes (unless dependencies have changed)
 - [ ] Request reviewers & ping on Slack
 - [ ] PR is linked to the ticket (fill in the closes line below)
 
