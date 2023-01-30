@@ -12,11 +12,11 @@ Installing Python:
 2. you're done when you can run `python3` in your terminal and it works
 3. make sure you have the most recent version
 
-Installing dependencies:
+### Installing dependencies:
 
 installing Python should come with pip3, so in your terminal you can do:
 
-1. `pip3 install venv`
+1. `pip3 install venv` <-- (only do if you haven't installed venv already)
 2. `virtualenv venv`
 3. `source venv/bin/activate`
 4. `pip install -r requirements.txt`
@@ -37,3 +37,11 @@ The link to the repo is here: https://github.com/TomSchimansky/CustomTkinter
 Their docs are here and are very good: https://github.com/TomSchimansky/CustomTkinter/wiki
 
 It is all based on Tkinter, so if these docs don't explain it then the Tkinter docs will somewhere.
+
+### Installing New Dependencies
+
+1. `source venv/bin/activate`
+2. `pip3 install NEW_DEPENDENCY`
+3. `pip3 freeze > requirements.txt`
+
+Then commit the new requirements.txt which should have added lines for the new package you're installing and any of its dependencies.

@@ -1,42 +1,16 @@
-from ner_processing.master_mapping import DATA_IDS
-from ner_processing.master_mapping import MESSAGE_IDS
-from ner_processing.message import Message
-import time
-import can
 import customtkinter
 from tkinter import Frame
-import os
-import sys
-import platform
+from typing import Optional
 
-if (platform.platform()[0:5] == "Linux"):
-    os.system('echo $PWD')
-    os.chdir("/home/ner/Desktop/Nero/")
-    os.system("echo $PWD")
-    # /home/ner/Desktop/Nero/
-
-    # sudo python3 /home/ner/Desktop/Nero/minimum_gui.py
-
-    os.environ.__setitem__('DISPLAY', ':0.0')
-
-    os.system('sudo ifconfig can0 down')
-    os.system('sudo ip link set can0 type can bitrate 1000000')
-    os.system('sudo ifconfig can0 up')
-
-    can0 = can.interface.Bus(
-        channel='can0', bustype='socketcan')  # socketcan_native
-
-current_data = [None] * len(DATA_IDS)
-
-# Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_appearance_mode("dark")
-# Themes: "blue" (standard), "green", "dark-blue"
-customtkinter.set_default_color_theme("themes/ner.json")
+customtkinter.set_default_color_theme("./themes/ner.json")
 
 
-class App(customtkinter.CTk):
-    def __init__(self):
+class NeroView(customtkinter.CTk):
+    def __init__(self, controller) -> None:
         super().__init__()
+
+        self.controller = controller
 
         # configure window
         self.title("NERO")
@@ -114,16 +88,16 @@ class App(customtkinter.CTk):
         self.mph.grid(row=0, column=0)
         self.mph_label.grid(row=0, column=1, sticky="s")
 
-        self.km_frame = Frame(self.top_left_frame,
-                              width=550, height=150, bg="black")
-        self.km = customtkinter.CTkLabel(
-            master=self.km_frame, text=self.calculate_kph(), font=customtkinter.CTkFont(size=25))
-        self.km_label = customtkinter.CTkLabel(
-            master=self.km_frame, text=" kmph", font=customtkinter.CTkFont(size=25))
+        self.kph_frame = Frame(self.top_left_frame,
+                               width=550, height=150, bg="black")
+        self.kph = customtkinter.CTkLabel(
+            master=self.kph_frame, text="N/A", font=customtkinter.CTkFont(size=25))
+        self.kph_label = customtkinter.CTkLabel(
+            master=self.kph_frame, text=" kmph", font=customtkinter.CTkFont(size=25))
 
-        self.km_frame.grid(row=1, column=0, sticky="n")
-        self.km.grid(row=0, column=0)
-        self.km_label.grid(row=0, column=1)
+        self.kph_frame.grid(row=1, column=0, sticky="n")
+        self.kph.grid(row=0, column=0)
+        self.kph_label.grid(row=0, column=1)
 
         # create top right frame
         self.status = customtkinter.CTkLabel(
@@ -162,91 +136,71 @@ class App(customtkinter.CTk):
         self.state_charge.grid(row=0, column=0, sticky="s")
         self.state_charge_label.grid(row=1, column=0, sticky="n")
 
-        if (platform.platform()[0:5] == "Linux"):
-            self.check_can()
-            self.update_speed()
-            self.update_status()
-            self.update_dir()
-            self.update_motor_temp()
-            self.update_pack_temp()
-            self.update_state_charge()
+        self.check_can()
+        self.update()
 
     def check_can(self):
-        msg = can0.recv(10.0)
-
-        if msg.arbitration_id in MESSAGE_IDS:
-            # if msg.arbitration_id == 165:
-            timestamp = int(float(msg.timestamp)*1000)
-            id = int(msg.arbitration_id)
-            length = int(msg.dlc)
-            data = [int(x) for x in msg.data]
-            msg = Message(timestamp, id, data)
-            decodedList = msg.decode()
-            for data in decodedList:
-                current_data[data.id] = data.value
-                print(str(data.id) +
-                      " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
-
-        if msg is None:
-            print('Timeout occurred, no message.')
-
+        self.controller.check_can()
         self.after(1, self.check_can)
 
-    def calculate_kph(self):
-        if self.mph._text != "N/A":
-            return int(int(self.mph._text) * 1.60934)
-        return "N/A"
+    def update(self):
+        self.update_speed()
+        self.update_status()
+        self.update_dir()
+        self.update_pack_temp()
+        self.update_motor_temp()
+        self.update_state_charge()
+        self.update_curr()
+        self.update_LVBatt()
+
+        self.after(100, self.update)
 
     def update_speed(self):
-        if current_data[45] is not None:
-            self.mph.configure(text=str(round(current_data[45] * 0.01272)))
-            self.km.configure(text=str(self.calculate_kph()))
-        self.mph.after(100, self.update_speed)
+        new_mph: Optional[int] = self.controller.get_mph()
+        new_kph: Optional[int] = self.controller.get_kph()
+
+        new_mph_text = str(new_mph) if new_mph else "N/A"
+        new_kph_text = str(new_kph) if new_kph else "N/A"
+
+        self.mph.configure(text=new_mph_text)
+        self.kph.configure(text=new_kph_text)
 
     def update_status(self):
-        if current_data[85] is not None:
-            if current_data[85] == 1:
-                self.status.configure(text="ON", text_color="green")
-            else:
-                self.status.configure(text="OFF", text_color="red")
-        self.status.after(100, self.update_status)
+        new_status: Optional[bool] = self.controller.get_status()
+
+        if new_status == True:
+            self.status.configure(text="ON", text_color="green")
+        elif new_status == False:
+            self.status.configure(text="OFF", text_color="red")
+        else:
+            self.status.configure(text="N/A")
 
     def update_dir(self):
-        if current_data[84] is not None:
-            if current_data[84] == 1:
-                self.dir.configure(text="FORWARD")
-            else:
-                self.dir.configure(text="REVERSE")
-        self.dir.after(100, self.update_dir)
+        # TODO
+        pass
 
     def update_pack_temp(self):
-        if current_data[10] is not None:
-            self.pack_temp.configure(text=str(int(current_data[10])) + "°")
-        self.pack_temp.after(100, self.update_pack_temp)
+        # TODO
+        pass
 
     def update_motor_temp(self):
-        if current_data[28] is not None:
-            self.motor_temp.configure(text=str(int(current_data[28])) + "°")
-        self.motor_temp.after(100, self.update_motor_temp)
+        # TODO
+        pass
 
     def update_state_charge(self):
-        if current_data[4] is not None:
-            self.state_charge.configure(text=str(current_data[4]) + "%")
-        self.state_charge.after(100, self.update_state_charge)
+        # TODO
+        pass
 
     def update_curr(self):
-        if current_data[2] is not None:
-            self.current.configure(text=str(current_data[2]))
-        self.current.after(100, self.update_curr)
+        # TODO
+        pass
 
     def update_LVBatt(self):
-        if current_data[63] is not None:
-            self.LVBatt.configure(text=str(current_data[63]))
-        self.LVBatt.after(100, self.update_LVBatt)
+        # TODO
+        pass
 
+    def run(self, fullscreen=False):
+        if (fullscreen):
+            self.attributes('-fullscreen', True)
 
-if __name__ == "__main__":
-    app = App()
-    if (platform.platform()[0:5] == "Linux"):
-        app.attributes('-fullscreen', True)
-    app.mainloop()
+        self.mainloop()
