@@ -4,15 +4,11 @@ from ner_processing.message import Message
 from typing import Optional
 import can
 import os
-import platform
 
 
-class NeroModel:
+class RaspberryModel:
     def __init__(self) -> None:
         self.current_data = [None] * len(DATA_IDS)
-
-        if not self.is_linux():
-            return
 
         os.chdir("/home/ner/Desktop/Nero/")
 
@@ -25,10 +21,7 @@ class NeroModel:
         # socketcan_native
         self.can0 = can.interface.Bus(channel='can0', bustype='socketcan')
 
-    def check_can(self):
-        if not self.is_linux():
-            return
-
+    def check_can(self) -> None:
         msg = self.can0.recv(10.0)
 
         if msg.arbitration_id in MESSAGE_IDS:
@@ -53,12 +46,24 @@ class NeroModel:
         kph = self.current_data[45]
         return (round(kph * 0.02047) if kph is not None else kph)
 
-    def get_status(self) -> Optional[bool]:
-        status = self.current_data[85]
-        if status is None:
-            return None
-        else:
-            return status == 1
+    def get_status(self) -> Optional[int]:
+        status: Optional[int] = self.current_data[85]
+        return (status == 1 if status is not None else None)
 
-    def is_linux(self) -> bool:
-        return platform.platform()[0:5] == "Linux"
+    def get_dir(self) -> Optional[int]:
+        dir = self.current_data[84]
+        return (dir == 1 if dir is not None else None)
+
+    def get_pack_temp(self) -> Optional[int]:
+        pack_temp = self.current_data[10]
+        return (round(pack_temp) if pack_temp is not None else pack_temp)
+
+    def get_motor_temp(self) -> Optional[int]:
+        motor_temp = self.current_data[28]
+        return (round(motor_temp) if motor_temp is not None else motor_temp)
+
+    def get_state_of_charge(self) -> Optional[int]:
+        return self.current_data[4]
+
+    def get_lv_battery(self) -> Optional[int]:
+        return self.current_data[63]

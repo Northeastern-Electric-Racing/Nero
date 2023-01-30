@@ -35,10 +35,10 @@ class NeroView(customtkinter.CTk):
         self.bottom_frame.grid_columnconfigure(1, weight=1)
 
         # create the top two frames
-        self.top_right_frame = Frame(self.top_frame, width=550, height=300,
-                                     bg="black", highlightbackground="gray", highlightthickness=1)
-        self.top_left_frame = Frame(self.top_frame, width=550, height=300,
-                                    bg="black", highlightbackground="gray", highlightthickness=1)
+        self.top_right_frame = Frame(self.top_frame, width=550, height=300, bg="black",
+                                     highlightbackground="gray", highlightthickness=1)
+        self.top_left_frame = Frame(self.top_frame, width=550, height=300, bg="black",
+                                    highlightbackground="gray", highlightthickness=1)
 
         self.top_right_frame.grid(row=0, column=1)
         self.top_left_frame.grid(row=0, column=0)
@@ -150,8 +150,6 @@ class NeroView(customtkinter.CTk):
         self.update_pack_temp()
         self.update_motor_temp()
         self.update_state_charge()
-        self.update_curr()
-        self.update_LVBatt()
 
         self.after(100, self.update)
 
@@ -176,28 +174,35 @@ class NeroView(customtkinter.CTk):
             self.status.configure(text="N/A")
 
     def update_dir(self):
-        # TODO
-        pass
+        new_dir: Optional[bool] = self.controller.get_dir()
+
+        if new_dir == True:
+            self.dir.configure(text="FORWARD")
+        elif new_dir == False:
+            self.dir.configure(text="REVERSE")
+        else:
+            self.dir.configure(text="N/A")
 
     def update_pack_temp(self):
-        # TODO
-        pass
+        new_pack_temp: Optional[int] = self.controller.get_pack_temp()
+
+        new_pack_temp_text = str(new_pack_temp) + "°" if new_pack_temp else "N/A"
+
+        self.pack_temp.configure(text=new_pack_temp_text)
 
     def update_motor_temp(self):
-        # TODO
-        pass
+        new_motor_temp: Optional[int] = self.controller.get_motor_temp()
+
+        new_motor_temp_text = str(new_motor_temp) + "°" if new_motor_temp else "N/A"
+
+        self.motor_temp.configure(text=new_motor_temp_text)
 
     def update_state_charge(self):
-        # TODO
-        pass
+        new_charge: Optional[int] = self.controller.get_state_of_charge()
 
-    def update_curr(self):
-        # TODO
-        pass
+        new_charge_text = str(new_charge) + "%" if new_charge else "N/A"
 
-    def update_LVBatt(self):
-        # TODO
-        pass
+        self.state_charge.configure(text=new_charge_text)
 
     def run(self, fullscreen=False):
         if (fullscreen):

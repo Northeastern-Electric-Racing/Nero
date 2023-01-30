@@ -26,7 +26,7 @@ installing Python should come with pip3, so in your terminal you can do:
 You can click the play button in VSCode when you're in the `gui.py` file or you can do:
 
 1. `source venv/bin/activate`
-2. `python3 gui.py`
+2. `python3 main.py`
 
 ### Learning
 
