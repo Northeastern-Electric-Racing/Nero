@@ -58,4 +58,4 @@ class MockModel:
         return self.lv_battery
     
     def get_generic(self, id: int) -> any:
-        return "N/A"
+        return "None"
