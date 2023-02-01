@@ -8,6 +8,7 @@ import platform
 
 class NeroController:
     def __init__(self) -> None:
+        print(platform.platform())
         self.model = RaspberryModel() if platform.platform()[0:5] == "Linux" else MockModel()
 
     def run(self) -> None:
