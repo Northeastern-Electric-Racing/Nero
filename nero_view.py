@@ -72,6 +72,12 @@ class NeroView(customtkinter.CTk):
         new_charge_text = str(new_charge) + "%" if new_charge else "N/A"
 
         self.view.state_charge.configure(text=new_charge_text)
+    def update_generic(self, id: int):
+        new_generic: any = self.controller.get_generic(id)
+
+        new_generic_text = str(new_generic) if new_generic else "N/A"
+
+        self.view.table[id].configure(placeholder_text=new_generic_text)
 
     def run(self, fullscreen=False):
         if (fullscreen):

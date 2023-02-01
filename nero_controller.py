@@ -41,3 +41,6 @@ class NeroController:
 
     def get_lv_battery(self) -> Optional[int]:
         return self.model.get_lv_battery()
+    
+    def get_generic(self, id: int) -> any:
+        return self.model.get_generic(id)
