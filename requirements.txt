@@ -1,4 +1,9 @@
 autopep8==2.0.1
 customtkinter==5.0.3
 darkdetect==0.8.0
+msgpack==1.0.4
+packaging==23.0
 pycodestyle==2.10.0
+python-can==4.1.0
+typing_extensions==4.4.0
+wrapt==1.14.1
