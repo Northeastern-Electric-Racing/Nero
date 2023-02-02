@@ -1,4 +1,3 @@
-
 from raspberry_model import RaspberryModel
 from mock_model import MockModel
 from nero_view import NeroView

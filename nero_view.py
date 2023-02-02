@@ -1,9 +1,15 @@
 import customtkinter
 from tkinter import Frame
 from typing import Optional
+import os
+import platform
+
+# this needs to be done on the raspberry pi
+if platform.platform()[0:5] == "Linux":
+    os.chdir('/home/ner/desktop/Nero')
 
 customtkinter.set_appearance_mode("dark")
-customtkinter.set_default_color_theme("./themes/ner.json")
+customtkinter.set_default_color_theme("themes/ner.json")
 
 
 class NeroView(customtkinter.CTk):
@@ -157,8 +163,8 @@ class NeroView(customtkinter.CTk):
         new_mph: Optional[int] = self.controller.get_mph()
         new_kph: Optional[int] = self.controller.get_kph()
 
-        new_mph_text = str(new_mph) if new_mph else "N/A"
-        new_kph_text = str(new_kph) if new_kph else "N/A"
+        new_mph_text = str(new_mph) if new_mph is not None else "N/A"
+        new_kph_text = str(new_kph) if new_kph is not None else "N/A"
 
         self.mph.configure(text=new_mph_text)
         self.kph.configure(text=new_kph_text)
@@ -186,21 +192,21 @@ class NeroView(customtkinter.CTk):
     def update_pack_temp(self):
         new_pack_temp: Optional[int] = self.controller.get_pack_temp()
 
-        new_pack_temp_text = str(new_pack_temp) + "°" if new_pack_temp else "N/A"
+        new_pack_temp_text = str(new_pack_temp) + "°" if new_pack_temp is not None else "N/A"
 
         self.pack_temp.configure(text=new_pack_temp_text)
 
     def update_motor_temp(self):
         new_motor_temp: Optional[int] = self.controller.get_motor_temp()
 
-        new_motor_temp_text = str(new_motor_temp) + "°" if new_motor_temp else "N/A"
+        new_motor_temp_text = str(new_motor_temp) + "°" if new_motor_temp is not None else "N/A"
 
         self.motor_temp.configure(text=new_motor_temp_text)
 
     def update_state_charge(self):
         new_charge: Optional[int] = self.controller.get_state_of_charge()
 
-        new_charge_text = str(new_charge) + "%" if new_charge else "N/A"
+        new_charge_text = str(new_charge) + "%" if new_charge is not None else "N/A"
 
         self.state_charge.configure(text=new_charge_text)
 
