@@ -8,7 +8,6 @@ import platform
 
 class NeroController:
     def __init__(self) -> None:
-        print(platform.platform())
         self.model = RaspberryModel() if platform.platform()[0:5] == "Linux" else MockModel()
 
     def run(self) -> None:
@@ -41,6 +40,18 @@ class NeroController:
 
     def get_lv_battery(self) -> Optional[int]:
         return self.model.get_lv_battery()
-    
+
     def get_generic(self, id: int) -> any:
         return self.model.get_generic(id)
+
+    def get_forward_button_pressed(self) -> bool:
+        return self.model.get_forward_button_pressed()
+
+    def get_enter_button_pressed(self) -> bool:
+        return self.model.get_enter_button_pressed()
+
+    def get_up_button_pressed(self) -> bool:
+        return self.model.get_up_button_pressed()
+
+    def get_down_button_pressed(self) -> bool:
+        return self.model.get_down_button_pressed()

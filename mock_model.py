@@ -1,5 +1,6 @@
 from typing import Optional
 import random
+from pynput.keyboard import Listener, Key
 
 
 class MockModel:
@@ -11,6 +12,12 @@ class MockModel:
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
+        self.forward_button_pressed = False
+        self.enter_button_pressed = False
+        self.up_button_pressed = False
+        self.down_button_pressed = False
+        self.listener = Listener(on_press=self.on_press, on_release=self.on_release)
+        self.listener.start()
         pass
 
     def check_can(self) -> None:
@@ -32,6 +39,30 @@ class MockModel:
             self.dir = False
         if rng > 40 and rng < 45:
             self.dir = True
+
+    def on_press(self, key):
+        match key:
+            case Key.enter:
+                self.enter_button_pressed = True
+            case Key.right:
+                self.forward_button_pressed = True
+                print("right pressed")
+            case Key.up:
+                self.up_button_pressed = True
+            case Key.down:
+                self.down_button_pressed = True
+
+    def on_release(self, key):
+        match key:
+            case Key.enter:
+                self.enter_button_pressed = False
+            case Key.right:
+                self.forward_button_pressed = False
+                print("right released")
+            case Key.up:
+                self.up_button_pressed = False
+            case Key.down:
+                self.down_button_pressed = False
 
     def get_mph(self) -> Optional[int]:
         return self.mph
@@ -56,6 +87,18 @@ class MockModel:
 
     def get_lv_battery(self) -> Optional[int]:
         return self.lv_battery
-    
+
     def get_generic(self, id: int) -> any:
         return "None"
+
+    def get_forward_button_pressed(self) -> bool:
+        return self.forward_button_pressed
+
+    def get_enter_button_pressed(self) -> bool:
+        return self.enter_button_pressed
+
+    def get_up_button_pressed(self) -> bool:
+        return self.up_button_pressed
+
+    def get_down_button_pressed(self) -> bool:
+        return self.down_button_pressed

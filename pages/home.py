@@ -3,18 +3,18 @@ import customtkinter
 
 
 class Home(Frame):
-    def __init__(self, controller) -> None:
-        super().__init__()
+    def __init__(self, parent, controller) -> None:
+        super().__init__(parent)
         self.controller = controller
 
     def create_view(self):
         # configure the grid
-        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
         # create top and bottom frames
-        self.top_frame = Frame(width=1100, height=300)
-        self.bottom_frame = Frame(width=1100, height=300)
+        self.top_frame = Frame(self, width=1100, height=300)
+        self.bottom_frame = Frame(self, width=1100, height=300)
 
         self.top_frame.grid(row=0, column=0)
         self.bottom_frame.grid(row=1, column=0)
@@ -129,6 +129,7 @@ class Home(Frame):
         self.state_charge_label.grid(row=1, column=0, sticky="n")
 
         self.update()
+        self.controller.check_input()
         self.controller.check_can()
 
     def update(self):
@@ -140,6 +141,15 @@ class Home(Frame):
         self.controller.update_state_charge()
 
         self.after(100, self.update)
+
+    def enter_button_pressed(self):
+        return
+
+    def up_button_pressed(self):
+        return
+
+    def down_button_pressed(self):
+        return
 
     def run(self):
         self.mainloop()
