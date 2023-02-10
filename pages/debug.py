@@ -1,4 +1,4 @@
-from tkinter import Frame, Label
+from tkinter import Frame
 import customtkinter
 
 
@@ -45,6 +45,7 @@ class Debug(Frame):
                     self.frame = Frame(self.right_frame, bg="black", height=30)
                     self.label = customtkinter.CTkLabel(self.frame, font=('Lato', 20), justify="center", text_color="white")
                     id = baseId*2
+
                 self.frame.grid_propagate(False)
 
                 self.frame.grid(row=i, column=j, sticky="ew", padx=5)
@@ -125,7 +126,7 @@ class Debug(Frame):
         self.table[id].configure(bg_color="black")
 
     def enter_button_pressed(self):
-        return
+        self.table[self.selectedId].configure(fg_color="green")
 
     def up_button_pressed(self):
         match self.selectedId:
@@ -156,7 +157,6 @@ class Debug(Frame):
     def update(self):
         for i in range(0, len(self.table)):
             self.controller.update_generic(i)
-
         self.after(100, self.update)
 
     def run(self):

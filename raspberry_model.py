@@ -67,6 +67,6 @@ class RaspberryModel:
 
     def get_lv_battery(self) -> Optional[int]:
         return self.current_data[63]
-    
+
     def get_generic(self, id: int) -> Optional[int]:
         return self.current_data[id]

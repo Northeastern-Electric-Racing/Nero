@@ -2,25 +2,31 @@ import customtkinter
 from tkinter import Frame
 from typing import Optional
 from pages import home, debug
+from mock_model import MockModel
+from raspberry_model import RaspberryModel
+import platform
+from pynput.keyboard import Listener, Key
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("./themes/ner.json")
 
 
 class NeroView(customtkinter.CTk):
-    def __init__(self, controller) -> None:
+    def __init__(self) -> None:
         super().__init__()
+        self.controller = RaspberryModel() if platform.platform()[0:5] == "Linux" else MockModel()
+
         # configure window
         self.title("NERO")
         self.geometry(f"{1100}x{580}")
 
-        self.controller = controller
-
+        # create the container frame that holds all views
         container = Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+        # create the views that the container will hold
         self.frames = {}
         index = 0
         for F in (home.Home, debug.Debug):
@@ -35,21 +41,18 @@ class NeroView(customtkinter.CTk):
         self.update_frame()
 
     def update_frame(self):
+        self.controller.set_down_button_action(self.frames[self.view_index].down_button_pressed)
+        self.controller.set_up_button_action(self.frames[self.view_index].up_button_pressed)
+        self.controller.set_enter_button_action(self.frames[self.view_index].enter_button_pressed)
+        self.controller.set_forward_button_action(self.change_view)
         frame = self.frames[self.view_index]
-        print(frame)
         frame.tkraise()
 
     def check_can(self):
         self.controller.check_can()
         self.after(1, self.check_can)
 
-    def check_input(self):
-        self.update_enter_button_pressed()
-        self.update_forward_button_pressed()
-        self.update_down_button_pressed()
-        self.update_up_button_pressed()
-        self.after(100, self.check_input)
-
+    # Updates for specific attributes
     def update_speed(self):
         new_mph: Optional[int] = self.controller.get_mph()
         new_kph: Optional[int] = self.controller.get_kph()
@@ -109,25 +112,9 @@ class NeroView(customtkinter.CTk):
         self.frames[1].table[id].configure(text=new_generic_text)
 
     def update_forward_button_pressed(self):
-        forward_button_pressed = self.controller.get_forward_button_pressed()
-        if forward_button_pressed:
-            self.change_view()
+        self.change_view()
 
-    def update_down_button_pressed(self):
-        down_button_pressed = self.controller.get_down_button_pressed()
-        if down_button_pressed:
-            self.frames[self.view_index].down_button_pressed()
-
-    def update_up_button_pressed(self):
-        up_button_pressed = self.controller.get_up_button_pressed()
-        if up_button_pressed:
-            self.frames[self.view_index].up_button_pressed()
-
-    def update_enter_button_pressed(self):
-        enter_button_pressed = self.controller.get_enter_button_pressed()
-        if enter_button_pressed:
-            self.frames[self.view_index].enter_button_pressed()
-
+    # Handle view changes
     def change_view(self):
         self.view_index += 1
         if (self.view_index >= len(self.frames)):
@@ -138,4 +125,4 @@ class NeroView(customtkinter.CTk):
         if (fullscreen):
             self.attributes('-fullscreen', True)
 
-        self.view.mainloop()
+        self.frames[self.view_index].mainloop()
