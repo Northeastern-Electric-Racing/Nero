@@ -6,7 +6,7 @@ import platform
 
 # this needs to be done on the raspberry pi
 if platform.platform()[0:5] == "Linux":
-    os.chdir('/home/ner/desktop/Nero')
+    os.chdir('/home/ner/Desktop/Nero')
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("themes/ner.json")
