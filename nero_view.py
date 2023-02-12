@@ -107,7 +107,6 @@ class NeroView(customtkinter.CTk):
 
     def update_generic(self, id: int):
         new_generic: any = self.controller.get_generic(id)
-
         new_generic_text = str(new_generic) if new_generic else "N/A"
         self.frames[1].table[id].value_label.configure(text=new_generic_text)
 

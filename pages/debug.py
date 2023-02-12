@@ -99,18 +99,6 @@ class Debug_Table(Frame):
         table_row_top_right = self.table[len(self.table) - 1]
         table_row_top_left = self.table[len(self.table) - 2]
         for i in range(0, 19):
-            for j in range(0, 8):
-                    self.frame = Frame(self.left_frame, bg="black", height=30)
-                    self.label = customtkinter.CTkLabel(self.frame, font=('Lato', 20),  justify="center", text_color="white")
-                    id = baseId*2 - 1
-                else:
-                    self.frame = Frame(self.right_frame, bg="black", height=30)
-                    self.label = customtkinter.CTkLabel(self.frame, font=('Lato', 20), justify="center", text_color="white")
-                    id = baseId*2
-
-                self.frame.grid_propagate(False)
-
-                self.frame.grid(row=i, column=j, sticky="ew", padx=5)
             left_id = baseId*2 + 1
             print(left_id)
             if (left_id > len(self.table) - 2):
