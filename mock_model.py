@@ -1,6 +1,7 @@
 from typing import Optional
 import random
 from pynput.keyboard import Listener, Key
+from pages import debug
 
 
 class MockModel:
@@ -72,25 +73,25 @@ class MockModel:
     def get_lv_battery(self) -> Optional[int]:
         return self.lv_battery
 
-    def get_generic(self, id: int) -> any:
-        return "None"
+    def get_generic(self, id: int) -> Optional[int]:
+        return None
 
-    def forward_button_pressed(self) -> bool:
-        print("forward button pressed")
-        print(self.forward_button_action)
+    def get_debug_table_values(self) -> list():
+        return []
+
+    def forward_button_pressed(self):
         self.forward_button_action()
 
-    def enter_button_pressed(self) -> bool:
+    def enter_button_pressed(self):
         self.enter_button_action()
 
-    def up_button_pressed(self) -> bool:
+    def up_button_pressed(self):
         self.up_button_action()
 
-    def down_button_pressed(self) -> bool:
+    def down_button_pressed(self):
         self.down_button_action()
 
     def set_forward_button_action(self, func):
-        print('test')
         self.forward_button_action = func
 
     def set_enter_button_action(self, func):

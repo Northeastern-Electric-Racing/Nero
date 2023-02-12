@@ -2,11 +2,69 @@ from tkinter import Frame
 import customtkinter
 
 
-class Debug(Frame):
+class Table_Row_Frame(Frame):
+    def __init__(self, parent: Frame, width: int):
+        super().__init__(parent, bg="black", height=30, width=width)
+        self.grid_propagate(False)
+
+
+class Table_Row_Label(customtkinter.CTkLabel):
+    def __init__(self, parent: Frame, text: str, anchor: str):
+        super().__init__(parent, font=('Lato', 20),  justify="center", text_color="white", text=text)
+        self.place(relx=0.5, rely=0.5, anchor=anchor)
+
+
+class Table_Row_Value():
+    def __init__(self, id, name, value, unit):
+        self.id = id
+        self.name = name
+        self.value = value
+        self.unit = unit
+
+
+class Table_Row():
+    def __init__(self, parent_frame: Frame, values: Table_Row_Value):
+        self.id_frame = Table_Row_Frame(parent_frame, 70)
+        self.id_label = Table_Row_Label(self.id_frame, str(values.id), "center")
+
+        self.name_frame = Table_Row_Frame(parent_frame, 300)
+        self.name_label = Table_Row_Label(self.name_frame, str(values.name), "w")
+
+        self.value_frame = Table_Row_Frame(parent_frame, 70)
+        self.value_label = Table_Row_Label(self.value_frame, str(values.value), "e")
+
+        self.unit_frame = Table_Row_Frame(parent_frame, 100)
+        self.unit_label = Table_Row_Label(self.unit_frame, str(values.unit), "w")
+
+    def highlight(self, color):
+        if self.is_highlighted():
+            self.dehighlight()
+        else:
+            self.id_label.configure(bg_color=color)
+            self.name_label.configure(bg_color=color)
+            self.value_label.configure(bg_color=color)
+            self.unit_label.configure(bg_color=color)
+
+    def dehighlight(self):
+        self.id_label.configure(bg_color="black")
+        self.name_label.configure(bg_color="black")
+        self.value_label.configure(bg_color="black")
+        self.unit_label.configure(bg_color="black")
+
+    def is_highlighted(self):
+        return self.id_label.cget("bg_color") == "gray"
+
+    def is_pinned(self):
+        return self.id_label.cget("bg_color") == "green"
+
+
+class Debug_Table(Frame):
     def __init__(self, parent, controller) -> None:
         super().__init__(parent)
         self.controller = controller
         self.selectedId = 0
+        self.selectedIds = []
+        self.table: list(Table_Row) = self.controller.create_debug_table()
 
     def create_view(self):
         # configure the grid
@@ -28,16 +86,20 @@ class Debug(Frame):
         self.left_frame.grid(row=0, column=0)
         self.right_frame.grid(row=0, column=1)
 
-        self.table = []
+        self.table.append(Table_Row(self.left_frame, Table_Row_Value("ID", "Name", "Value", "Unit")))
+        self.table.append(Table_Row(self.right_frame, Table_Row_Value("ID", "Name", "Value", "Unit")))
+
         # create the table
         self.create_table(0)
+
         self.update()
         self.controller.check_can()
 
-    def create_table(self, baseId=0):
+    def create_table(self, baseId: int):
+        table_row_top_right = self.table[len(self.table) - 1]
+        table_row_top_left = self.table[len(self.table) - 2]
         for i in range(0, 19):
             for j in range(0, 8):
-                if (j <= 3):
                     self.frame = Frame(self.left_frame, bg="black", height=30)
                     self.label = customtkinter.CTkLabel(self.frame, font=('Lato', 20),  justify="center", text_color="white")
                     id = baseId*2 - 1
@@ -49,84 +111,42 @@ class Debug(Frame):
                 self.frame.grid_propagate(False)
 
                 self.frame.grid(row=i, column=j, sticky="ew", padx=5)
-                self.label.place(relx=0.5, rely=0.5, anchor="center")
-
-                match i, j:
-                    # create the id headers
-                    case 0, 0:
-                        self.label.configure(text="ID")
-                        self.frame.configure(width=70)
-                    case 0, 4:
-                        self.label.configure(text="ID")
-                        self.frame.configure(width=70)
-                    # create the name headers
-                    case 0, 1:
-                        self.label.configure(text="Name")
-                        self.frame.configure(width=300)
-                    case 0, 5:
-                        self.label.configure(text="Name")
-                        self.frame.configure(width=300)
-                    # creaet the value headers
-                    case 0, 2:
-                        self.label.configure(text="Value")
-                        self.frame.configure(width=70)
-                    case 0, 6:
-                        self.label.configure(text="Value")
-                        self.frame.configure(width=70)
-                    # create the unit headers
-                    case 0, 3:
-                        self.label.configure(text="Unit")
-                        self.frame.configure(width=100)
-                    case 0, 7:
-                        self.label.configure(text="Unit")
-                        self.frame.configure(width=100)
-                    # create the id columns
-                    case i, 0:
-                        self.label.configure(text=str(id))
-                        self.frame.configure(width=70)
-                    case i, 4:
-                        self.label.configure(text=str(id))
-                        self.frame.configure(width=70)
-                    # create the name columns
-                    case i, 1:
-                        self.label.configure(text="N/A")
-                        self.frame.configure(width=300)
-                        self.label.place(relx=0, rely=0.5, anchor="w")
-                    case i, 5:
-                        self.label.configure(text="N/A")
-                        self.frame.configure(width=300)
-                        self.label.place(relx=0, rely=0.5, anchor="w")
-                    # create the value columns
-                    case i, 2:
-                        self.label.configure(text="N/A")
-                        self.table.insert(id - 1, self.label)
-                        self.frame.configure(width=70)
-                        self.label.place(relx=1, rely=0.5, anchor="e")
-                    case i, 6:
-                        self.label.configure(text="N/A")
-                        self.table.insert(id - 1, self.label)
-                        self.frame.configure(width=70)
-                        self.label.place(relx=1, rely=0.5, anchor="e")
-                    # create the unit columns
-                    case i, 3:
-                        self.label.configure(text="N/A")
-                        self.frame.configure(width=100)
-                        self.label.place(relx=0, rely=0.5, anchor="w")
-                    case i, 7:
-                        self.label.configure(text="N/A")
-                        self.frame.configure(width=100)
-                        self.label.place(relx=0, rely=0.5, anchor="w")
+            left_id = baseId*2 + 1
+            print(left_id)
+            if (left_id > len(self.table) - 2):
+                break
+            table_row_left = self.table[left_id]
+            table_row_right = self.table[left_id + 1]
+            match i:
+                case 0:
+                    table_row_top_left.id_frame.grid(row=i, column=0, sticky="ew", padx=5)
+                    table_row_top_right.id_frame.grid(row=i, column=4, sticky="ew", padx=5)
+                    table_row_top_left.name_frame.grid(row=i, column=1, sticky="ew", padx=5)
+                    table_row_top_right.name_frame.grid(row=i, column=5, sticky="ew", padx=5)
+                    table_row_top_left.value_frame.grid(row=i, column=2, sticky="ew", padx=5)
+                    table_row_top_right.value_frame.grid(row=i, column=6, sticky="ew", padx=5)
+                    table_row_top_left.unit_frame.grid(row=i, column=3, sticky="ew", padx=5)
+                    table_row_top_right.unit_frame.grid(row=i, column=7, sticky="ew", padx=5)
+                case i:
+                    table_row_left.id_frame.grid(row=i, column=0, sticky="ew", padx=5)
+                    table_row_right.id_frame.grid(row=i, column=4, sticky="ew", padx=5)
+                    table_row_left.name_frame.grid(row=i, column=1, sticky="ew", padx=5)
+                    table_row_right.name_frame.grid(row=i, column=5, sticky="ew", padx=5)
+                    table_row_left.value_frame.grid(row=i, column=2, sticky="ew", padx=5)
+                    table_row_right.value_frame.grid(row=i, column=6, sticky="ew", padx=5)
+                    table_row_left.unit_frame.grid(row=i, column=3, sticky="ew", padx=5)
+                    table_row_right.unit_frame.grid(row=i, column=7, sticky="ew", padx=5)
             baseId += 1
-        self.selectItem()
+        self.highlightItem()
 
-    def selectItem(self):
-        self.table[self.selectedId].configure(bg_color="red")
-
-    def deselectItem(self, id):
-        self.table[id].configure(bg_color="black")
+    def highlightItem(self):
+        if not self.table[self.selectedId].is_pinned():
+            self.table[self.selectedId].highlight("gray")
 
     def enter_button_pressed(self):
-        self.table[self.selectedId].configure(fg_color="green")
+        if self.table[self.selectedId].is_pinned():
+            self.table[self.selectedId].highlight("gray")
+        self.table[self.selectedId].highlight("green")
 
     def up_button_pressed(self):
         match self.selectedId:
@@ -136,9 +156,9 @@ class Debug(Frame):
                 self.create_table(0)
             case 72:
                 self.create_table(18)
-        self.deselectItem(self.selectedId)
+        self.highlightItem()
         self.selectedId -= 1
-        self.selectItem()
+        self.highlightItem()
 
     def down_button_pressed(self):
         match self.selectedId:
@@ -148,11 +168,11 @@ class Debug(Frame):
                 self.create_table(36)
             case 107:
                 return
-        self.deselectItem(self.selectedId)
+        self.highlightItem()
         self.selectedId += 1
         print(self.selectedId)
         print(len(self.table))
-        self.selectItem()
+        self.highlightItem()
 
     def update(self):
         for i in range(0, len(self.table)):

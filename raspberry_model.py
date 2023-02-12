@@ -4,6 +4,7 @@ from ner_processing.message import Message
 from typing import Optional
 import can
 import os
+from pages import debug
 
 
 class RaspberryModel:
@@ -70,3 +71,35 @@ class RaspberryModel:
 
     def get_generic(self, id: int) -> Optional[int]:
         return self.current_data[id]
+
+    def get_debug_table_values(self) -> list():
+        table: list(debug.Table_Row_Value) = []
+        for i in range(0, len(self.current_data)):
+            value = self.current_data[i]
+            if value is not None:
+                table.append(debug.Table_Row_Value(i, DATA_IDS[i].name, value, DATA_IDS[i].unit))
+        return table
+
+    def forward_button_pressed(self):
+        self.forward_button_action()
+
+    def enter_button_pressed(self):
+        self.enter_button_action()
+
+    def up_button_pressed(self):
+        self.up_button_action()
+
+    def down_button_pressed(self):
+        self.down_button_action()
+
+    def set_forward_button_action(self, func):
+        self.forward_button_action = func
+
+    def set_enter_button_action(self, func):
+        self.enter_button_action = func
+
+    def set_up_button_action(self, func):
+        self.up_button_action = func
+
+    def set_down_button_action(self, func):
+        self.down_button_action = func

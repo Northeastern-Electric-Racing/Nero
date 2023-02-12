@@ -14,7 +14,8 @@ customtkinter.set_default_color_theme("./themes/ner.json")
 class NeroView(customtkinter.CTk):
     def __init__(self) -> None:
         super().__init__()
-        self.controller = RaspberryModel() if platform.platform()[0:5] == "Linux" else MockModel()
+        self.isLinux = platform.platform()[0:5] == "Linux"
+        self.controller = RaspberryModel() if self.isLinux else MockModel()
 
         # configure window
         self.title("NERO")
@@ -29,7 +30,7 @@ class NeroView(customtkinter.CTk):
         # create the views that the container will hold
         self.frames = {}
         index = 0
-        for F in (home.Home, debug.Debug):
+        for F in (home.Home, debug.Debug_Table):
             frame = F(parent=container, controller=self)
             self.frames[index] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -108,8 +109,20 @@ class NeroView(customtkinter.CTk):
         new_generic: any = self.controller.get_generic(id)
 
         new_generic_text = str(new_generic) if new_generic else "N/A"
+        self.frames[1].table[id].value_label.configure(text=new_generic_text)
 
-        self.frames[1].table[id].configure(text=new_generic_text)
+    def create_debug_table(self) -> list():
+        values: list(debug.Table_Row_Value) = self.controller.get_debug_table_values()
+
+        table: list(debug.Table_Row) = []
+        for i in range(len(values)):
+            parent: Frame
+            if i % 2 == 0:
+                parent = self.frames[1].left_frame
+            else:
+                parent = self.frames[1].right_frame
+            table.append(debug.Table_Row(parent, values[i]))
+        return table
 
     def update_forward_button_pressed(self):
         self.change_view()
@@ -121,8 +134,8 @@ class NeroView(customtkinter.CTk):
             self.view_index = 0
         self.update_frame()
 
-    def run(self, fullscreen=False):
-        if (fullscreen):
+    def run(self):
+        if (self.isLinux):
             self.attributes('-fullscreen', True)
 
         self.frames[self.view_index].mainloop()
