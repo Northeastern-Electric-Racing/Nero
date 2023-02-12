@@ -9,9 +9,9 @@ class Table_Row_Frame(Frame):
 
 
 class Table_Row_Label(customtkinter.CTkLabel):
-    def __init__(self, parent: Frame, text: str, anchor: str):
-        super().__init__(parent, font=('Lato', 20),  justify="center", text_color="white", text=text)
-        self.place(relx=0.5, rely=0.5, anchor=anchor)
+    def __init__(self, parent: Frame, text: str, anchor: str, relx: float = 0.5):
+        super().__init__(parent, font=('Lato', 20), text_color="white", text=text)
+        self.place(relx=relx, rely=0.5, anchor=anchor)
 
 
 class Table_Row_Value():
@@ -28,43 +28,35 @@ class Table_Row():
         self.id_label = Table_Row_Label(self.id_frame, str(values.id), "center")
 
         self.name_frame = Table_Row_Frame(parent_frame, 300)
-        self.name_label = Table_Row_Label(self.name_frame, str(values.name), "w")
+        self.name_label = Table_Row_Label(self.name_frame, str(values.name), "w", 0)
 
         self.value_frame = Table_Row_Frame(parent_frame, 70)
-        self.value_label = Table_Row_Label(self.value_frame, str(values.value), "e")
+        self.value_label = Table_Row_Label(self.value_frame, str(values.value), "e", 1)
 
         self.unit_frame = Table_Row_Frame(parent_frame, 100)
-        self.unit_label = Table_Row_Label(self.unit_frame, str(values.unit), "w")
+        self.unit_label = Table_Row_Label(self.unit_frame, str(values.unit), "w", 0)
 
     def highlight(self, color):
-        if self.is_highlighted():
-            self.dehighlight()
-        else:
-            self.id_label.configure(bg_color=color)
-            self.name_label.configure(bg_color=color)
-            self.value_label.configure(bg_color=color)
-            self.unit_label.configure(bg_color=color)
-
-    def dehighlight(self):
-        self.id_label.configure(bg_color="black")
-        self.name_label.configure(bg_color="black")
-        self.value_label.configure(bg_color="black")
-        self.unit_label.configure(bg_color="black")
+        print(color)
+        self.id_frame.configure(bg=color)
+        self.name_frame.configure(bg=color)
+        self.value_frame.configure(bg=color)
+        self.unit_frame.configure(bg=color)
 
     def is_highlighted(self):
-        return self.id_label.cget("bg_color") == "gray"
+        return self.id_frame.cget("bg") == "gray"
 
     def is_pinned(self):
-        return self.id_label.cget("bg_color") == "green"
+        print(self.id_frame.cget("bg"))
+        return self.id_frame.cget("bg") == "blue"
 
 
 class Debug_Table(Frame):
     def __init__(self, parent, controller) -> None:
         super().__init__(parent)
-        self.controller = controller
-        self.selectedId = 0
-        self.selectedIds = []
-        self.table: list(Table_Row) = self.controller.create_debug_table()
+        self.controller: Frame = controller
+        self.selectedId: int = 0
+        self.selectedIds: list(int) = []
 
     def create_view(self):
         # configure the grid
@@ -86,55 +78,68 @@ class Debug_Table(Frame):
         self.left_frame.grid(row=0, column=0)
         self.right_frame.grid(row=0, column=1)
 
-        self.table.append(Table_Row(self.left_frame, Table_Row_Value("ID", "Name", "Value", "Unit")))
-        self.table.append(Table_Row(self.right_frame, Table_Row_Value("ID", "Name", "Value", "Unit")))
-
         # create the table
+        self.table: list(Table_Row) = self.controller.create_debug_table()
         self.create_table(0)
 
         self.update()
         self.controller.check_can()
 
     def create_table(self, baseId: int):
-        table_row_top_right = self.table[len(self.table) - 1]
-        table_row_top_left = self.table[len(self.table) - 2]
+        print(self.table[len(self.table) - 1].id_label.cget("text"))
+        print(self.table[len(self.table) - 2].id_label.cget("text"))
+        table_row_top_right = Table_Row(self.right_frame, Table_Row_Value("ID", "Name", "Value", "Unit"))
+        table_row_top_right.name_label.place(relx=0.5, rely=0.5, anchor="center")
+        table_row_top_right.value_label.place(relx=0.5, rely=0.5, anchor="center")
+        table_row_top_right.unit_label.place(relx=0.5, rely=0.5, anchor="center")
+
+        table_row_top_left = Table_Row(self.left_frame, Table_Row_Value("ID", "Name", "Value", "Unit"))
+        table_row_top_left.name_label.place(relx=0.5, rely=0.5, anchor="center")
+        table_row_top_left.value_label.place(relx=0.5, rely=0.5, anchor="center")
+        table_row_top_left.unit_label.place(relx=0.5, rely=0.5, anchor="center")
+
         for i in range(0, 19):
-            left_id = baseId*2 + 1
-            print(left_id)
-            if (left_id > len(self.table) - 2):
+            left_id = baseId*2 - 1
+            if (left_id > len(self.table) - 1):
                 break
-            table_row_left = self.table[left_id]
-            table_row_right = self.table[left_id + 1]
+            table_row_left = self.table[left_id + 1]
+            table_row_right = self.table[left_id]
             match i:
                 case 0:
-                    table_row_top_left.id_frame.grid(row=i, column=0, sticky="ew", padx=5)
-                    table_row_top_right.id_frame.grid(row=i, column=4, sticky="ew", padx=5)
-                    table_row_top_left.name_frame.grid(row=i, column=1, sticky="ew", padx=5)
-                    table_row_top_right.name_frame.grid(row=i, column=5, sticky="ew", padx=5)
-                    table_row_top_left.value_frame.grid(row=i, column=2, sticky="ew", padx=5)
-                    table_row_top_right.value_frame.grid(row=i, column=6, sticky="ew", padx=5)
-                    table_row_top_left.unit_frame.grid(row=i, column=3, sticky="ew", padx=5)
-                    table_row_top_right.unit_frame.grid(row=i, column=7, sticky="ew", padx=5)
+                    table_row_top_left.id_frame.grid(row=i, column=0, sticky="ew")
+                    table_row_top_right.id_frame.grid(row=i, column=4, sticky="ew")
+                    table_row_top_left.name_frame.grid(row=i, column=1, sticky="ew")
+                    table_row_top_right.name_frame.grid(row=i, column=5, sticky="ew")
+                    table_row_top_left.value_frame.grid(row=i, column=2, sticky="ew")
+                    table_row_top_right.value_frame.grid(row=i, column=6, sticky="ew")
+                    table_row_top_left.unit_frame.grid(row=i, column=3, sticky="ew")
+                    table_row_top_right.unit_frame.grid(row=i, column=7, sticky="ew")
                 case i:
-                    table_row_left.id_frame.grid(row=i, column=0, sticky="ew", padx=5)
-                    table_row_right.id_frame.grid(row=i, column=4, sticky="ew", padx=5)
-                    table_row_left.name_frame.grid(row=i, column=1, sticky="ew", padx=5)
-                    table_row_right.name_frame.grid(row=i, column=5, sticky="ew", padx=5)
-                    table_row_left.value_frame.grid(row=i, column=2, sticky="ew", padx=5)
-                    table_row_right.value_frame.grid(row=i, column=6, sticky="ew", padx=5)
-                    table_row_left.unit_frame.grid(row=i, column=3, sticky="ew", padx=5)
-                    table_row_right.unit_frame.grid(row=i, column=7, sticky="ew", padx=5)
-            baseId += 1
+                    table_row_left.id_frame.grid(row=i, column=0, sticky="ew")
+                    table_row_right.id_frame.grid(row=i, column=4, sticky="ew")
+                    table_row_left.name_frame.grid(row=i, column=1, sticky="ew")
+                    table_row_right.name_frame.grid(row=i, column=5, sticky="ew")
+                    table_row_left.value_frame.grid(row=i, column=2, sticky="ew")
+                    table_row_right.value_frame.grid(row=i, column=6, sticky="ew")
+                    table_row_left.unit_frame.grid(row=i, column=3, sticky="ew")
+                    table_row_right.unit_frame.grid(row=i, column=7, sticky="ew")
+            if not i == 0:
+                baseId += 1
         self.highlightItem()
 
     def highlightItem(self):
-        if not self.table[self.selectedId].is_pinned():
+        if not self.table[self.selectedId].is_pinned() and not self.table[self.selectedId].is_highlighted():
             self.table[self.selectedId].highlight("gray")
+        elif not self.table[self.selectedId].is_pinned():
+            self.table[self.selectedId].highlight("black")
 
     def enter_button_pressed(self):
         if self.table[self.selectedId].is_pinned():
             self.table[self.selectedId].highlight("gray")
-        self.table[self.selectedId].highlight("green")
+            self.selectedIds.remove(self.selectedId)
+        elif len(self.selectedIds) < 6:
+            self.table[self.selectedId].highlight("blue")
+            self.selectedIds.append(self.selectedId)
 
     def up_button_pressed(self):
         match self.selectedId:
@@ -149,6 +154,8 @@ class Debug_Table(Frame):
         self.highlightItem()
 
     def down_button_pressed(self):
+        if len(self.table) - 1 == self.selectedId:
+            return
         match self.selectedId:
             case 35:
                 self.create_table(18)
@@ -156,10 +163,9 @@ class Debug_Table(Frame):
                 self.create_table(36)
             case 107:
                 return
+
         self.highlightItem()
         self.selectedId += 1
-        print(self.selectedId)
-        print(len(self.table))
         self.highlightItem()
 
     def update(self):
