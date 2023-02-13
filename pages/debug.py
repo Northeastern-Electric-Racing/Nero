@@ -1,6 +1,6 @@
 from tkinter import Frame
 import customtkinter
-
+from typing import List
 
 class Table_Row_Frame(Frame):
     def __init__(self, parent: Frame, width: int):
@@ -37,7 +37,6 @@ class Table_Row():
         self.unit_label = Table_Row_Label(self.unit_frame, str(values.unit), "w", 0)
 
     def highlight(self, color):
-        print(color)
         self.id_frame.configure(bg=color)
         self.name_frame.configure(bg=color)
         self.value_frame.configure(bg=color)
@@ -47,7 +46,6 @@ class Table_Row():
         return self.id_frame.cget("bg") == "gray"
 
     def is_pinned(self):
-        print(self.id_frame.cget("bg"))
         return self.id_frame.cget("bg") == "blue"
 
 
@@ -56,7 +54,7 @@ class Debug_Table(Frame):
         super().__init__(parent)
         self.controller: Frame = controller
         self.selectedId: int = 0
-        self.selectedIds: list(int) = []
+        self.selectedIds: List[int] = []
 
     def create_view(self):
         # configure the grid
@@ -79,15 +77,13 @@ class Debug_Table(Frame):
         self.right_frame.grid(row=0, column=1)
 
         # create the table
-        self.table: list(Table_Row) = self.controller.create_debug_table()
+        self.table: List[Table_Row] = self.controller.create_debug_table()
         self.create_table(0)
 
         self.update()
         self.controller.check_can()
 
     def create_table(self, baseId: int):
-        print(self.table[len(self.table) - 1].id_label.cget("text"))
-        print(self.table[len(self.table) - 2].id_label.cget("text"))
         table_row_top_right = Table_Row(self.right_frame, Table_Row_Value("ID", "Name", "Value", "Unit"))
         table_row_top_right.name_label.place(relx=0.5, rely=0.5, anchor="center")
         table_row_top_right.value_label.place(relx=0.5, rely=0.5, anchor="center")

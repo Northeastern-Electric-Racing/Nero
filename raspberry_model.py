@@ -1,7 +1,7 @@
 from ner_processing.master_mapping import DATA_IDS
 from ner_processing.master_mapping import MESSAGE_IDS
 from ner_processing.message import Message
-from typing import Optional
+from typing import Optional, List
 import can
 import os
 from pages import debug
@@ -72,8 +72,8 @@ class RaspberryModel:
     def get_generic(self, id: int) -> Optional[int]:
         return self.current_data[id]
 
-    def get_debug_table_values(self) -> list():
-        table: list(debug.Table_Row_Value) = []
+    def get_debug_table_values(self) -> List[debug.Table_Row_Value]:
+        table: List[debug.Table_Row_Value] = []
         for i in range(0, len(self.current_data)):
             value = self.current_data[i]
             if value is not None:

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 import random
 from pynput.keyboard import Listener, Key
 from pages import debug
@@ -76,7 +76,7 @@ class MockModel:
     def get_generic(self, id: int) -> Optional[int]:
         return None
 
-    def get_debug_table_values(self) -> list():
+    def get_debug_table_values(self) -> List[debug.Table_Row_Value]:
         return [debug.Table_Row_Value(0, "speed", self.mph, "mph"), debug.Table_Row_Value(1, "status", self.status, "bool"), debug.Table_Row_Value(2, "dir", self.dir, "bool"), debug.Table_Row_Value(3, "pack temp", self.pack_temp, "C"), debug.Table_Row_Value(4, "motor temp", self.motor_temp, "C"), debug.Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), debug.Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
 
     def forward_button_pressed(self):

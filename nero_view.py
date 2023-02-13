@@ -1,11 +1,10 @@
 import customtkinter
 from tkinter import Frame
-from typing import Optional
+from typing import Optional, List
 from pages import home, debug
 from mock_model import MockModel
 from raspberry_model import RaspberryModel
 import platform
-from pynput.keyboard import Listener, Key
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("./themes/ner.json")
@@ -110,10 +109,10 @@ class NeroView(customtkinter.CTk):
         new_generic_text = str(new_generic) if new_generic else "N/A"
         self.frames[1].table[id].value_label.configure(text=new_generic_text)
 
-    def create_debug_table(self) -> list():
-        values: list(debug.Table_Row_Value) = self.controller.get_debug_table_values()
+    def create_debug_table(self) -> List[debug.Table_Row]:
+        values: List[debug.Table_Row_Value] = self.controller.get_debug_table_values()
 
-        table: list(debug.Table_Row) = []
+        table: List[debug.Table_Row] = []
         for i in range(len(values)):
             parent: Frame
             if i % 2 == 0:
