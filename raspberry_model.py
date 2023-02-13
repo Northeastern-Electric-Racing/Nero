@@ -10,7 +10,6 @@ from pages import debug
 class RaspberryModel:
     def __init__(self) -> None:
         self.current_data = [None] * len(DATA_IDS)
-
         os.chdir("/home/ner/Desktop/Nero/")
 
         os.environ.__setitem__('DISPLAY', ':0.0')

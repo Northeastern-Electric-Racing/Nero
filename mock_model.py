@@ -43,7 +43,6 @@ class MockModel:
                 self.enter_button_pressed()
             case Key.right:
                 self.forward_button_pressed()
-                print("right pressed")
             case Key.up:
                 self.up_button_pressed()
             case Key.down:
