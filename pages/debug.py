@@ -2,19 +2,20 @@ from tkinter import Frame
 import customtkinter
 from typing import List
 
-class Table_Row_Frame(Frame):
+
+class Debug_Table_Row_Frame(Frame):
     def __init__(self, parent: Frame, width: int):
         super().__init__(parent, bg="black", height=30, width=width)
         self.grid_propagate(False)
 
 
-class Table_Row_Label(customtkinter.CTkLabel):
+class Debug_Table_Row_Label(customtkinter.CTkLabel):
     def __init__(self, parent: Frame, text: str, anchor: str, relx: float = 0.5):
         super().__init__(parent, font=('Lato', 20), text_color="white", text=text)
         self.place(relx=relx, rely=0.5, anchor=anchor)
 
 
-class Table_Row_Value():
+class Debug_Table_Row_Value():
     def __init__(self, id, name, value, unit):
         self.id = id
         self.name = name
@@ -22,19 +23,19 @@ class Table_Row_Value():
         self.unit = unit
 
 
-class Table_Row():
-    def __init__(self, parent_frame: Frame, values: Table_Row_Value):
-        self.id_frame = Table_Row_Frame(parent_frame, 70)
-        self.id_label = Table_Row_Label(self.id_frame, str(values.id), "center")
+class Debug_Table_Row():
+    def __init__(self, parent_frame: Frame, values: Debug_Table_Row_Value):
+        self.id_frame = Debug_Table_Row_Frame(parent_frame, 70)
+        self.id_label = Debug_Table_Row_Label(self.id_frame, str(values.id), "center")
 
-        self.name_frame = Table_Row_Frame(parent_frame, 300)
-        self.name_label = Table_Row_Label(self.name_frame, str(values.name), "w", 0)
+        self.name_frame = Debug_Table_Row_Frame(parent_frame, 300)
+        self.name_label = Debug_Table_Row_Label(self.name_frame, str(values.name), "w", 0)
 
-        self.value_frame = Table_Row_Frame(parent_frame, 70)
-        self.value_label = Table_Row_Label(self.value_frame, str(values.value), "e", 1)
+        self.value_frame = Debug_Table_Row_Frame(parent_frame, 70)
+        self.value_label = Debug_Table_Row_Label(self.value_frame, str(values.value), "e", 1)
 
-        self.unit_frame = Table_Row_Frame(parent_frame, 100)
-        self.unit_label = Table_Row_Label(self.unit_frame, str(values.unit), "w", 0)
+        self.unit_frame = Debug_Table_Row_Frame(parent_frame, 100)
+        self.unit_label = Debug_Table_Row_Label(self.unit_frame, str(values.unit), "w", 0)
 
     def highlight(self, color):
         self.id_frame.configure(bg=color)
@@ -77,48 +78,48 @@ class Debug_Table(Frame):
         self.right_frame.grid(row=0, column=1)
 
         # create the table
-        self.table: List[Table_Row] = self.controller.create_debug_table()
+        self.table: List[Debug_Table_Row] = self.controller.create_debug_table()
         self.create_table(0)
 
         self.update()
         self.controller.check_can()
 
     def create_table(self, baseId: int):
-        table_row_top_right = Table_Row(self.right_frame, Table_Row_Value("ID", "Name", "Value", "Unit"))
-        table_row_top_right.name_label.place(relx=0.5, rely=0.5, anchor="center")
-        table_row_top_right.value_label.place(relx=0.5, rely=0.5, anchor="center")
-        table_row_top_right.unit_label.place(relx=0.5, rely=0.5, anchor="center")
+        Debug_Table_Row_top_right = Debug_Table_Row(self.right_frame, Debug_Table_Row_Value("ID", "Name", "Value", "Unit"))
+        Debug_Table_Row_top_right.name_label.place(relx=0.5, rely=0.5, anchor="center")
+        Debug_Table_Row_top_right.value_label.place(relx=0.5, rely=0.5, anchor="center")
+        Debug_Table_Row_top_right.unit_label.place(relx=0.5, rely=0.5, anchor="center")
 
-        table_row_top_left = Table_Row(self.left_frame, Table_Row_Value("ID", "Name", "Value", "Unit"))
-        table_row_top_left.name_label.place(relx=0.5, rely=0.5, anchor="center")
-        table_row_top_left.value_label.place(relx=0.5, rely=0.5, anchor="center")
-        table_row_top_left.unit_label.place(relx=0.5, rely=0.5, anchor="center")
+        Debug_Table_Row_top_left = Debug_Table_Row(self.left_frame, Debug_Table_Row_Value("ID", "Name", "Value", "Unit"))
+        Debug_Table_Row_top_left.name_label.place(relx=0.5, rely=0.5, anchor="center")
+        Debug_Table_Row_top_left.value_label.place(relx=0.5, rely=0.5, anchor="center")
+        Debug_Table_Row_top_left.unit_label.place(relx=0.5, rely=0.5, anchor="center")
 
         for i in range(0, 19):
             left_id = baseId*2 - 1
             if (left_id > len(self.table) - 1):
                 break
-            table_row_left = self.table[left_id + 1]
-            table_row_right = self.table[left_id]
+            Debug_Table_Row_left = self.table[left_id + 1]
+            Debug_Table_Row_right = self.table[left_id]
             match i:
                 case 0:
-                    table_row_top_left.id_frame.grid(row=i, column=0, sticky="ew")
-                    table_row_top_right.id_frame.grid(row=i, column=4, sticky="ew")
-                    table_row_top_left.name_frame.grid(row=i, column=1, sticky="ew")
-                    table_row_top_right.name_frame.grid(row=i, column=5, sticky="ew")
-                    table_row_top_left.value_frame.grid(row=i, column=2, sticky="ew")
-                    table_row_top_right.value_frame.grid(row=i, column=6, sticky="ew")
-                    table_row_top_left.unit_frame.grid(row=i, column=3, sticky="ew")
-                    table_row_top_right.unit_frame.grid(row=i, column=7, sticky="ew")
+                    Debug_Table_Row_top_left.id_frame.grid(row=i, column=0, sticky="ew")
+                    Debug_Table_Row_top_right.id_frame.grid(row=i, column=4, sticky="ew")
+                    Debug_Table_Row_top_left.name_frame.grid(row=i, column=1, sticky="ew")
+                    Debug_Table_Row_top_right.name_frame.grid(row=i, column=5, sticky="ew")
+                    Debug_Table_Row_top_left.value_frame.grid(row=i, column=2, sticky="ew")
+                    Debug_Table_Row_top_right.value_frame.grid(row=i, column=6, sticky="ew")
+                    Debug_Table_Row_top_left.unit_frame.grid(row=i, column=3, sticky="ew")
+                    Debug_Table_Row_top_right.unit_frame.grid(row=i, column=7, sticky="ew")
                 case i:
-                    table_row_left.id_frame.grid(row=i, column=0, sticky="ew")
-                    table_row_right.id_frame.grid(row=i, column=4, sticky="ew")
-                    table_row_left.name_frame.grid(row=i, column=1, sticky="ew")
-                    table_row_right.name_frame.grid(row=i, column=5, sticky="ew")
-                    table_row_left.value_frame.grid(row=i, column=2, sticky="ew")
-                    table_row_right.value_frame.grid(row=i, column=6, sticky="ew")
-                    table_row_left.unit_frame.grid(row=i, column=3, sticky="ew")
-                    table_row_right.unit_frame.grid(row=i, column=7, sticky="ew")
+                    Debug_Table_Row_left.id_frame.grid(row=i, column=0, sticky="ew")
+                    Debug_Table_Row_right.id_frame.grid(row=i, column=4, sticky="ew")
+                    Debug_Table_Row_left.name_frame.grid(row=i, column=1, sticky="ew")
+                    Debug_Table_Row_right.name_frame.grid(row=i, column=5, sticky="ew")
+                    Debug_Table_Row_left.value_frame.grid(row=i, column=2, sticky="ew")
+                    Debug_Table_Row_right.value_frame.grid(row=i, column=6, sticky="ew")
+                    Debug_Table_Row_left.unit_frame.grid(row=i, column=3, sticky="ew")
+                    Debug_Table_Row_right.unit_frame.grid(row=i, column=7, sticky="ew")
             if not i == 0:
                 baseId += 1
         self.highlightItem()
@@ -166,7 +167,7 @@ class Debug_Table(Frame):
 
     def update(self):
         for i in range(0, len(self.table)):
-            self.controller.update_generic(i)
+            self.controller.update_by_id(i)
         self.after(100, self.update)
 
     def run(self):

@@ -13,7 +13,12 @@ class MockModel:
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
-        self.listener = Listener(on_press=self.on_press)
+        self.forward = False
+        self.enter = False
+        self.up = False
+        self.down = False
+        self.view_index = 0
+        self.listener = Listener(on_press=self.on_press, on_release=self.on_release)
         self.listener.start()
         pass
 
@@ -40,13 +45,25 @@ class MockModel:
     def on_press(self, key):
         match key:
             case Key.enter:
-                self.enter_button_pressed()
+                self.enter = True
             case Key.right:
-                self.forward_button_pressed()
+                self.forward = True
+                self.view_index += 1
             case Key.up:
-                self.up_button_pressed()
+                self.up = True
             case Key.down:
-                self.down_button_pressed()
+                self.down = True
+
+    def on_release(self, key):
+        match key:
+            case Key.enter:
+                self.enter = False
+            case Key.right:
+                self.forward = False
+            case Key.up:
+                self.up = False
+            case Key.down:
+                self.down = False
 
     def get_mph(self) -> Optional[int]:
         return self.mph
@@ -72,32 +89,25 @@ class MockModel:
     def get_lv_battery(self) -> Optional[int]:
         return self.lv_battery
 
-    def get_generic(self, id: int) -> Optional[int]:
+    def get_by_id(self, id: int) -> Optional[int]:
         return None
 
-    def get_debug_table_values(self) -> List[debug.Table_Row_Value]:
-        return [debug.Table_Row_Value(0, "speed", self.mph, "mph"), debug.Table_Row_Value(1, "status", self.status, "bool"), debug.Table_Row_Value(2, "dir", self.dir, "bool"), debug.Table_Row_Value(3, "pack temp", self.pack_temp, "C"), debug.Table_Row_Value(4, "motor temp", self.motor_temp, "C"), debug.Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), debug.Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
+    def get_debug_table_values(self) -> List[debug.Debug_Table_Row_Value]:
+        return [debug.Debug_Table_Row_Value(0, "speed", self.mph, "mph"), debug.Debug_Table_Row_Value(1, "status", self.status, "bool"), debug.Debug_Table_Row_Value(2, "dir", self.dir, "bool"), debug.Debug_Table_Row_Value(3, "pack temp", self.pack_temp, "C"), debug.Debug_Table_Row_Value(4, "motor temp", self.motor_temp, "C"), debug.Debug_Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), debug.Debug_Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
 
-    def forward_button_pressed(self):
-        self.forward_button_action()
+    def get_forward_button_pressed(self) -> bool:
+        return self.forward
 
-    def enter_button_pressed(self):
-        self.enter_button_action()
+    def get_enter_button_pressed(self) -> bool:
+        return self.enter
 
-    def up_button_pressed(self):
-        self.up_button_action()
+    def get_up_button_pressed(self) -> bool:
+        return self.up
 
-    def down_button_pressed(self):
-        self.down_button_action()
+    def get_down_button_pressed(self) -> bool:
+        return self.down
 
-    def set_forward_button_action(self, func):
-        self.forward_button_action = func
-
-    def set_enter_button_action(self, func):
-        self.enter_button_action = func
-
-    def set_up_button_action(self, func):
-        self.up_button_action = func
-
-    def set_down_button_action(self, func):
-        self.down_button_action = func
+    def get_view_index(self) -> int:
+        if self.view_index == 3:
+            self.view_index = 0
+        return self.view_index
