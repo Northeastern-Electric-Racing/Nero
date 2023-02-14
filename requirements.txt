@@ -5,6 +5,9 @@ msgpack==1.0.4
 packaging==23.0
 pycodestyle==2.10.0
 pynput==1.7.6
+PyQt6==6.4.2
+PyQt6-Qt6==6.4.2
+PyQt6-sip==13.4.1
 python-can==4.1.0
 typing_extensions==4.4.0
 wrapt==1.14.1
