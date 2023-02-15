@@ -2,28 +2,28 @@ from tkinter import Frame
 import customtkinter
 from typing import List
 
-# The frame that holds the label of the row
 class Debug_Table_Row_Frame(Frame):
+    # The frame that holds the label of the row
     def __init__(self, parent: Frame, width: int):
         super().__init__(parent, bg="black", height=30, width=width)
         self.grid_propagate(False)
 
-# The label that displays the text of the row
 class Debug_Table_Row_Label(customtkinter.CTkLabel):
+    # The label that displays the text of the row
     def __init__(self, parent: Frame, text: str, anchor: str, relx: float = 0.5):
         super().__init__(parent, font=('Lato', 20), text_color="white", text=text)
         self.place(relx=relx, rely=0.5, anchor=anchor)
 
-# The values of each row
 class Debug_Table_Row_Value():
+    # The values of each row
     def __init__(self, id, name, value, unit):
         self.id = id
         self.name = name
         self.value = value
         self.unit = unit
 
-# The row of the debug table
 class Debug_Table_Row():
+    # The row of the debug table
     def __init__(self, parent_frame: Frame, values: Debug_Table_Row_Value):
         self.id_frame = Debug_Table_Row_Frame(parent_frame, 70)
         self.id_label = Debug_Table_Row_Label(self.id_frame, str(values.id), "center")
@@ -114,7 +114,6 @@ class Debug_Table(Frame):
                 debug_table_row_right = debug_table_row_Empty_right
             # if the left id is the last id then the right id is out of range so make the right row empty
             elif (left_id >= len(self.table) - 1):
-                print("test")
                 debug_table_row_right = debug_table_row_Empty_right
                 debug_table_row_left = self.table[left_id]
             # otherwise the left and right ids are in range
@@ -132,16 +131,27 @@ class Debug_Table(Frame):
                     debug_table_row_top_right.value_frame.grid(row=i, column=6, sticky="ew")
                     debug_table_row_top_left.unit_frame.grid(row=i, column=3, sticky="ew")
                     debug_table_row_top_right.unit_frame.grid(row=i, column=7, sticky="ew")
-                # create the other rows
+                # Create the other rows. If they already exist, raise them to the top
                 case i:
                     debug_table_row_left.id_frame.grid(row=i, column=0, sticky="ew")
+                    debug_table_row_left.id_frame.tkraise()
                     debug_table_row_right.id_frame.grid(row=i, column=4, sticky="ew")
+                    debug_table_row_right.id_frame.tkraise()
+
                     debug_table_row_left.name_frame.grid(row=i, column=1, sticky="ew")
+                    debug_table_row_left.name_frame.tkraise()
                     debug_table_row_right.name_frame.grid(row=i, column=5, sticky="ew")
+                    debug_table_row_right.name_frame.tkraise()
+
                     debug_table_row_left.value_frame.grid(row=i, column=2, sticky="ew")
+                    debug_table_row_left.value_frame.tkraise()
                     debug_table_row_right.value_frame.grid(row=i, column=6, sticky="ew")
+                    debug_table_row_right.value_frame.tkraise()
+
                     debug_table_row_left.unit_frame.grid(row=i, column=3, sticky="ew")
+                    debug_table_row_left.unit_frame.tkraise()
                     debug_table_row_right.unit_frame.grid(row=i, column=7, sticky="ew")
+                    debug_table_row_right.unit_frame.tkraise()
             # if were making the header row, dont increase the baseid yet
             if not i == 0:
                 baseId += 1
@@ -172,7 +182,6 @@ class Debug_Table(Frame):
             case 0:
                 return
             case 36:
-                print("test")
                 self.create_table(0)
             case 72:
                 self.create_table(18)
