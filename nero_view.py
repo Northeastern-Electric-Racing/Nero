@@ -1,7 +1,7 @@
 import customtkinter
 from tkinter import Frame
 from typing import Optional, List
-from pages import home, debug
+from pages import home, debug, off, pit_lane, reverse, speed
 from mock_model import MockModel
 from raspberry_model import RaspberryModel
 import platform
@@ -18,7 +18,7 @@ class NeroView(customtkinter.CTk):
         self.model = RaspberryModel() if self.isLinux else MockModel()
 
         self.view_index = 0
-        self.view_dict = {0: "Home", 1: "Debug Table"}
+        self.view_dict = {0: "Off", 1: "Pit Lane", 2: "Debug Table", 3: "Speed", 4: "Home", 5: "Reverse"}
 
         self.debounce_forward_value = 0
         self.debounce_enter_value = 0
@@ -38,7 +38,7 @@ class NeroView(customtkinter.CTk):
 
         # create the views that the container will hold
         self.frames = {}
-        for page in (home.Home, debug.Debug_Table):
+        for page in (off.Off, pit_lane.Pit_Lane, debug.Debug_Table, speed.Speed, home.Home, reverse.Reverse):
             frame = page(parent=container, controller=self)
             name = frame.name
             self.frames[name] = frame
