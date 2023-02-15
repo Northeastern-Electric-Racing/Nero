@@ -32,8 +32,6 @@ class RaspberryModel:
             decodedList = msg.decode()
             for data in decodedList:
                 self.current_data[data.id] = data.value
-                print(str(data.id) +
-                      " (" + str(DATA_IDS[data.id]) + "): " + str(data.value))
 
         if msg is None:
             print('Timeout occurred, no message.')
@@ -76,28 +74,53 @@ class RaspberryModel:
         for i in range(0, len(self.current_data)):
             value = self.current_data[i]
             if value is not None:
-                table.append(debug.Debug_Table_Row_Value(i, DATA_IDS[i].name, value, DATA_IDS[i].unit))
+                table.append(debug.Debug_Table_Row_Value(i, DATA_IDS[i]["name"], value, DATA_IDS[i]["units"]))
+            else:
+                table.append(debug.Debug_Table_Row_Value(i, DATA_IDS[i]["name"], "N/A", DATA_IDS[i]["units"]))
         return table
 
-    def get_forward_button_pressed(self) -> Optional[int]:
-        binary = bin(self.current_data[104])
-        binary = binary[2:]
-        return binary[7]
+    def get_forward_button_pressed(self) -> Optional[str]:
+        value = self.current_data[104]
+        if value is not None:
+            binary = bin(value)
+            binary = binary[2:][::-1]
+            if len(binary) >= 7:
+                value = binary[6]
+            else:
+                value = 0
+        return value
 
-    def get_enter_button_pressed(self):
-        binary = bin(self.current_data[104])
-        binary = binary[2:]
-        return binary[1]
+    def get_enter_button_pressed(self) -> Optional[str]:
+        value = self.current_data[104]
+        if value is not None:
+            binary = bin(value)
+            binary = binary[2:][::-1]
+            value = binary[0]
+        return value
 
-    def get_up_button_pressed(self):
-        binary = bin(self.current_data[104])
-        binary = binary[2:]
-        return binary[6]
+    def get_up_button_pressed(self) -> Optional[str]:
+        value = self.current_data[104]
+        if value is not None:
+            binary = bin(value)
+            binary = binary[2:][::-1]
+            if len(binary) >= 6:
+                value = binary[5]
+            else:
+                value = 0
+        return value
 
-    def get_down_button_pressed(self):
-        binary = bin(self.current_data[104])
-        binary = binary[2:]
-        return binary[5]
+
+    def get_down_button_pressed(self) -> Optional[str]:
+        value = self.current_data[104]
+        if value is not None:
+            binary = bin(value)
+            binary = binary[2:][::-1]
+            if len(binary) >= 5:
+                value = binary[4]
+            else:
+                value = 0
+        return value
+
 
     def get_view_index(self):
         return self.current_data[...]

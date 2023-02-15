@@ -129,7 +129,6 @@ class Home(Frame):
         self.state_charge_label.grid(row=1, column=0, sticky="n")
 
         self.update()
-        self.controller.check_can()
 
     def update(self):
         self.controller.update_speed()

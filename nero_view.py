@@ -5,6 +5,7 @@ from pages import home, debug
 from mock_model import MockModel
 from raspberry_model import RaspberryModel
 import platform
+import time
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("./themes/ner.json")
@@ -16,11 +17,13 @@ class NeroView(customtkinter.CTk):
         self.isLinux = platform.platform()[0:5] == "Linux"
         self.model = RaspberryModel() if self.isLinux else MockModel()
 
+        self.view_index = 0
+
         self.debounce_forward_value = 0
         self.debounce_enter_value = 0
         self.debounce_up_value = 0
         self.debounce_down_value = 0
-        self.debounce_max_value = 125
+        self.debounce_max_value = 75
 
         # configure window
         self.title("NERO")
@@ -43,8 +46,9 @@ class NeroView(customtkinter.CTk):
 
         for frame in self.frames.values():
             frame.create_view()
-        self.view_index = 0
         self.update_frame()
+        self.check_can()
+        self.update_buttons()
 
     def update_frame(self):
         frame = self.frames[self.view_index]
@@ -52,11 +56,20 @@ class NeroView(customtkinter.CTk):
 
     def check_can(self):
         self.model.check_can()
-        self.update_enter_button_pressed()
+        self.after(1, self.check_can)
+
+    # Check for button inputs with debouncing / consistent time calls
+    def update_buttons(self):
+        start_time = time.time()
         self.update_forward_button_pressed()
+        self.update_enter_button_pressed()
         self.update_up_button_pressed()
         self.update_down_button_pressed()
-        self.after(1, self.check_can)
+        end_time = time.time()
+        while end_time - start_time < 0.0001:
+            end_time = time.time()
+            pass
+        self.after(1, self.update_buttons)
 
     # Updates for specific attributes
     def update_speed(self):
@@ -110,11 +123,13 @@ class NeroView(customtkinter.CTk):
 
         self.frames[0].state_charge.configure(text=new_charge_text)
 
+    # update for generic values (debug table)
     def update_by_id(self, id: int):
         new_generic: any = self.model.get_by_id(id)
         new_generic_text = str(new_generic) if new_generic else "N/A"
         self.frames[1].table[id].value_label.configure(text=new_generic_text)
 
+    # Create the debug table with initial values
     def create_debug_table(self) -> List[debug.Debug_Table_Row]:
         values: List[debug.Debug_Table_Row_Value] = self.model.get_debug_table_values()
 
@@ -128,42 +143,43 @@ class NeroView(customtkinter.CTk):
             table.append(debug.Debug_Table_Row(parent, values[i]))
         return table
 
+    # Button updates with debouncing
     def update_forward_button_pressed(self):
         value = self.model.get_forward_button_pressed()
-        if value and self.debounce_forward_value == 0:
-            self.change_view()
+        if value is not None and int(value) == 1 and self.debounce_forward_value == 0:
             self.debounce_forward_value = self.debounce_max_value
-        elif value is not None and not value:
+            self.change_view()
+        elif value is not None and int(value) == 0:
             self.debounce_forward_value = 0
         else:
             self.debounce_forward_value -= 1
 
     def update_up_button_pressed(self):
         value = self.model.get_up_button_pressed()
-        if value and self.debounce_up_value == 0:
+        if value is not None and int(value) == 1 and self.debounce_up_value == 0:
             self.frames[self.view_index].up_button_pressed()
             self.debounce_up_value = self.debounce_max_value
-        elif value is not None and not value:
+        elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
         else:
             self.debounce_up_value -= 1
 
     def update_down_button_pressed(self):
         value = self.model.get_down_button_pressed()
-        if value and self.debounce_down_value == 0:
+        if value is not None and int(value) == 1 and self.debounce_down_value == 0:
             self.frames[self.view_index].down_button_pressed()
             self.debounce_down_value = self.debounce_max_value
-        elif value is not None and not value:
+        elif value is not None and int(value) == 0:
             self.debounce_down_value = 0
         else:
             self.debounce_down_value -= 1
 
     def update_enter_button_pressed(self):
         value = self.model.get_enter_button_pressed()
-        if value and self.debounce_enter_value == 0:
+        if value is not None and int(value) == 1 and self.debounce_enter_value == 0:
             self.frames[self.view_index].enter_button_pressed()
             self.debounce_enter_value = self.debounce_max_value
-        elif value is not None and not value:
+        elif value is not None and int(value) == 0:
             self.debounce_enter_value = 0
         else:
             self.debounce_enter_value -= 1

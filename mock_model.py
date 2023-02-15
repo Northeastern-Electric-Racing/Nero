@@ -13,10 +13,12 @@ class MockModel:
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
-        self.forward = False
-        self.enter = False
-        self.up = False
-        self.down = False
+        self.table = [debug.Debug_Table_Row_Value(0, "speed", self.mph, "mph"), debug.Debug_Table_Row_Value(1, "status", self.status, "bool"), debug.Debug_Table_Row_Value(2, "dir", self.dir, "bool"), debug.Debug_Table_Row_Value(
+            3, "pack temp", self.pack_temp, "C"), debug.Debug_Table_Row_Value(4, "motor temp", self.motor_temp, "C"), debug.Debug_Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), debug.Debug_Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
+        self.forward = 0
+        self.enter = 0
+        self.up = 0
+        self.down = 0
         self.view_index = 0
         self.listener = Listener(on_press=self.on_press, on_release=self.on_release)
         self.listener.start()
@@ -45,25 +47,25 @@ class MockModel:
     def on_press(self, key):
         match key:
             case Key.enter:
-                self.enter = True
+                self.enter = 1
             case Key.right:
-                self.forward = True
+                self.forward = 1
                 self.view_index += 1
             case Key.up:
-                self.up = True
+                self.up = 1
             case Key.down:
-                self.down = True
+                self.down = 1
 
     def on_release(self, key):
         match key:
             case Key.enter:
-                self.enter = False
+                self.enter = 0
             case Key.right:
-                self.forward = False
+                self.forward = 0
             case Key.up:
-                self.up = False
+                self.up = 0
             case Key.down:
-                self.down = False
+                self.down = 0
 
     def get_mph(self) -> Optional[int]:
         return self.mph
@@ -93,18 +95,18 @@ class MockModel:
         return None
 
     def get_debug_table_values(self) -> List[debug.Debug_Table_Row_Value]:
-        return [debug.Debug_Table_Row_Value(0, "speed", self.mph, "mph"), debug.Debug_Table_Row_Value(1, "status", self.status, "bool"), debug.Debug_Table_Row_Value(2, "dir", self.dir, "bool"), debug.Debug_Table_Row_Value(3, "pack temp", self.pack_temp, "C"), debug.Debug_Table_Row_Value(4, "motor temp", self.motor_temp, "C"), debug.Debug_Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), debug.Debug_Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
+        return self.table
 
-    def get_forward_button_pressed(self) -> bool:
+    def get_forward_button_pressed(self) -> int:
         return self.forward
 
-    def get_enter_button_pressed(self) -> bool:
+    def get_enter_button_pressed(self) -> int:
         return self.enter
 
-    def get_up_button_pressed(self) -> bool:
+    def get_up_button_pressed(self) -> int:
         return self.up
 
-    def get_down_button_pressed(self) -> bool:
+    def get_down_button_pressed(self) -> int:
         return self.down
 
     def get_view_index(self) -> int:
