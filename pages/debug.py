@@ -2,17 +2,20 @@ from tkinter import Frame
 import customtkinter
 from typing import List
 
+
 class Debug_Table_Row_Frame(Frame):
     # The frame that holds the label of the row
     def __init__(self, parent: Frame, width: int):
         super().__init__(parent, bg="black", height=30, width=width)
         self.grid_propagate(False)
 
+
 class Debug_Table_Row_Label(customtkinter.CTkLabel):
     # The label that displays the text of the row
     def __init__(self, parent: Frame, text: str, anchor: str, relx: float = 0.5):
         super().__init__(parent, font=('Lato', 20), text_color="white", text=text)
         self.place(relx=relx, rely=0.5, anchor=anchor)
+
 
 class Debug_Table_Row_Value():
     # The values of each row
@@ -21,6 +24,7 @@ class Debug_Table_Row_Value():
         self.name = name
         self.value = value
         self.unit = unit
+
 
 class Debug_Table_Row():
     # The row of the debug table
@@ -46,11 +50,7 @@ class Debug_Table_Row():
 
     # determines if the row is highlighted
     def is_highlighted(self):
-        return self.id_frame.cget("bg") == "gray"
-
-    # determines if the row is pinned
-    def is_pinned(self):
-        return self.id_frame.cget("bg") == "blue"
+        return self.id_frame.cget("bg") == "gray" or self.id_frame.cget("bg") == "cyan"
 
 
 class Debug_Table(Frame):
@@ -59,6 +59,7 @@ class Debug_Table(Frame):
         self.controller: Frame = controller
         self.selectedId: int = 0
         self.selectedIds: List[int] = []
+        self.name = "Debug Table"
 
     # Creates the initial two frames
     def create_view(self):
@@ -156,15 +157,22 @@ class Debug_Table(Frame):
             if not i == 0:
                 baseId += 1
         # highlight the initial selected row
-        self.highlightItem()
+        if (self.selectedId == 0):
+            self.highlightItem()
 
     def highlightItem(self):
-        # if the selected id is not pinned and not highlighted then highlight it gray
-        if not self.selectedIds.count(self.selectedId) > 0 and not self.table[self.selectedId].is_highlighted():
-            self.table[self.selectedId].highlight("gray")
-        # otherwise if its highlighted then unhighlight it
-        elif not self.selectedIds.count(self.selectedId) > 0:
+        # if the selected id is pinned and highlighted then unhighlight it
+        if self.selectedIds.count(self.selectedId) > 0 and self.table[self.selectedId].is_highlighted():
+            self.table[self.selectedId].highlight("blue")
+        # otherwise if its pinned and not highlighted then highlight it cyan
+        elif self.selectedIds.count(self.selectedId) > 0 and not self.table[self.selectedId].is_highlighted():
+            self.table[self.selectedId].highlight("cyan")
+        # otherwise if its not pinned and highlighted then unhighlight it
+        elif self.table[self.selectedId].is_highlighted():
             self.table[self.selectedId].highlight("black")
+        # otherwise its not pinned and not highlighted, so highlight it
+        else:
+            self.table[self.selectedId].highlight("gray")
 
     def enter_button_pressed(self):
         # if the selected id is already pinned then unpin it
@@ -173,7 +181,7 @@ class Debug_Table(Frame):
             self.selectedIds.remove(self.selectedId)
         # otherwise if the selected id is not pinned and there are less than 6 pinned then pin it
         elif len(self.selectedIds) < 6:
-            self.table[self.selectedId].highlight("blue")
+            self.table[self.selectedId].highlight("cyan")
             self.selectedIds.append(self.selectedId)
 
     def up_button_pressed(self):

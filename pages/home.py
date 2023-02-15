@@ -6,6 +6,7 @@ class Home(Frame):
     def __init__(self, parent, controller) -> None:
         super().__init__(parent)
         self.controller = controller
+        self.name = "Home"
 
     def create_view(self):
         # configure the grid
