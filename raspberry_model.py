@@ -4,7 +4,7 @@ from ner_processing.message import Message
 from typing import Optional, List
 import can
 import os
-from pages import debug
+from pages.debug_table import Debug_Table_Row_Value
 
 
 class RaspberryModel:
@@ -69,14 +69,12 @@ class RaspberryModel:
     def get_by_id(self, id: int) -> Optional[int]:
         return self.current_data[id]
 
-    def get_debug_table_values(self) -> List[debug.Debug_Table_Row_Value]:
-        table: List[debug.Debug_Table_Row_Value] = []
+    def get_debug_table_values(self) -> List[Debug_Table_Row_Value]:
+        table: List[Debug_Table_Row_Value] = []
         for i in range(0, len(self.current_data)):
             value = self.current_data[i]
-            if value is not None:
-                table.append(debug.Debug_Table_Row_Value(i, DATA_IDS[i]["name"], value, DATA_IDS[i]["units"]))
-            else:
-                table.append(debug.Debug_Table_Row_Value(i, DATA_IDS[i]["name"], "N/A", DATA_IDS[i]["units"]))
+            table.append(Debug_Table_Row_Value(i, DATA_IDS[i]["name"],
+                         value if value is not None else "N/A", DATA_IDS[i]["units"]))
         return table
 
     def get_forward_button_pressed(self) -> Optional[str]:
@@ -86,6 +84,39 @@ class RaspberryModel:
             binary = binary[2:][::-1]
             if len(binary) >= 7:
                 value = binary[6]
+            else:
+                value = 0
+        return value
+
+    def get_backward_button_pressed(self) -> Optional[str]:
+        value = self.current_data[104]
+        if value is not None:
+            binary = bin(value)
+            binary = binary[2:][::-1]
+            if len(binary) >= 2:
+                value = binary[1]
+            else:
+                value = 0
+        return value
+
+    def get_left_button_pressed(self) -> Optional[str]:
+        value = self.current_data[104]
+        if value is not None:
+            binary = bin(value)
+            binary = binary[2:][::-1]
+            if len(binary) >= 3:
+                value = binary[2]
+            else:
+                value = 0
+        return value
+
+    def get_right_button_pressed(self) -> Optional[str]:
+        value = self.current_data[104]
+        if value is not None:
+            binary = bin(value)
+            binary = binary[2:][::-1]
+            if len(binary) >= 4:
+                value = binary[3]
             else:
                 value = 0
         return value
@@ -109,7 +140,6 @@ class RaspberryModel:
                 value = 0
         return value
 
-
     def get_down_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
@@ -120,7 +150,6 @@ class RaspberryModel:
             else:
                 value = 0
         return value
-
 
     def get_view_index(self):
         return self.current_data[...]

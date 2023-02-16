@@ -1,7 +1,14 @@
 import customtkinter
 from tkinter import Frame
 from typing import Optional, List
-from pages import home, debug, off, pit_lane, reverse, speed
+from pages.debug import Debug
+from pages.debug_table import Debug_Table_Row_Value
+from pages.home import Home
+from pages.off import Off
+from pages.pit_lane import Pit_Lane
+from pages.reverse import Reverse
+from pages.speed import Speed
+
 from mock_model import MockModel
 from raspberry_model import RaspberryModel
 import platform
@@ -18,12 +25,15 @@ class NeroView(customtkinter.CTk):
         self.model = RaspberryModel() if self.isLinux else MockModel()
 
         self.view_index = 0
-        self.view_dict = {0: "Off", 1: "Pit Lane", 2: "Debug Table", 3: "Speed", 4: "Home", 5: "Reverse"}
+        self.view_dict = {0: "Off", 1: "Pit Lane", 2: "Debug", 3: "Speed", 4: "Home", 5: "Reverse"}
 
         self.debounce_forward_value = 0
+        self.debounce_backward_value = 0
         self.debounce_enter_value = 0
         self.debounce_up_value = 0
         self.debounce_down_value = 0
+        self.debounce_left_value = 0
+        self.debounce_right_value = 0
         self.debounce_max_value = 75
 
         # configure window
@@ -38,7 +48,7 @@ class NeroView(customtkinter.CTk):
 
         # create the views that the container will hold
         self.frames = {}
-        for page in (off.Off, pit_lane.Pit_Lane, debug.Debug_Table, speed.Speed, home.Home, reverse.Reverse):
+        for page in (Off, Pit_Lane, Debug, Speed, Home, Reverse):
             frame = page(parent=container, controller=self)
             name = frame.name
             self.frames[name] = frame
@@ -62,9 +72,12 @@ class NeroView(customtkinter.CTk):
     def update_buttons(self):
         start_time = time.time()
         self.update_forward_button_pressed()
+        self.update_backward_button_pressed()
         self.update_enter_button_pressed()
         self.update_up_button_pressed()
         self.update_down_button_pressed()
+        self.update_left_button_pressed()
+        self.update_right_button_pressed()
         end_time = time.time()
         while end_time - start_time < 0.0001:
             end_time = time.time()
@@ -124,35 +137,56 @@ class NeroView(customtkinter.CTk):
         self.frames["Home"].state_charge.configure(text=new_charge_text)
 
     # update for generic values (debug table)
-    def update_by_id(self, id: int):
+    def get_by_id(self, id: int) -> str:
         new_generic: any = self.model.get_by_id(id)
         new_generic_text = str(new_generic) if new_generic else "N/A"
-        self.frames["Debug Table"].table[id].value_label.configure(text=new_generic_text)
+        return new_generic_text
 
     # Create the debug table with initial values
-    def create_debug_table(self) -> List[debug.Debug_Table_Row]:
-        values: List[debug.Debug_Table_Row_Value] = self.model.get_debug_table_values()
-
-        table: List[debug.Debug_Table_Row] = []
-        for i in range(len(values)):
-            parent: Frame
-            if i % 2 == 0:
-                parent = self.frames["Debug Table"].left_frame
-            else:
-                parent = self.frames["Debug Table"].right_frame
-            table.append(debug.Debug_Table_Row(parent, values[i]))
-        return table
+    def get_debug_table_values(self) -> List[Debug_Table_Row_Value]:
+        return self.model.get_debug_table_values()
+        
 
     # Button updates with debouncing
     def update_forward_button_pressed(self):
         value = self.model.get_forward_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_forward_value == 0:
             self.debounce_forward_value = self.debounce_max_value
-            self.change_view()
+            self.increment_view()
         elif value is not None and int(value) == 0:
             self.debounce_forward_value = 0
         else:
             self.debounce_forward_value -= 1
+
+    def update_backward_button_pressed(self):
+        value = self.model.get_backward_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_backward_value == 0:
+            self.debounce_backward_value = self.debounce_max_value
+            self.decrement_view()
+        elif value is not None and int(value) == 0:
+            self.debounce_backward_value = 0
+        else:
+            self.debounce_backward_value -= 1
+
+    def update_right_button_pressed(self):
+        value = self.model.get_right_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_right_value == 0:
+            self.debounce_right_value = self.debounce_max_value
+            self.frames[self.view_dict[self.view_index]].right_button_pressed()
+        elif value is not None and int(value) == 0:
+            self.debounce_right_value = 0
+        else:
+            self.debounce_right_value -= 1
+
+    def update_left_button_pressed(self):
+        value = self.model.get_left_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_left_value == 0:
+            self.debounce_left_value = self.debounce_max_value
+            self.frames[self.view_dict[self.view_index]].left_button_pressed()
+        elif value is not None and int(value) == 0:
+            self.debounce_left_value = 0
+        else:
+            self.debounce_left_value -= 1
 
     def update_up_button_pressed(self):
         value = self.model.get_up_button_pressed()
@@ -185,10 +219,16 @@ class NeroView(customtkinter.CTk):
             self.debounce_enter_value -= 1
 
     # Handle view changes
-    def change_view(self):
+    def increment_view(self):
         self.view_index += 1
         if (self.view_index >= len(self.frames)):
             self.view_index = 0
+        self.update_frame()
+
+    def decrement_view(self):
+        self.view_index -= 1
+        if (self.view_index < 0):
+            self.view_index = len(self.frames) - 1
         self.update_frame()
 
     def run(self):

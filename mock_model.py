@@ -1,7 +1,7 @@
 from typing import Optional, List
 import random
 from pynput.keyboard import Listener, Key
-from pages import debug
+from pages.debug_table import Debug_Table_Row_Value
 
 
 class MockModel:
@@ -13,12 +13,15 @@ class MockModel:
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
-        self.table = [debug.Debug_Table_Row_Value(0, "speed", self.mph, "mph"), debug.Debug_Table_Row_Value(1, "status", self.status, "bool"), debug.Debug_Table_Row_Value(2, "dir", self.dir, "bool"), debug.Debug_Table_Row_Value(
-            3, "pack temp", self.pack_temp, "C"), debug.Debug_Table_Row_Value(4, "motor temp", self.motor_temp, "C"), debug.Debug_Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), debug.Debug_Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
+        self.table = [Debug_Table_Row_Value(0, "speed", self.mph, "mph"), Debug_Table_Row_Value(1, "status", self.status, "bool"), Debug_Table_Row_Value(2, "dir", self.dir, "bool"), Debug_Table_Row_Value(
+            3, "pack temp", self.pack_temp, "C"), Debug_Table_Row_Value(4, "motor temp", self.motor_temp, "C"), Debug_Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), Debug_Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
         self.forward = 0
+        self.backward = 0
         self.enter = 0
         self.up = 0
         self.down = 0
+        self.left = 0
+        self.right = 0
         self.view_index = 0
         self.listener = Listener(on_press=self.on_press, on_release=self.on_release)
         self.listener.start()
@@ -51,10 +54,18 @@ class MockModel:
             case Key.right:
                 self.forward = 1
                 self.view_index += 1
+            case Key.left:
+                self.backward = 1
+                self.view_index -= 1
             case Key.up:
                 self.up = 1
             case Key.down:
                 self.down = 1
+            case Key.shift_l:
+                self.left = 1
+            case Key.shift_r:
+                self.right = 1
+            
 
     def on_release(self, key):
         match key:
@@ -62,10 +73,16 @@ class MockModel:
                 self.enter = 0
             case Key.right:
                 self.forward = 0
+            case Key.left:
+                self.backward = 0
             case Key.up:
                 self.up = 0
             case Key.down:
                 self.down = 0
+            case Key.shift_l:
+                self.left = 0
+            case Key.shift_r:
+                self.right = 0
 
     def get_mph(self) -> Optional[int]:
         return self.mph
@@ -94,7 +111,7 @@ class MockModel:
     def get_by_id(self, id: int) -> Optional[int]:
         return None
 
-    def get_debug_table_values(self) -> List[debug.Debug_Table_Row_Value]:
+    def get_debug_table_values(self) -> List[Debug_Table_Row_Value]:
         return self.table
 
     def get_forward_button_pressed(self) -> int:
@@ -108,6 +125,15 @@ class MockModel:
 
     def get_down_button_pressed(self) -> int:
         return self.down
+
+    def get_backward_button_pressed(self) -> int:
+        return self.backward
+
+    def get_left_button_pressed(self) -> int:
+        return self.left
+    
+    def get_right_button_pressed(self) -> int:
+        return self.right
 
     def get_view_index(self) -> int:
         if self.view_index == 3:
