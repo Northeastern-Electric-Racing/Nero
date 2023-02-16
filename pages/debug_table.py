@@ -1,7 +1,7 @@
 from tkinter import Frame
 import customtkinter
 from typing import List
-
+from pages.page import Page
 
 class Debug_Table_Row_Frame(Frame):
     # The frame that holds the label of the row
@@ -53,13 +53,11 @@ class Debug_Table_Row():
         return self.id_frame.cget("bg") == "gray" or self.id_frame.cget("bg") == "cyan"
 
 
-class Debug_Table(Frame):
+class Debug_Table(Page):
     def __init__(self, parent, controller) -> None:
-        super().__init__(parent)
-        self.controller: Frame = controller
+        super().__init__(parent, controller, "Debug Table")
         self.selectedId: int = 0
         self.selectedIds: List[int] = []
-        self.name = "Debug Table"
 
     # Creates the initial two frames
     def create_view(self):
@@ -221,6 +219,3 @@ class Debug_Table(Frame):
         for i in range(0, len(self.table)):
             self.controller.update_by_id(i)
         self.after(100, self.update)
-
-    def run(self):
-        self.mainloop()

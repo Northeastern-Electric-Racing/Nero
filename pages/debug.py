@@ -2,13 +2,11 @@ from tkinter import Frame
 from typing import List
 from pages.debug_plot import Debug_Plot
 from pages.debug_table import Debug_Table, Debug_Table_Row, Debug_Table_Row_Value
+from pages.page import Page
 
-
-class Debug(Frame):
+class Debug(Page):
     def __init__(self, controller, parent):
-        super().__init__(parent)
-        self.controller = controller
-        self.name = "Debug"
+        super().__init__(parent, controller, "Debug")
 
     def create_view(self):
         self.view_index = 0

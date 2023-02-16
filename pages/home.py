@@ -1,12 +1,10 @@
 from tkinter import Frame
 import customtkinter
+from pages.page import Page
 
-
-class Home(Frame):
+class Home(Page):
     def __init__(self, parent, controller) -> None:
-        super().__init__(parent)
-        self.controller = controller
-        self.name = "Home"
+        super().__init__(parent, controller, "Home")
 
     def create_view(self):
         # configure the grid
@@ -141,14 +139,3 @@ class Home(Frame):
 
         self.after(100, self.update)
 
-    def enter_button_pressed(self):
-        return
-
-    def up_button_pressed(self):
-        return
-
-    def down_button_pressed(self):
-        return
-
-    def run(self):
-        self.mainloop()
