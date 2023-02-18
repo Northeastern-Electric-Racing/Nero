@@ -4,6 +4,7 @@ from pynput.keyboard import Listener, Key
 from debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
 
+
 class MockModel(Model):
     def __init__(self) -> None:
         super().__init__()
@@ -14,7 +15,8 @@ class MockModel(Model):
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
-        self.current_data = [self.mph, self.status, self.dir, self.pack_temp, self.motor_temp, self.state_of_charge, self.lv_battery]
+        self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
+                             self.motor_temp, self.state_of_charge, self.lv_battery]
         self.table = [DebugTableRowValue(0, "speed", self.current_data[0], "mph"), DebugTableRowValue(1, "status", self.current_data[1], "bool"), DebugTableRowValue(2, "dir", self.current_data[2], "bool"), DebugTableRowValue(
             3, "pack temp", self.current_data[3], "C"), DebugTableRowValue(4, "motor temp", self.current_data[4], "C"), DebugTableRowValue(5, "state of charge", self.current_data[5], "%"), DebugTableRowValue(6, "lv battery", self.current_data[6], "V")]
         self.forward = 0
@@ -31,7 +33,6 @@ class MockModel(Model):
 
     def check_can(self) -> None:
         rng = random.randint(0, 10000)
-
         if rng < 5 and rng >= 0:
             self.mph += 1
         elif rng >= 5 and rng <= 10:
@@ -48,6 +49,9 @@ class MockModel(Model):
             self.dir = False
         if rng > 40 and rng < 45:
             self.dir = True
+
+        self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
+                             self.motor_temp, self.state_of_charge, self.lv_battery]
 
     def on_press(self, key):
         match key:
@@ -107,7 +111,7 @@ class MockModel(Model):
         return self.current_data[5]
 
     def get_lv_battery(self) -> Optional[int]:
-        return self.current_data[6]        
+        return self.current_data[6]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         return self.table
