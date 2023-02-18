@@ -28,6 +28,15 @@ You can click the play button in VSCode when you're in the `main.py` file or you
 1. `source venv/bin/activate`
 2. `python3 main.py`
 
+### Dev Inputs 
+   Increment Mode -> Right Arrow
+   Decrement Mode -> Left Arrow
+   Increment Page -> Right Shift
+   Decrement Page -> Left Shift
+   Up -> Up Arrow
+   Down -> Down Arrow
+   Enter -> Enter Key
+
 ### Learning
 
 We use CustomTkinter which is a more modern version of Tkinter. 
@@ -45,3 +54,4 @@ It is all based on Tkinter, so if these docs don't explain it then the Tkinter d
 3. `pip3 freeze > requirements.txt`
 
 Then commit the new requirements.txt which should have added lines for the new package you're installing and any of its dependencies.
+

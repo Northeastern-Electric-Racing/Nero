@@ -1,11 +1,12 @@
 from typing import Optional, List
 import random
 from pynput.keyboard import Listener, Key
-from pages.debug_table import Debug_Table_Row_Value
+from debug_mode.debug_table_page import DebugTableRowValue
+from models.model import Model
 
-
-class MockModel:
+class MockModel(Model):
     def __init__(self) -> None:
+        super().__init__()
         self.mph = 60
         self.status = True
         self.dir = True
@@ -13,9 +14,9 @@ class MockModel:
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
-        self.data = [self.mph, self.status, self.dir, self.pack_temp, self.motor_temp, self.state_of_charge, self.lv_battery]
-        self.table = [Debug_Table_Row_Value(0, "speed", self.data[0], "mph"), Debug_Table_Row_Value(1, "status", self.data[1], "bool"), Debug_Table_Row_Value(2, "dir", self.data[2], "bool"), Debug_Table_Row_Value(
-            3, "pack temp", self.data[3], "C"), Debug_Table_Row_Value(4, "motor temp", self.data[4], "C"), Debug_Table_Row_Value(5, "state of charge", self.data[5], "%"), Debug_Table_Row_Value(6, "lv battery", self.data[6], "V")]
+        self.current_data = [self.mph, self.status, self.dir, self.pack_temp, self.motor_temp, self.state_of_charge, self.lv_battery]
+        self.table = [DebugTableRowValue(0, "speed", self.current_data[0], "mph"), DebugTableRowValue(1, "status", self.current_data[1], "bool"), DebugTableRowValue(2, "dir", self.current_data[2], "bool"), DebugTableRowValue(
+            3, "pack temp", self.current_data[3], "C"), DebugTableRowValue(4, "motor temp", self.current_data[4], "C"), DebugTableRowValue(5, "state of charge", self.current_data[5], "%"), DebugTableRowValue(6, "lv battery", self.current_data[6], "V")]
         self.forward = 0
         self.backward = 0
         self.enter = 0
@@ -85,33 +86,30 @@ class MockModel:
                 self.right = 0
 
     def get_mph(self) -> Optional[int]:
-        return self.mph
+        return self.current_data[0]
 
     def get_kph(self) -> Optional[int]:
-        return round(self.mph * 1.609)
+        return round(self.current_data[0] * 1.609)
 
     def get_status(self) -> Optional[bool]:
-        return self.status
+        return self.current_data[1]
 
     def get_dir(self) -> Optional[bool]:
-        return self.dir
+        return self.current_data[2]
 
     def get_pack_temp(self) -> Optional[int]:
-        return self.pack_temp
+        return self.current_data[3]
 
     def get_motor_temp(self) -> Optional[int]:
-        return self.motor_temp
+        return self.current_data[4]
 
     def get_state_of_charge(self) -> Optional[int]:
-        return self.state_of_charge
+        return self.current_data[5]
 
     def get_lv_battery(self) -> Optional[int]:
-        return self.lv_battery
+        return self.current_data[6]        
 
-    def get_by_id(self, id: int) -> Optional[int]:
-        return self.data[id]
-
-    def get_debug_table_values(self) -> List[Debug_Table_Row_Value]:
+    def get_debug_table_values(self) -> List[DebugTableRowValue]:
         return self.table
 
     def get_forward_button_pressed(self) -> int:

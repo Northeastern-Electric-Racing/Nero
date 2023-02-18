@@ -1,18 +1,19 @@
 import customtkinter
 from tkinter import Frame
-from typing import Optional, List
-from pages.debug import Debug
-from pages.debug_table import Debug_Table_Row_Value
-from pages.home import Home
-from pages.off import Off
-from pages.pit_lane import Pit_Lane
-from pages.reverse import Reverse
-from pages.speed import Speed
-
-from mock_model import MockModel
-from raspberry_model import RaspberryModel
+from typing import Optional, List, Dict
+from debug_mode.debug_mode import DebugMode
+from debug_mode.debug_table_page import DebugTableRowValue
+from efficiency_mode.efficiency_mode import EfficiencyMode
+from off_mode.off_mode import OffMode
+from pit_lane_mode.pit_lane_mode import PitLaneMode
+from reverse_mode.reverse_mode import ReverseMode
+from speed_mode.speed_mode import SpeedMode
+from models.mock_model import MockModel
+from models.raspberry_model import RaspberryModel
+from mode import Mode
 import platform
 import time
+from models.model import Model
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("themes/ner.json")
@@ -22,10 +23,7 @@ class NeroView(customtkinter.CTk):
     def __init__(self) -> None:
         super().__init__()
         self.isLinux = platform.platform()[0:5] == "Linux"
-        self.model = RaspberryModel() if self.isLinux else MockModel()
-
-        self.view_index = 0
-        self.view_dict = {0: "Off", 1: "Pit Lane", 2: "Debug", 3: "Speed", 4: "Home", 5: "Reverse"}
+        self.model: Model = RaspberryModel() if self.isLinux else MockModel()
 
         self.debounce_forward_value = 0
         self.debounce_backward_value = 0
@@ -40,29 +38,33 @@ class NeroView(customtkinter.CTk):
         self.title("NERO")
         self.geometry(f"{1100}x{580}")
 
-        # create the container frame that holds all views
+        # create the container frame that holds all modes
         container = Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        # create the views that the container will hold
-        self.frames = {}
-        for page in (Off, Pit_Lane, Debug, Speed, Home, Reverse):
-            frame = page(parent=container, controller=self)
-            name = frame.name
-            self.frames[name] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
+        # create the modes that the container will hold
+        self.modes: Dict[str, Mode] = {}
+        self.mode_index = 0
+        self.mode_names: List[str] = []
+        for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode):
+            mode = mode_class(parent=container, controller=self, model=self.model)
+            name = mode.name
+            self.modes[name] = mode
+            self.mode_names.append(name)
+            mode.grid(row=0, column=0, sticky="nsew")
 
-        for frame in self.frames.values():
-            frame.create_view()
-        self.update_frame()
+        for mode in self.modes.values():
+            mode.create_view()
+
+        self.update_mode()
         self.check_can()
         self.update_buttons()
 
-    def update_frame(self):
-        frame = self.frames[self.view_dict[self.view_index]]
-        frame.tkraise()
+    def update_mode(self):
+        self.current_mode = self.modes[self.mode_names[self.mode_index]]
+        self.current_mode.tkraise()
 
     def check_can(self):
         self.model.check_can()
@@ -83,69 +85,6 @@ class NeroView(customtkinter.CTk):
             end_time = time.time()
             pass
         self.after(1, self.update_buttons)
-
-    # Updates for specific attributes
-    def update_speed(self):
-        new_mph: Optional[int] = self.model.get_mph()
-        new_kph: Optional[int] = self.model.get_kph()
-
-        new_mph_text = str(new_mph) if new_mph is not None else "N/A"
-        new_kph_text = str(new_kph) if new_kph is not None else "N/A"
-
-        self.frames["Home"].mph.configure(text=new_mph_text)
-        self.frames["Home"].kph.configure(text=new_kph_text)
-
-    def update_status(self):
-        new_status: Optional[bool] = self.model.get_status()
-
-        if new_status == True:
-            self.frames["Home"].status.configure(text="ON", text_color="green")
-        elif new_status == False:
-            self.frames["Home"].status.configure(text="OFF", text_color="red")
-        else:
-            self.frames["Home"].status.configure(text="N/A")
-
-    def update_dir(self):
-        new_dir: Optional[bool] = self.model.get_dir()
-
-        if new_dir == True:
-            self.frames["Home"].dir.configure(text="FORWARD")
-        elif new_dir == False:
-            self.frames["Home"].dir.configure(text="REVERSE")
-        else:
-            self.frames["Home"].dir.configure(text="N/A")
-
-    def update_pack_temp(self):
-        new_pack_temp: Optional[int] = self.model.get_pack_temp()
-
-        new_pack_temp_text = str(new_pack_temp) + "°" if new_pack_temp is not None else "N/A"
-
-        self.frames["Home"].pack_temp.configure(text=new_pack_temp_text)
-
-    def update_motor_temp(self):
-        new_motor_temp: Optional[int] = self.model.get_motor_temp()
-
-        new_motor_temp_text = str(new_motor_temp) + "°" if new_motor_temp is not None else "N/A"
-
-        self.frames["Home"].motor_temp.configure(text=new_motor_temp_text)
-
-    def update_state_charge(self):
-        new_charge: Optional[int] = self.model.get_state_of_charge()
-
-        new_charge_text = str(new_charge) + "%" if new_charge is not None else "N/A"
-
-        self.frames["Home"].state_charge.configure(text=new_charge_text)
-
-    # update for generic values (debug table)
-    def get_by_id(self, id: int) -> str:
-        new_generic: any = self.model.get_by_id(id)
-        new_generic_text = str(new_generic) if new_generic else "N/A"
-        return new_generic_text
-
-    # Create the debug table with initial values
-    def get_debug_table_values(self) -> List[Debug_Table_Row_Value]:
-        return self.model.get_debug_table_values()
-        
 
     # Button updates with debouncing
     def update_forward_button_pressed(self):
@@ -172,7 +111,7 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_right_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_right_value == 0:
             self.debounce_right_value = self.debounce_max_value
-            self.frames[self.view_dict[self.view_index]].right_button_pressed()
+            self.current_mode.right_button_pressed()
         elif value is not None and int(value) == 0:
             self.debounce_right_value = 0
         else:
@@ -182,7 +121,7 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_left_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_left_value == 0:
             self.debounce_left_value = self.debounce_max_value
-            self.frames[self.view_dict[self.view_index]].left_button_pressed()
+            self.current_mode.left_button_pressed()
         elif value is not None and int(value) == 0:
             self.debounce_left_value = 0
         else:
@@ -191,7 +130,7 @@ class NeroView(customtkinter.CTk):
     def update_up_button_pressed(self):
         value = self.model.get_up_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_up_value == 0:
-            self.frames[self.view_dict[self.view_index]].up_button_pressed()
+            self.current_mode.up_button_pressed()
             self.debounce_up_value = self.debounce_max_value
         elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
@@ -201,7 +140,7 @@ class NeroView(customtkinter.CTk):
     def update_down_button_pressed(self):
         value = self.model.get_down_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_down_value == 0:
-            self.frames[self.view_dict[self.view_index]].down_button_pressed()
+            self.current_mode.down_button_pressed()
             self.debounce_down_value = self.debounce_max_value
         elif value is not None and int(value) == 0:
             self.debounce_down_value = 0
@@ -211,7 +150,7 @@ class NeroView(customtkinter.CTk):
     def update_enter_button_pressed(self):
         value = self.model.get_enter_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_enter_value == 0:
-            self.frames[self.view_dict[self.view_index]].enter_button_pressed()
+            self.current_mode.enter_button_pressed()
             self.debounce_enter_value = self.debounce_max_value
         elif value is not None and int(value) == 0:
             self.debounce_enter_value = 0
@@ -220,19 +159,19 @@ class NeroView(customtkinter.CTk):
 
     # Handle view changes
     def increment_view(self):
-        self.view_index += 1
-        if (self.view_index >= len(self.frames)):
-            self.view_index = 0
-        self.update_frame()
+        self.mode_index += 1
+        if (self.mode_index >= len(self.modes)):
+            self.mode_index = 0
+        self.update_mode()
 
     def decrement_view(self):
-        self.view_index -= 1
-        if (self.view_index < 0):
-            self.view_index = len(self.frames) - 1
-        self.update_frame()
+        self.mode_index -= 1
+        if (self.mode_index < 0):
+            self.mode_index = len(self.modes) - 1
+        self.update_mode()
 
     def run(self):
         if (self.isLinux):
             self.attributes('-fullscreen', True)
 
-        self.frames[self.view_dict[self.view_index]].mainloop()
+        self.current_mode.mainloop()

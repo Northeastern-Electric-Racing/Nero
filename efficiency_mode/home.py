@@ -1,10 +1,13 @@
 from tkinter import Frame
 import customtkinter
-from pages.page import Page
+from page import Page
+from models.model import Model
+from typing import Optional
+
 
 class Home(Page):
-    def __init__(self, parent, controller) -> None:
-        super().__init__(parent, controller, "Home")
+    def __init__(self, parent: Frame, model: Model) -> None:
+        super().__init__(parent, model, "Home")
 
     def create_view(self):
         # configure the grid
@@ -129,13 +132,64 @@ class Home(Page):
 
         self.update()
 
+    # Updates for specific attributes
+    def update_speed(self):
+        new_mph: Optional[int] = self.model.get_mph()
+        new_kph: Optional[int] = self.model.get_kph()
+
+        new_mph_text = str(new_mph) if new_mph is not None else "N/A"
+        new_kph_text = str(new_kph) if new_kph is not None else "N/A"
+
+        self.mph.configure(text=new_mph_text)
+        self.kph.configure(text=new_kph_text)
+
+    def update_status(self):
+        new_status: Optional[bool] = self.model.get_status()
+
+        if new_status == True:
+            self.status.configure(text="ON", text_color="green")
+        elif new_status == False:
+            self.status.configure(text="OFF", text_color="red")
+        else:
+            self.status.configure(text="N/A")
+
+    def update_dir(self):
+        new_dir: Optional[bool] = self.model.get_dir()
+
+        if new_dir == True:
+            self.dir.configure(text="FORWARD")
+        elif new_dir == False:
+            self.dir.configure(text="REVERSE")
+        else:
+            self.dir.configure(text="N/A")
+
+    def update_pack_temp(self):
+        new_pack_temp: Optional[int] = self.model.get_pack_temp()
+
+        new_pack_temp_text = str(new_pack_temp) + "°" if new_pack_temp is not None else "N/A"
+
+        self.pack_temp.configure(text=new_pack_temp_text)
+
+    def update_motor_temp(self):
+        new_motor_temp: Optional[int] = self.model.get_motor_temp()
+
+        new_motor_temp_text = str(new_motor_temp) + "°" if new_motor_temp is not None else "N/A"
+
+        self.motor_temp.configure(text=new_motor_temp_text)
+
+    def update_state_charge(self):
+        new_charge: Optional[int] = self.model.get_state_of_charge()
+
+        new_charge_text = str(new_charge) + "%" if new_charge is not None else "N/A"
+
+        self.state_charge.configure(text=new_charge_text)
+
     def update(self):
-        self.controller.update_speed()
-        self.controller.update_status()
-        self.controller.update_dir()
-        self.controller.update_pack_temp()
-        self.controller.update_motor_temp()
-        self.controller.update_state_charge()
+        self.update_speed()
+        self.update_status()
+        self.update_dir()
+        self.update_pack_temp()
+        self.update_motor_temp()
+        self.update_state_charge()
 
         self.after(100, self.update)
-

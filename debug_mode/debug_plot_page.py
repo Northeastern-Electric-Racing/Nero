@@ -1,14 +1,15 @@
 from tkinter import Frame
-from pages.page import Page
+from page import Page
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from typing import Dict, List
+from models.model import Model
 
 
-class Debug_Plot(Page):
-    def __init__(self, controller, parent):
-        super().__init__(parent, controller, "Debug Plot")
-        self.data: Dict[int, List[float]] = controller.pinned_data
+class DebugPlot(Page):
+    def __init__(self, parent: Frame, model: Model):
+        super().__init__(parent, model, "Debug Plot")
+        self.data: Dict[int, List[float]] = model.pinned_data
 
     def create_view(self):
         # the frame that will hold the figure
@@ -21,7 +22,6 @@ class Debug_Plot(Page):
         self.fig.suptitle("Debug Plot", fontsize=16)
         # adding the subplot
         self.plot1 = self.fig.add_subplot(111)
-        
 
         # creating the Tkinter canvas
         # containing the Matplotlib figure
@@ -32,7 +32,7 @@ class Debug_Plot(Page):
         self.canvas.get_tk_widget().grid(row=0, column=0, sticky="s")
 
         self.update_figure()
-    
+
     def update_figure(self):
         self.plot1.clear()
         for id in self.data:

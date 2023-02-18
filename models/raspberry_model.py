@@ -4,11 +4,13 @@ from ner_processing.message import Message
 from typing import Optional, List
 import can
 import os
-from pages.debug_table import Debug_Table_Row_Value
+from debug_mode.debug_table_page import DebugTableRowValue
+from models.model import Model
 
 
-class RaspberryModel:
+class RaspberryModel(Model):
     def __init__(self) -> None:
+        super().__init__()
         self.current_data = [None] * len(DATA_IDS)
         os.chdir("/home/ner/Desktop/Nero/")
 
@@ -66,14 +68,11 @@ class RaspberryModel:
     def get_lv_battery(self) -> Optional[int]:
         return self.current_data[63]
 
-    def get_by_id(self, id: int) -> Optional[int]:
-        return self.current_data[id]
-
-    def get_debug_table_values(self) -> List[Debug_Table_Row_Value]:
-        table: List[Debug_Table_Row_Value] = []
+    def get_debug_table_values(self) -> List[DebugTableRowValue]:
+        table: List[DebugTableRowValue] = []
         for i in range(0, len(self.current_data)):
             value = self.current_data[i]
-            table.append(Debug_Table_Row_Value(i, DATA_IDS[i]["name"],
+            table.append(DebugTableRowValue(i, DATA_IDS[i]["name"],
                          value if value is not None else "N/A", DATA_IDS[i]["units"]))
         return table
 
@@ -93,8 +92,8 @@ class RaspberryModel:
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 2:
-                value = binary[1]
+            if len(binary) >= 8:
+                value = binary[7]
             else:
                 value = 0
         return value
@@ -115,8 +114,8 @@ class RaspberryModel:
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 4:
-                value = binary[3]
+            if len(binary) >= 2:
+                value = binary[1]
             else:
                 value = 0
         return value
@@ -151,5 +150,5 @@ class RaspberryModel:
                 value = 0
         return value
 
-    def get_view_index(self):
+    def get_mode_index(self):
         return self.current_data[...]

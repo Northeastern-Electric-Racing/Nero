@@ -1,10 +1,11 @@
 from tkinter import Frame, Label
+from models.model import Model
 
 class Page(Frame):
-    def __init__(self, parent: Frame, controller: Frame, name: str) -> None:
+    def __init__(self, parent: Frame, model: Model, name: str) -> None:
          super().__init__(parent)
-         self.controller = controller
          self.name = name
+         self.model = model
 
     def create_view(self):
         label = Label(self, text=self.name)
@@ -17,12 +18,6 @@ class Page(Frame):
         pass
 
     def down_button_pressed(self):
-        pass
-
-    def left_button_pressed(self):
-        pass
-
-    def right_button_pressed(self):
         pass
 
     def update(self):
