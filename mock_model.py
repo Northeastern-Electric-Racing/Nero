@@ -13,8 +13,9 @@ class MockModel:
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
-        self.table = [Debug_Table_Row_Value(0, "speed", self.mph, "mph"), Debug_Table_Row_Value(1, "status", self.status, "bool"), Debug_Table_Row_Value(2, "dir", self.dir, "bool"), Debug_Table_Row_Value(
-            3, "pack temp", self.pack_temp, "C"), Debug_Table_Row_Value(4, "motor temp", self.motor_temp, "C"), Debug_Table_Row_Value(5, "state of charge", self.state_of_charge, "%"), Debug_Table_Row_Value(6, "lv battery", self.lv_battery, "V")]
+        self.data = [self.mph, self.status, self.dir, self.pack_temp, self.motor_temp, self.state_of_charge, self.lv_battery]
+        self.table = [Debug_Table_Row_Value(0, "speed", self.data[0], "mph"), Debug_Table_Row_Value(1, "status", self.data[1], "bool"), Debug_Table_Row_Value(2, "dir", self.data[2], "bool"), Debug_Table_Row_Value(
+            3, "pack temp", self.data[3], "C"), Debug_Table_Row_Value(4, "motor temp", self.data[4], "C"), Debug_Table_Row_Value(5, "state of charge", self.data[5], "%"), Debug_Table_Row_Value(6, "lv battery", self.data[6], "V")]
         self.forward = 0
         self.backward = 0
         self.enter = 0
@@ -65,7 +66,6 @@ class MockModel:
                 self.left = 1
             case Key.shift_r:
                 self.right = 1
-            
 
     def on_release(self, key):
         match key:
@@ -109,7 +109,7 @@ class MockModel:
         return self.lv_battery
 
     def get_by_id(self, id: int) -> Optional[int]:
-        return None
+        return self.data[id]
 
     def get_debug_table_values(self) -> List[Debug_Table_Row_Value]:
         return self.table
@@ -131,7 +131,7 @@ class MockModel:
 
     def get_left_button_pressed(self) -> int:
         return self.left
-    
+
     def get_right_button_pressed(self) -> int:
         return self.right
 

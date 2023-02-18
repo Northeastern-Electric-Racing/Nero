@@ -1,16 +1,20 @@
 from tkinter import Frame
-from typing import List
+from typing import List, Dict
 from pages.debug_plot import Debug_Plot
 from pages.debug_table import Debug_Table, Debug_Table_Row, Debug_Table_Row_Value
 from pages.page import Page
+
 
 class Debug(Page):
     def __init__(self, controller, parent):
         super().__init__(parent, controller, "Debug")
 
+        # the ids and values that are pinned by the table and will be displayed by the plot
+        self.pinned_data: Dict[int, List[float]] = {}
+
     def create_view(self):
         self.view_index = 0
-        self.view_dict = {0: "Debug Table", 1: "Debug Plot"}
+        self.view_dict: Dict[int, str] = {0: "Debug Table", 1: "Debug Plot"}
 
         # create the container frame that holds all views
         container = Frame(self)
@@ -30,10 +34,16 @@ class Debug(Page):
             frame.create_view()
 
         self.update_frame()
+        self.update_pinned_data()
 
     def update_frame(self):
         frame = self.frames[self.view_dict[self.view_index]]
         frame.tkraise()
+
+    def update_pinned_data(self):
+        for id in self.pinned_data:
+            self.pinned_data[id].append(self.controller.get_by_id(id))
+        self.after(1, self.update_pinned_data)
 
     def create_debug_table(self):
         values: List[Debug_Table_Row_Value] = self.controller.get_debug_table_values()

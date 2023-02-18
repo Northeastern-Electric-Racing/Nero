@@ -51,13 +51,14 @@ class Debug_Table_Row():
     # determines if the row is highlighted
     def is_highlighted(self):
         return self.id_frame.cget("bg") == "gray" or self.id_frame.cget("bg") == "cyan"
-
+    
+    def is_pinned(self):
+        return self.id_frame.cget("bg") == "cyan" or self.id_frame.cget("bg") == "blue"
 
 class Debug_Table(Page):
     def __init__(self, parent, controller) -> None:
         super().__init__(parent, controller, "Debug Table")
-        self.selectedId: int = 0
-        self.selectedIds: List[int] = []
+        self.selected_id: int = 0
 
     # Creates the initial two frames
     def create_view(self):
@@ -155,36 +156,36 @@ class Debug_Table(Page):
             if not i == 0:
                 baseId += 1
         # highlight the initial selected row
-        if (self.selectedId == 0):
+        if (self.selected_id == 0):
             self.highlightItem()
 
     def highlightItem(self):
         # if the selected id is pinned and highlighted then unhighlight it
-        if self.selectedIds.count(self.selectedId) > 0 and self.table[self.selectedId].is_highlighted():
-            self.table[self.selectedId].highlight("blue")
+        if self.table[self.selected_id].is_pinned() and self.table[self.selected_id].is_highlighted():
+            self.table[self.selected_id].highlight("blue")
         # otherwise if its pinned and not highlighted then highlight it cyan
-        elif self.selectedIds.count(self.selectedId) > 0 and not self.table[self.selectedId].is_highlighted():
-            self.table[self.selectedId].highlight("cyan")
+        elif self.table[self.selected_id].is_pinned():
+            self.table[self.selected_id].highlight("cyan")
         # otherwise if its not pinned and highlighted then unhighlight it
-        elif self.table[self.selectedId].is_highlighted():
-            self.table[self.selectedId].highlight("black")
+        elif self.table[self.selected_id].is_highlighted():
+            self.table[self.selected_id].highlight("black")
         # otherwise its not pinned and not highlighted, so highlight it
         else:
-            self.table[self.selectedId].highlight("gray")
+            self.table[self.selected_id].highlight("gray")
 
     def enter_button_pressed(self):
         # if the selected id is already pinned then unpin it
-        if self.selectedIds.count(self.selectedId) > 0:
-            self.table[self.selectedId].highlight("gray")
-            self.selectedIds.remove(self.selectedId)
+        if self.table[self.selected_id].is_pinned():
+            self.table[self.selected_id].highlight("gray")
+            self.controller.pinned_data.pop(self.selected_id)
         # otherwise if the selected id is not pinned and there are less than 6 pinned then pin it
-        elif len(self.selectedIds) < 6:
-            self.table[self.selectedId].highlight("cyan")
-            self.selectedIds.append(self.selectedId)
+        elif len(self.controller.pinned_data.keys()) < 6:
+            self.table[self.selected_id].highlight("cyan")
+            self.controller.pinned_data[self.selected_id] = [self.table[self.selected_id].value_label.cget("text")]
 
     def up_button_pressed(self):
         # Determines if the table should reload to the prior table
-        match self.selectedId:
+        match self.selected_id:
             case 0:
                 return
             case 36:
@@ -194,14 +195,14 @@ class Debug_Table(Page):
         # unhighlight the current selected row
         self.highlightItem()
         # change the selected id to the row above and highlight it
-        self.selectedId -= 1
+        self.selected_id -= 1
         self.highlightItem()
 
     def down_button_pressed(self):
         # Determines if the table should reload to the next table
-        if len(self.table) - 1 == self.selectedId:
+        if len(self.table) - 1 == self.selected_id:
             return
-        match self.selectedId:
+        match self.selected_id:
             case 35:
                 self.create_table(18)
             case 71:
@@ -211,7 +212,7 @@ class Debug_Table(Page):
         # unhighlight the current selected row
         self.highlightItem()
         # change the selected id to the row below and highlight it
-        self.selectedId += 1
+        self.selected_id += 1
         self.highlightItem()
 
     def update(self):
