@@ -17,7 +17,6 @@ class DebugPlot(Page):
         frame.grid(row=0, column=0, sticky="s")
 
         # the figure that will contain the plot
-        # the figure that will contain the plot
         self.fig = Figure(figsize=(11, 6), dpi=100)
         self.fig.suptitle("Debug Plot", fontsize=16)
         # adding the subplot

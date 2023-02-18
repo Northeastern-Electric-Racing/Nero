@@ -76,15 +76,13 @@ class RaspberryModel(Model):
                          value if value is not None else "N/A", DATA_IDS[i]["units"]))
         return table
 
+    # The way we get button data is by seperating the data into binary and then parsing the bit that represents each button out, if the binary string is too short then we know the button wasnt pressed so we can return 0
     def get_forward_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 7:
-                value = binary[6]
-            else:
-                value = 0
+            value = binary[6] if len(binary) >= 7 else 0
         return value
 
     def get_backward_button_pressed(self) -> Optional[str]:
@@ -92,10 +90,7 @@ class RaspberryModel(Model):
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 8:
-                value = binary[7]
-            else:
-                value = 0
+            value = binary[7] if len(binary) >= 8 else 0
         return value
 
     def get_left_button_pressed(self) -> Optional[str]:
@@ -103,10 +98,7 @@ class RaspberryModel(Model):
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 3:
-                value = binary[2]
-            else:
-                value = 0
+            value = binary[2] if len(binary) >= 3 else 0
         return value
 
     def get_right_button_pressed(self) -> Optional[str]:
@@ -114,10 +106,7 @@ class RaspberryModel(Model):
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 2:
-                value = binary[1]
-            else:
-                value = 0
+            value = binary[1] if len(binary) >= 2 else 0
         return value
 
     def get_enter_button_pressed(self) -> Optional[str]:
@@ -133,10 +122,7 @@ class RaspberryModel(Model):
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 6:
-                value = binary[5]
-            else:
-                value = 0
+            value = binary[5] if len(binary) >= 6 else 0
         return value
 
     def get_down_button_pressed(self) -> Optional[str]:
@@ -144,10 +130,7 @@ class RaspberryModel(Model):
         if value is not None:
             binary = bin(value)
             binary = binary[2:][::-1]
-            if len(binary) >= 5:
-                value = binary[4]
-            else:
-                value = 0
+            value = binary[4] if len(binary) >= 5 else 0
         return value
 
     def get_mode_index(self):
