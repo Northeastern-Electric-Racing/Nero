@@ -39,4 +39,3 @@ class DebugPlot(Page):
             # plotting the graph
             self.plot1.plot(y)
         self.canvas.draw()
-        self.after(100, self.update_figure)

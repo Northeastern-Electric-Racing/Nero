@@ -60,7 +60,7 @@ class DebugTableRow():
 
 class DebugTable(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
-        super().__init__(parent,model, "Debug Table")
+        super().__init__(parent, model, "Debug Table")
         self.selected_id: int = 0
 
     # Creates the initial two frames
@@ -222,7 +222,7 @@ class DebugTable(Page):
         values: List[DebugTableRowValue] = self.model.get_debug_table_values()
         table: List[DebugTableRow] = []
         for i in range(len(values)):
-            parent : Frame = self.left_frame if i % 2 == 0 else self.right_frame
+            parent: Frame = self.left_frame if i % 2 == 0 else self.right_frame
             table.append(DebugTableRow(parent, values[i]))
         return table
 
@@ -234,5 +234,3 @@ class DebugTable(Page):
         # updates the values in the table every 100 ms
         for i in range(0, len(self.table)):
             self.update_by_id(i)
-        self.model.update_pinned_data()
-        self.after(1, self.update)

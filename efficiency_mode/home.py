@@ -191,5 +191,3 @@ class Home(Page):
         self.update_pack_temp()
         self.update_motor_temp()
         self.update_state_charge()
-
-        self.after(100, self.update)

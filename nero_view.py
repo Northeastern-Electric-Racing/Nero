@@ -61,6 +61,7 @@ class NeroView(customtkinter.CTk):
         self.update_mode()
         self.check_can()
         self.update_buttons()
+        self.update_current_page()
 
     def update_mode(self):
         self.current_mode = self.modes[self.mode_names[self.mode_index]]
@@ -68,7 +69,12 @@ class NeroView(customtkinter.CTk):
 
     def check_can(self):
         self.model.check_can()
+        self.model.update_pinned_data()
         self.after(1, self.check_can)
+
+    def update_current_page(self):
+        self.current_mode.current_page.update()
+        self.after(100, self.update_current_page)
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
