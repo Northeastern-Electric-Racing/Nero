@@ -72,4 +72,4 @@ class Model:
             self.pinned_data[id].append(self.current_data[id])
     
     def remove_pinned_data(self, id: int) -> None:
-        self.pinned_data[id].pop()
+        del self.pinned_data[id]
