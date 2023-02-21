@@ -30,9 +30,9 @@ class DebugPlot(Page):
         # placing the canvas on the Tkinter window
         self.canvas.get_tk_widget().grid(row=0, column=0, sticky="s")
 
-        self.update_figure()
+        self.update()
 
-    def update_figure(self):
+    def update(self):
         self.plot1.clear()
         for id in self.data:
             y = self.data[id]
