@@ -86,9 +86,6 @@ class DebugTable(Page):
         self.table: List[DebugTableRow] = self.create_debug_table()
         self.create_table(0)
 
-        # Updates the table values
-        self.update()
-
     def create_table(self, baseId: int):
         # Empty values for rows that are not used
         debug_table_row_Empty_right = DebugTableRow(self.right_frame, DebugTableRowValue("", "", "", ""))

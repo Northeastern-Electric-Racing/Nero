@@ -38,6 +38,11 @@ class MockModel(Model):
         elif rng >= 5 and rng <= 10:
             self.mph -= 1
 
+        if rng < 3:
+            self.motor_temp += 1
+        elif rng >= 985 and rng < 988:
+            self.motor_temp -= 1
+
         if rng == 100:
             self.status = False
         elif rng == 101:

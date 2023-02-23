@@ -67,12 +67,12 @@ class Model:
         pass
 
     def add_pinned_data(self, id: int) -> None:
-        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'], data=[
-                                              self.current_data[id]], unit=DATA_IDS[id]['units'])
+        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'],
+                                              data=[self.current_data[id]], unit=DATA_IDS[id]['units'])
+
+    def remove_pinned_data(self, id: int) -> None:
+        del self.pinned_data[id]
 
     def update_pinned_data(self) -> None:
         for id in self.pinned_data:
             self.pinned_data[id].data.append(self.current_data[id])
-
-    def remove_pinned_data(self, id: int) -> None:
-        del self.pinned_data[id]

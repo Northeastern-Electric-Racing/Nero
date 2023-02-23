@@ -171,4 +171,4 @@ class NeroView(customtkinter.CTk):
         if (self.isLinux):
             self.attributes('-fullscreen', True)
 
-        self.current_mode.mainloop()
+        self.mainloop()

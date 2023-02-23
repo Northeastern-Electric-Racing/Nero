@@ -65,8 +65,9 @@ class DebugPlot(Page):
         self.key_frame.grid_columnconfigure(4, weight=1)
         self.key_frame.grid(row=0, column=0, sticky="ew")
         self.key_frames = []
+
         # Create the keys
-        for i in range(5):
+        for i in range(6):
             self.key_frames.append(DebugPlotKey(DebugPlotValue("", "", [""]), self.key_frame))
             self.key_frames[i].grid(row=i, column=0, sticky="nsew")
 
@@ -81,8 +82,7 @@ class DebugPlot(Page):
         self.ax.set_xlabel('Time [s]', color='c')
         self.ax.tick_params(labelcolor='blue')
 
-        # creating the Tkinter canvas
-        # containing the Matplotlib figure
+        # creating the Tkinter canvas containing the Matplotlib figure
         self.canvas = FigureCanvasTkAgg(self.fig, master=figure_frame)
         self.canvas.draw()
 
@@ -90,7 +90,6 @@ class DebugPlot(Page):
         self.canvas.get_tk_widget().grid(row=0, column=0, sticky="s")
 
         self.update_pinned_data()
-        self.update()
 
     def enter_button_pressed(self):
         self.current_time_index += 1 if self.current_time_index < len(self.time_presets) - 1 else 0
@@ -98,9 +97,11 @@ class DebugPlot(Page):
 
     def update(self):
         self.ax.clear()
-        i = 0
+
         if time.time() - self.start >= 1:
             self.update_pinned_data()
+
+        i = 0
         for id in self.data:
             # creating key frame
             self.key_frames[i].name_label.configure(text=self.data[id].name)
@@ -112,10 +113,12 @@ class DebugPlot(Page):
             self.ax.plot(y.data[len(y.data)-self.current_time: len(y.data)] if len(y.data)
                          > self.current_time else y.data, color=self.colors[i])
             i += 1
+
         for j in range(i, 5):
             self.key_frames[j].name_label.configure(text="")
             self.key_frames[j].unit_label.configure(text="")
             self.key_frames[j].current_value_label.configure(text="")
+
         self.canvas.draw()
 
     def update_pinned_data(self):

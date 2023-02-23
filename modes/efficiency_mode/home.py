@@ -129,8 +129,6 @@ class Home(Page):
         self.state_charge.grid(row=0, column=0, sticky="s")
         self.state_charge_label.grid(row=1, column=0, sticky="n")
 
-        self.update()
-
     # Updates for specific attributes
     def update_speed(self):
         new_mph: Optional[int] = self.model.get_mph()
