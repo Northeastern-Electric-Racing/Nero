@@ -1,9 +1,11 @@
 from typing import List, Optional, Dict
+from debug_mode.debug_utils import DebugPlotValue
+from ner_processing.master_mapping import DATA_IDS
 
 
 class Model:
     def __init__(self) -> None:
-        self.pinned_data: Dict[int, List[float]] = {}
+        self.pinned_data: Dict[int, DebugPlotValue] = {}
         self.current_data: List[Optional[int]] = []
         pass
 
@@ -65,11 +67,11 @@ class Model:
         pass
 
     def add_pinned_data(self, id: int) -> None:
-        self.pinned_data[id] = [self.current_data[id]]
+        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'], data=[self.current_data[id]], unit=DATA_IDS[id]['units'])
 
     def update_pinned_data(self) -> None:
         for id in self.pinned_data:
-            self.pinned_data[id].append(self.current_data[id])
-    
+            self.pinned_data[id].data.append(self.current_data[id])
+
     def remove_pinned_data(self, id: int) -> None:
         del self.pinned_data[id]

@@ -1,6 +1,6 @@
 import customtkinter
 from tkinter import Frame
-from typing import Optional, List, Dict
+from typing import List, Dict
 from debug_mode.debug_mode import DebugMode
 from debug_mode.debug_table_page import DebugTableRowValue
 from efficiency_mode.efficiency_mode import EfficiencyMode
@@ -69,7 +69,6 @@ class NeroView(customtkinter.CTk):
 
     def check_can(self):
         self.model.check_can()
-        self.model.update_pinned_data()
         self.after(1, self.check_can)
 
     def update_current_page(self):
