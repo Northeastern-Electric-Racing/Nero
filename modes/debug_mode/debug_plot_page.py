@@ -61,8 +61,8 @@ class DebugPlot(Page):
         # the frame that will hold the keys
         self.key_frame = Frame(self, width=300, height=598, bg="black")
         self.key_frame.grid_propagate(False)
-        self.key_frame.grid_rowconfigure(19, weight=1)
-        self.key_frame.grid_columnconfigure(4, weight=1)
+        self.key_frame.grid_rowconfigure(5, weight=1)
+        self.key_frame.grid_columnconfigure(0, weight=1)
         self.key_frame.grid(row=0, column=0, sticky="ew")
         self.key_frames = []
 
@@ -89,18 +89,12 @@ class DebugPlot(Page):
         # placing the canvas on the Tkinter window
         self.canvas.get_tk_widget().grid(row=0, column=0, sticky="s")
 
-        self.update_pinned_data()
-
     def enter_button_pressed(self):
-        self.current_time_index += 1 if self.current_time_index < len(self.time_presets) - 1 else 0
+        self.current_time_index = self.current_time_index + 1 if self.current_time_index < len(self.time_presets) - 1 else 0
         self.current_time = self.time_presets[self.current_time_index]
 
     def update(self):
         self.ax.clear()
-
-        if time.time() - self.start >= 1:
-            self.update_pinned_data()
-
         i = 0
         for id in self.data:
             # creating key frame
@@ -118,9 +112,4 @@ class DebugPlot(Page):
             self.key_frames[j].name_label.configure(text="")
             self.key_frames[j].unit_label.configure(text="")
             self.key_frames[j].current_value_label.configure(text="")
-
         self.canvas.draw()
-
-    def update_pinned_data(self):
-        self.start = time.time()
-        self.model.update_pinned_data()
