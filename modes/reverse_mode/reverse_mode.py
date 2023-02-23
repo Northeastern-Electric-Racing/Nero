@@ -1,6 +1,6 @@
-from mode import Mode
+from modes.mode import Mode
 from tkinter import Frame
-from reverse_mode.reverse_page import Reverse
+from modes.reverse_mode.reverse_page import Reverse
 from models.model import Model
 
 

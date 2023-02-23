@@ -1,13 +1,13 @@
 from tkinter import Frame, Label
 from models.model import Model
 
+
 class Page(Frame):
     def __init__(self, parent: Frame, model: Model, name: str) -> None:
-         super().__init__(parent)
-         self.name = name
-         self.model = model
+        super().__init__(parent)
+        self.name = name
+        self.model = model
 
-    def create_view(self):
         label = Label(self, text=self.name)
         label.grid(row=0, column=0, sticky="nsew")
 

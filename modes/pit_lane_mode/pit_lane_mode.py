@@ -1,6 +1,6 @@
-from mode import Mode
+from modes.mode import Mode
 from tkinter import Frame
-from pit_lane_mode.pit_lane_page import PitLane
+from modes.pit_lane_mode.pit_lane_page import PitLane
 from models.model import Model
 
 

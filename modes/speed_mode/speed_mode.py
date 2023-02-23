@@ -1,6 +1,6 @@
-from mode import Mode
+from modes.mode import Mode
 from tkinter import Frame
-from speed_mode.speed_page import Speed
+from modes.speed_mode.speed_page import Speed
 from models.model import Model
 
 

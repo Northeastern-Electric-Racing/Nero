@@ -1,16 +1,13 @@
 import customtkinter
 from tkinter import Frame
-from typing import List, Dict
-from debug_mode.debug_mode import DebugMode
-from debug_mode.debug_table_page import DebugTableRowValue
-from efficiency_mode.efficiency_mode import EfficiencyMode
-from off_mode.off_mode import OffMode
-from pit_lane_mode.pit_lane_mode import PitLaneMode
-from reverse_mode.reverse_mode import ReverseMode
-from speed_mode.speed_mode import SpeedMode
+from modes.debug_mode.debug_mode import DebugMode
+from modes.efficiency_mode.efficiency_mode import EfficiencyMode
+from modes.off_mode.off_mode import OffMode
+from modes.pit_lane_mode.pit_lane_mode import PitLaneMode
+from modes.reverse_mode.reverse_mode import ReverseMode
+from modes.speed_mode.speed_mode import SpeedMode
 from models.mock_model import MockModel
 from models.raspberry_model import RaspberryModel
-from mode import Mode
 import platform
 import time
 from models.model import Model
@@ -45,18 +42,14 @@ class NeroView(customtkinter.CTk):
         container.grid_columnconfigure(0, weight=1)
 
         # create the modes that the container will hold
-        self.modes: Dict[str, Mode] = {}
+        self.modes = []
         self.mode_index = 0
-        self.mode_names: List[str] = []
-        for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode):
-            mode = mode_class(parent=container, controller=self, model=self.model)
-            name = mode.name
-            self.modes[name] = mode
-            self.mode_names.append(name)
-            mode.grid(row=0, column=0, sticky="nsew")
 
-        for mode in self.modes.values():
-            mode.create_view()
+        # for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode):
+        for mode_class in (EfficiencyMode, DebugMode):
+            mode = mode_class(parent=container, controller=self, model=self.model)
+            self.modes.append(mode)
+            mode.grid(row=0, column=0, sticky="nsew")
 
         self.update_mode()
         self.check_can()
@@ -64,7 +57,7 @@ class NeroView(customtkinter.CTk):
         self.update_current_page()
 
     def update_mode(self):
-        self.current_mode = self.modes[self.mode_names[self.mode_index]]
+        self.current_mode = self.modes[self.mode_index]
         self.current_mode.tkraise()
 
     def check_can(self):
@@ -96,7 +89,7 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_forward_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_forward_value == 0:
             self.debounce_forward_value = self.debounce_max_value
-            self.increment_view()
+            self.increment_mode()
         elif value is not None and int(value) == 0:
             self.debounce_forward_value = 0
         else:
@@ -106,7 +99,7 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_backward_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_backward_value == 0:
             self.debounce_backward_value = self.debounce_max_value
-            self.decrement_view()
+            self.decrement_mode()
         elif value is not None and int(value) == 0:
             self.debounce_backward_value = 0
         else:
@@ -162,14 +155,13 @@ class NeroView(customtkinter.CTk):
         else:
             self.debounce_enter_value -= 1
 
-    # Handle view changes
-    def increment_view(self):
+    def increment_mode(self):
         self.mode_index += 1
         if (self.mode_index >= len(self.modes)):
             self.mode_index = 0
         self.update_mode()
 
-    def decrement_view(self):
+    def decrement_mode(self):
         self.mode_index -= 1
         if (self.mode_index < 0):
             self.mode_index = len(self.modes) - 1

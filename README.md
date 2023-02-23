@@ -12,12 +12,16 @@ Installing Python:
 2. you're done when you can run `python3` in your terminal and it works
 3. make sure you have the most recent version
 
-### Installing dependencies:
+Installing Git Submodule
+
+1. `git submodule update --init`
+
+Installing dependencies:
 
 installing Python should come with pip3, so in your terminal you can do:
 
 1. `pip3 install venv` <-- (only do if you haven't installed venv already)
-2. `virtualenv venv`
+2. `virtualenv venv` <-- (only do if the venv folder doesn't exist already)
 3. `source venv/bin/activate`
 4. `pip install -r requirements.txt`
 
@@ -36,6 +40,10 @@ You can click the play button in VSCode when you're in the `main.py` file or you
    Up -> Up Arrow
    Down -> Down Arrow
    Enter -> Enter Key
+   
+Notes:
+- Enter on the plot page changes the time frame
+- Press up and down on the debug table to move between values, press enter to select one for plotting
 
 ### Learning
 

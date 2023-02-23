@@ -1,12 +1,12 @@
 from tkinter import Frame
 import customtkinter
-from page import Page
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import time
 from typing import Dict
 from models.model import Model
-from debug_mode.debug_utils import DebugPlotValue
-import time
+from modes.debug_mode.debug_utils import DebugPlotValue
+from modes.page import Page
 
 
 class DebugPlotKey(Frame):
@@ -57,7 +57,6 @@ class DebugPlot(Page):
         self.current_time = self.time_presets[self.current_time_index]
         self.colors = {0: "red", 1: "green", 2: "blue", 3: "yellow", 4: "orange", 5: "purple"}
 
-    def create_view(self):
         self.grid_columnconfigure(1, weight=1)
         # the frame that will hold the keys
         self.key_frame = Frame(self, width=300, height=598, bg="black")
@@ -76,7 +75,7 @@ class DebugPlot(Page):
         figure_frame.grid(row=0, column=1, sticky="sw")
 
         # the figure that will contain the plot
-        self.fig, self.ax = plt.subplots(facecolor="black", figsize=(4, 3), dpi=100)
+        self.fig, self.ax = plt.subplots(facecolor="black", figsize=(8, 6), dpi=100)
         self.ax.set_facecolor('black')
         self.fig.suptitle('Debug Plot', color='c')
         self.ax.set_xlabel('Time [s]', color='c')

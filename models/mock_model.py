@@ -1,7 +1,7 @@
 from typing import Optional, List
 import random
 from pynput.keyboard import Listener, Key
-from debug_mode.debug_table_page import DebugTableRowValue
+from modes.debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
 
 

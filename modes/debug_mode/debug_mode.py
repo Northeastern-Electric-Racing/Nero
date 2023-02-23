@@ -1,8 +1,7 @@
 from tkinter import Frame
-from typing import List, Dict
-from debug_mode.debug_plot_page import DebugPlot
-from debug_mode.debug_table_page import DebugTable
-from mode import Mode
+from modes.debug_mode.debug_plot_page import DebugPlot
+from modes.debug_mode.debug_table_page import DebugTable
+from modes.mode import Mode
 from models.model import Model
 
 

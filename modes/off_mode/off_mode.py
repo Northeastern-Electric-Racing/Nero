@@ -1,6 +1,6 @@
-from mode import Mode
+from modes.mode import Mode
 from tkinter import Frame
-from off_mode.off_page import Off
+from modes.off_mode.off_page import Off
 from models.model import Model
 
 

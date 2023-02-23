@@ -1,6 +1,6 @@
-from mode import Mode
+from modes.mode import Mode
 from tkinter import Frame
-from efficiency_mode.home import Home
+from modes.efficiency_mode.home import Home
 from models.model import Model
 
 

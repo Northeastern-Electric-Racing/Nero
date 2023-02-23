@@ -1,7 +1,7 @@
 from tkinter import Frame
 import customtkinter
 from typing import List
-from page import Page
+from modes.page import Page
 from models.model import Model
 
 
@@ -63,8 +63,6 @@ class DebugTable(Page):
         super().__init__(parent, model, "Debug Table")
         self.selected_id: int = 0
 
-    # Creates the initial two frames
-    def create_view(self):
         # configure the grid
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)

@@ -1,5 +1,5 @@
 from typing import List, Optional, Dict
-from debug_mode.debug_utils import DebugPlotValue
+from modes.debug_mode.debug_utils import DebugPlotValue
 from ner_processing.master_mapping import DATA_IDS
 
 
@@ -67,7 +67,8 @@ class Model:
         pass
 
     def add_pinned_data(self, id: int) -> None:
-        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'], data=[self.current_data[id]], unit=DATA_IDS[id]['units'])
+        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'], data=[
+                                              self.current_data[id]], unit=DATA_IDS[id]['units'])
 
     def update_pinned_data(self) -> None:
         for id in self.pinned_data:

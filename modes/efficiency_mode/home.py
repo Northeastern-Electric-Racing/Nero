@@ -1,6 +1,6 @@
 from tkinter import Frame
 import customtkinter
-from page import Page
+from modes.page import Page
 from models.model import Model
 from typing import Optional
 
@@ -9,7 +9,6 @@ class Home(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Home")
 
-    def create_view(self):
         # configure the grid
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)

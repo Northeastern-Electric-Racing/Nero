@@ -1,5 +1,5 @@
 from tkinter import Frame
-from page import Page
+from modes.page import Page
 from models.model import Model
 
 

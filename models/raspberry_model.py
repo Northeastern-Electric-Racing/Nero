@@ -4,7 +4,7 @@ from ner_processing.message import Message
 from typing import Optional, List
 import can
 import os
-from debug_mode.debug_table_page import DebugTableRowValue
+from modes.debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
 
 
@@ -76,7 +76,8 @@ class RaspberryModel(Model):
                          value if value is not None else "N/A", DATA_IDS[i]["units"]))
         return table
 
-    # The way we get button data is by seperating the data into binary and then parsing the bit that represents each button out, if the binary string is too short then we know the button wasnt pressed so we can return 0
+    # The way we get button data is by separating the data into binary and then parsing the bit that represents each button out,
+    # if the binary string is too short then we know the button wasnt pressed so we can return 0
     def get_forward_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
