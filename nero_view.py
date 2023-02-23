@@ -85,12 +85,12 @@ class NeroView(customtkinter.CTk):
             end_time = time.time()
             pass
         self.after(1, self.update_buttons)
-    
+
     def update_pinned_data(self):
         if time.time() - self.last_pinned_update_time >= 1:
             self.model.update_pinned_data()
             self.last_pinned_update_time = time.time()
-        self.after(1, self.update_pinned_data)
+        self.after(100, self.update_pinned_data)
 
     # Button updates with debouncing
     def update_forward_button_pressed(self):

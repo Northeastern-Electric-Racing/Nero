@@ -64,8 +64,8 @@ class DebugPlot(Page):
         self.key_frame.grid_rowconfigure(5, weight=1)
         self.key_frame.grid_columnconfigure(0, weight=1)
         self.key_frame.grid(row=0, column=0, sticky="ew")
-        self.key_frames = []
 
+        self.key_frames = []
         # Create the keys
         for i in range(6):
             self.key_frames.append(DebugPlotKey(DebugPlotValue("", "", [""]), self.key_frame))
@@ -90,7 +90,8 @@ class DebugPlot(Page):
         self.canvas.get_tk_widget().grid(row=0, column=0, sticky="s")
 
     def enter_button_pressed(self):
-        self.current_time_index = self.current_time_index + 1 if self.current_time_index < len(self.time_presets) - 1 else 0
+        self.current_time_index = (self.current_time_index +
+                                   1) if self.current_time_index < len(self.time_presets) - 1 else 0
         self.current_time = self.time_presets[self.current_time_index]
 
     def update(self):
@@ -102,6 +103,7 @@ class DebugPlot(Page):
             self.key_frames[i].unit_label.configure(text=self.data[id].unit)
             self.key_frames[i].current_value_label.configure(
                 text=self.data[id].data[len(self.data[id].data) - 1], text_color=self.colors[i])
+
             # plotting the graph
             y = self.data[id]
             self.ax.plot(y.data[len(y.data)-self.current_time: len(y.data)] if len(y.data)
