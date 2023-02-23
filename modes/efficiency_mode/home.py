@@ -14,8 +14,8 @@ class Home(Page):
         self.grid_columnconfigure(0, weight=1)
 
         # create top and bottom frames
-        self.top_frame = Frame(self, width=1100, height=300)
-        self.bottom_frame = Frame(self, width=1100, height=300)
+        self.top_frame = Frame(self, width=1024, height=300)
+        self.bottom_frame = Frame(self, width=1024, height=300)
 
         self.top_frame.grid(row=0, column=0)
         self.bottom_frame.grid(row=1, column=0)
@@ -28,9 +28,9 @@ class Home(Page):
         self.bottom_frame.grid_columnconfigure(2, weight=1)
 
         # create the top two frames
-        self.top_right_frame = Frame(self.top_frame, width=550, height=300, bg="black",
+        self.top_right_frame = Frame(self.top_frame, width=512, height=300, bg="black",
                                      highlightbackground="gray", highlightthickness=1)
-        self.top_left_frame = Frame(self.top_frame, width=550, height=300, bg="black",
+        self.top_left_frame = Frame(self.top_frame, width=512, height=300, bg="black",
                                     highlightbackground="gray", highlightthickness=1)
 
         self.top_right_frame.grid(row=0, column=1)
@@ -46,11 +46,11 @@ class Home(Page):
 
         # create the bottom three frames
         self.bottom_right_frame = Frame(
-            self.bottom_frame, width=367, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
-        self.bottom_left_frame = Frame(self.bottom_frame, width=367, height=300,
+            self.bottom_frame, width=341, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
+        self.bottom_left_frame = Frame(self.bottom_frame, width=341, height=300,
                                        bg="black", highlightbackground="gray", highlightthickness=1)
         self.bottom_middle_frame = Frame(
-            self.bottom_frame, width=366, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
+            self.bottom_frame, width=341, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
 
         self.bottom_right_frame.grid(row=0, column=2)
         self.bottom_left_frame.grid(row=0, column=0)
@@ -70,7 +70,7 @@ class Home(Page):
 
         # create top left frame
         self.mph_frame = Frame(self.top_left_frame,
-                               width=550, height=150, bg="black")
+                               width=512, height=150, bg="black")
         self.mph = customtkinter.CTkLabel(
             master=self.mph_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
 
@@ -82,7 +82,7 @@ class Home(Page):
         self.mph_label.grid(row=0, column=1, sticky="s")
 
         self.kph_frame = Frame(self.top_left_frame,
-                               width=550, height=150, bg="black")
+                               width=512, height=150, bg="black")
         self.kph = customtkinter.CTkLabel(
             master=self.kph_frame, text="N/A", font=customtkinter.CTkFont(size=25))
         self.kph_label = customtkinter.CTkLabel(

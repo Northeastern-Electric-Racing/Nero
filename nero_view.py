@@ -33,7 +33,7 @@ class NeroView(customtkinter.CTk):
 
         # configure window
         self.title("NERO")
-        self.geometry(f"{1100}x{580}")
+        self.geometry(f"{1024}x{600}")
 
         # create the container frame that holds all modes
         container = Frame(self)
