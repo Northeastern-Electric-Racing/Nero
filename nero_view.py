@@ -1,217 +1,174 @@
 import customtkinter
 from tkinter import Frame
-from typing import Optional
-import os
+from modes.debug_mode.debug_mode import DebugMode
+from modes.efficiency_mode.efficiency_mode import EfficiencyMode
+from modes.off_mode.off_mode import OffMode
+from modes.pit_lane_mode.pit_lane_mode import PitLaneMode
+from modes.reverse_mode.reverse_mode import ReverseMode
+from modes.speed_mode.speed_mode import SpeedMode
+from models.mock_model import MockModel
+from models.raspberry_model import RaspberryModel
 import platform
-
-# this needs to be done on the raspberry pi
-if platform.platform()[0:5] == "Linux":
-    os.chdir('/home/ner/Desktop/Nero')
+import time
+from models.model import Model
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("themes/ner.json")
 
 
 class NeroView(customtkinter.CTk):
-    def __init__(self, controller) -> None:
+    def __init__(self) -> None:
         super().__init__()
+        self.isLinux = platform.platform()[0:5] == "Linux"
+        self.model: Model = RaspberryModel() if self.isLinux else MockModel()
 
-        self.controller = controller
+        self.debounce_forward_value = 0
+        self.debounce_backward_value = 0
+        self.debounce_enter_value = 0
+        self.debounce_up_value = 0
+        self.debounce_down_value = 0
+        self.debounce_left_value = 0
+        self.debounce_right_value = 0
+        self.debounce_max_value = 75
 
         # configure window
         self.title("NERO")
         self.geometry(f"{1100}x{580}")
 
-        # configure the grid
-        self.grid_rowconfigure(1, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        # create the container frame that holds all modes
+        container = Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-        # create top and bottom frames
-        self.top_frame = Frame(width=1100, height=300)
-        self.bottom_frame = Frame(width=1100, height=300)
+        # create the modes that the container will hold
+        self.modes = []
+        self.mode_index = 0
 
-        self.top_frame.grid(row=0, column=0)
-        self.bottom_frame.grid(row=1, column=0)
+        # for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode):
+        for mode_class in (EfficiencyMode, DebugMode):
+            mode = mode_class(parent=container, controller=self, model=self.model)
+            self.modes.append(mode)
+            mode.grid(row=0, column=0, sticky="nsew")
 
-        # Configure grids for top and bottom frames
-        self.top_frame.grid_rowconfigure(0, weight=1)
-        self.top_frame.grid_columnconfigure(1, weight=1)
-
-        self.bottom_frame.grid_rowconfigure(0, weight=1)
-        self.bottom_frame.grid_columnconfigure(1, weight=1)
-
-        # create the top two frames
-        self.top_right_frame = Frame(self.top_frame, width=550, height=300, bg="black",
-                                     highlightbackground="gray", highlightthickness=1)
-        self.top_left_frame = Frame(self.top_frame, width=550, height=300, bg="black",
-                                    highlightbackground="gray", highlightthickness=1)
-
-        self.top_right_frame.grid(row=0, column=1)
-        self.top_left_frame.grid(row=0, column=0)
-
-        self.top_left_frame.grid_propagate(False)
-        self.top_left_frame.grid_rowconfigure(1, weight=1)
-        self.top_left_frame.grid_columnconfigure(0, weight=1)
-
-        self.top_right_frame.grid_propagate(False)
-        self.top_right_frame.grid_rowconfigure(1, weight=1)
-        self.top_right_frame.grid_columnconfigure(0, weight=1)
-
-        # create the bottom three frames
-        self.bottom_right_frame = Frame(
-            self.bottom_frame, width=367, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
-        self.bottom_left_frame = Frame(self.bottom_frame, width=367, height=300,
-                                       bg="black", highlightbackground="gray", highlightthickness=1)
-        self.bottom_middle_frame = Frame(
-            self.bottom_frame, width=366, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
-
-        self.bottom_right_frame.grid(row=0, column=2)
-        self.bottom_left_frame.grid(row=0, column=0)
-        self.bottom_middle_frame.grid(row=0, column=1)
-
-        self.bottom_left_frame.grid_propagate(False)
-        self.bottom_left_frame.grid_rowconfigure(1, weight=1)
-        self.bottom_left_frame.grid_columnconfigure(0, weight=1)
-
-        self.bottom_middle_frame.grid_propagate(False)
-        self.bottom_middle_frame.grid_rowconfigure(1, weight=1)
-        self.bottom_middle_frame.grid_columnconfigure(0, weight=1)
-
-        self.bottom_right_frame.grid_propagate(False)
-        self.bottom_right_frame.grid_rowconfigure(1, weight=1)
-        self.bottom_right_frame.grid_columnconfigure(0, weight=1)
-
-        # create top left frame
-        self.mph_frame = Frame(self.top_left_frame,
-                               width=550, height=150, bg="black")
-        self.mph = customtkinter.CTkLabel(
-            master=self.mph_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
-
-        self.mph_label = customtkinter.CTkLabel(
-            master=self.mph_frame, text="mph", font=customtkinter.CTkFont(size=20))
-
-        self.mph_frame.grid(row=0, column=0, sticky="s")
-        self.mph.grid(row=0, column=0)
-        self.mph_label.grid(row=0, column=1, sticky="s")
-
-        self.kph_frame = Frame(self.top_left_frame,
-                               width=550, height=150, bg="black")
-        self.kph = customtkinter.CTkLabel(
-            master=self.kph_frame, text="N/A", font=customtkinter.CTkFont(size=25))
-        self.kph_label = customtkinter.CTkLabel(
-            master=self.kph_frame, text=" kmph", font=customtkinter.CTkFont(size=25))
-
-        self.kph_frame.grid(row=1, column=0, sticky="n")
-        self.kph.grid(row=0, column=0)
-        self.kph_label.grid(row=0, column=1)
-
-        # create top right frame
-        self.status = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=100, weight="bold"))
-
-        self.dir = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=75, weight="bold"))
-
-        self.status.grid(row=0, column=0, sticky="s")
-        self.dir.grid(row=1, column=0, sticky="n")
-
-        # create bottom left frame
-        self.pack_temp = customtkinter.CTkLabel(
-            master=self.bottom_left_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
-        self.pack_temp_label = customtkinter.CTkLabel(
-            master=self.bottom_left_frame, text="Pack Temperature", font=customtkinter.CTkFont(size=20))
-
-        self.pack_temp.grid(row=0, column=0, sticky="s")
-        self.pack_temp_label.grid(row=1, column=0, sticky="n")
-
-        # create bottom middle frame
-        self.motor_temp = customtkinter.CTkLabel(
-            master=self.bottom_middle_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
-        self.motor_temp_label = customtkinter.CTkLabel(
-            master=self.bottom_middle_frame, text="Motor Temperature", font=customtkinter.CTkFont(size=20))
-
-        self.motor_temp.grid(row=0, column=0, sticky="s")
-        self.motor_temp_label.grid(row=1, column=0, sticky="n")
-
-        # create bottom right frame
-        self.state_charge = customtkinter.CTkLabel(
-            master=self.bottom_right_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
-        self.state_charge_label = customtkinter.CTkLabel(
-            master=self.bottom_right_frame, text="State of Charge", font=customtkinter.CTkFont(size=20))
-
-        self.state_charge.grid(row=0, column=0, sticky="s")
-        self.state_charge_label.grid(row=1, column=0, sticky="n")
-
+        self.update_mode()
         self.check_can()
-        self.update()
+        self.update_buttons()
+        self.update_current_page()
+
+    def update_mode(self):
+        self.current_mode = self.modes[self.mode_index]
+        self.current_mode.tkraise()
 
     def check_can(self):
-        self.controller.check_can()
+        self.model.check_can()
         self.after(1, self.check_can)
 
-    def update(self):
-        self.update_speed()
-        self.update_status()
-        self.update_dir()
-        self.update_pack_temp()
-        self.update_motor_temp()
-        self.update_state_charge()
+    def update_current_page(self):
+        self.current_mode.current_page.update()
+        self.after(100, self.update_current_page)
 
-        self.after(100, self.update)
+    # Check for button inputs with debouncing / consistent time calls
+    def update_buttons(self):
+        start_time = time.time()
+        self.update_forward_button_pressed()
+        self.update_backward_button_pressed()
+        self.update_enter_button_pressed()
+        self.update_up_button_pressed()
+        self.update_down_button_pressed()
+        self.update_left_button_pressed()
+        self.update_right_button_pressed()
+        end_time = time.time()
+        while end_time - start_time < 0.0001:
+            end_time = time.time()
+            pass
+        self.after(1, self.update_buttons)
 
-    def update_speed(self):
-        new_mph: Optional[int] = self.controller.get_mph()
-        new_kph: Optional[int] = self.controller.get_kph()
-
-        new_mph_text = str(new_mph) if new_mph is not None else "N/A"
-        new_kph_text = str(new_kph) if new_kph is not None else "N/A"
-
-        self.mph.configure(text=new_mph_text)
-        self.kph.configure(text=new_kph_text)
-
-    def update_status(self):
-        new_status: Optional[bool] = self.controller.get_status()
-
-        if new_status == True:
-            self.status.configure(text="ON", text_color="green")
-        elif new_status == False:
-            self.status.configure(text="OFF", text_color="red")
+    # Button updates with debouncing
+    def update_forward_button_pressed(self):
+        value = self.model.get_forward_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_forward_value == 0:
+            self.debounce_forward_value = self.debounce_max_value
+            self.increment_mode()
+        elif value is not None and int(value) == 0:
+            self.debounce_forward_value = 0
         else:
-            self.status.configure(text="N/A")
+            self.debounce_forward_value -= 1
 
-    def update_dir(self):
-        new_dir: Optional[bool] = self.controller.get_dir()
-
-        if new_dir == True:
-            self.dir.configure(text="FORWARD")
-        elif new_dir == False:
-            self.dir.configure(text="REVERSE")
+    def update_backward_button_pressed(self):
+        value = self.model.get_backward_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_backward_value == 0:
+            self.debounce_backward_value = self.debounce_max_value
+            self.decrement_mode()
+        elif value is not None and int(value) == 0:
+            self.debounce_backward_value = 0
         else:
-            self.dir.configure(text="N/A")
+            self.debounce_backward_value -= 1
 
-    def update_pack_temp(self):
-        new_pack_temp: Optional[int] = self.controller.get_pack_temp()
+    def update_right_button_pressed(self):
+        value = self.model.get_right_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_right_value == 0:
+            self.debounce_right_value = self.debounce_max_value
+            self.current_mode.right_button_pressed()
+        elif value is not None and int(value) == 0:
+            self.debounce_right_value = 0
+        else:
+            self.debounce_right_value -= 1
 
-        new_pack_temp_text = str(new_pack_temp) + "°" if new_pack_temp is not None else "N/A"
+    def update_left_button_pressed(self):
+        value = self.model.get_left_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_left_value == 0:
+            self.debounce_left_value = self.debounce_max_value
+            self.current_mode.left_button_pressed()
+        elif value is not None and int(value) == 0:
+            self.debounce_left_value = 0
+        else:
+            self.debounce_left_value -= 1
 
-        self.pack_temp.configure(text=new_pack_temp_text)
+    def update_up_button_pressed(self):
+        value = self.model.get_up_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_up_value == 0:
+            self.current_mode.up_button_pressed()
+            self.debounce_up_value = self.debounce_max_value
+        elif value is not None and int(value) == 0:
+            self.debounce_up_value = 0
+        else:
+            self.debounce_up_value -= 1
 
-    def update_motor_temp(self):
-        new_motor_temp: Optional[int] = self.controller.get_motor_temp()
+    def update_down_button_pressed(self):
+        value = self.model.get_down_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_down_value == 0:
+            self.current_mode.down_button_pressed()
+            self.debounce_down_value = self.debounce_max_value
+        elif value is not None and int(value) == 0:
+            self.debounce_down_value = 0
+        else:
+            self.debounce_down_value -= 1
 
-        new_motor_temp_text = str(new_motor_temp) + "°" if new_motor_temp is not None else "N/A"
+    def update_enter_button_pressed(self):
+        value = self.model.get_enter_button_pressed()
+        if value is not None and int(value) == 1 and self.debounce_enter_value == 0:
+            self.current_mode.enter_button_pressed()
+            self.debounce_enter_value = self.debounce_max_value
+        elif value is not None and int(value) == 0:
+            self.debounce_enter_value = 0
+        else:
+            self.debounce_enter_value -= 1
 
-        self.motor_temp.configure(text=new_motor_temp_text)
+    def increment_mode(self):
+        self.mode_index += 1
+        if (self.mode_index >= len(self.modes)):
+            self.mode_index = 0
+        self.update_mode()
 
-    def update_state_charge(self):
-        new_charge: Optional[int] = self.controller.get_state_of_charge()
+    def decrement_mode(self):
+        self.mode_index -= 1
+        if (self.mode_index < 0):
+            self.mode_index = len(self.modes) - 1
+        self.update_mode()
 
-        new_charge_text = str(new_charge) + "%" if new_charge is not None else "N/A"
-
-        self.state_charge.configure(text=new_charge_text)
-
-    def run(self, fullscreen=False):
-        if (fullscreen):
+    def run(self):
+        if (self.isLinux):
             self.attributes('-fullscreen', True)
 
         self.mainloop()

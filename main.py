@@ -1,6 +1,5 @@
-from nero_controller import NeroController
-
+from nero_view import NeroView
 
 if __name__ == "__main__":
-    controller = NeroController()
+    controller = NeroView()
     controller.run()

@@ -1,0 +1,4 @@
+[submodule "ner_processing"]
+	path = ner_processing
+	url = https://github.com/Northeastern-Electric-Racing/Ner_Processing.git
+	branch = main
