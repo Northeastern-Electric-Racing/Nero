@@ -28,26 +28,26 @@ class DebugPlotKey(Frame):
         self.bottom_frame.grid_propagate(False)
         self.bottom_frame.grid(row=1, column=0, sticky="nsew")
 
-        self.current_value_frame = Frame(self.bottom_frame, bg="black", height=70, width=150)
+        self.current_value_frame = Frame(self.bottom_frame, bg="black", height=70, width=200)
         self.current_value_label = customtkinter.CTkLabel(self.current_value_frame,
                                                           text=key_value.data[len(key_value.data) - 1], font=("Lato", 60))
         self.current_value_frame.grid(row=0, column=0, sticky="w")
         self.current_value_frame.grid_propagate(False)
         self.current_value_label.grid(row=0, column=0, sticky="w")
 
-        self.right_frame = Frame(self.bottom_frame, bg="black", height=70, width=150)
+        self.right_frame = Frame(self.bottom_frame, bg="black", height=70, width=100)
         self.right_frame.grid_rowconfigure(0, weight=1)
         self.right_frame.grid_columnconfigure(1, weight=1)
         self.right_frame.grid_propagate(False)
         self.right_frame.grid(row=0, column=1, sticky="nsew")
 
-        self.unit_frame = Frame(self.right_frame, bg="black", height=30, width=150)
+        self.unit_frame = Frame(self.right_frame, bg="black", height=30, width=100)
         self.unit_label = customtkinter.CTkLabel(self.unit_frame, text=key_value.unit, font=("Lato", 25, "bold"))
         self.unit_frame.grid(row=0, column=0, sticky="nsew")
         self.unit_frame.grid_propagate(False)
         self.unit_label.grid(row=0, column=0, sticky="nsew")
 
-        self.multiplier_frame = Frame(self.right_frame, bg="black", height=40, width=150)
+        self.multiplier_frame = Frame(self.right_frame, bg="black", height=40, width=100)
         self.multiplier_label = customtkinter.CTkLabel(self.multiplier_frame, text="1x", font=("Lato", 35, "bold"))
         self.multiplier_frame.grid(row=1, column=0, sticky="nsew")
         self.multiplier_frame.grid_propagate(False)
@@ -84,9 +84,9 @@ class DebugPlot(Page):
         # the figure that will contain the plot
         self.fig, self.ax = plt.subplots(facecolor="black", figsize=(7.24, 6), dpi=100)
         self.ax.set_facecolor('black')
-        self.fig.suptitle('Debug Plot', color='c')
-        self.ax.set_xlabel('Time [s]', color='c')
-        self.ax.tick_params(labelcolor='blue')
+        self.fig.suptitle('Debug Plot', color='white')
+        self.ax.set_xlabel('Time [s]', color='white')
+        self.ax.tick_params(labelcolor='white')
 
         # creating the Tkinter canvas containing the Matplotlib figure
         self.canvas = FigureCanvasTkAgg(self.fig, master=figure_frame)
@@ -108,14 +108,13 @@ class DebugPlot(Page):
             self.key_frames[i].name_label.configure(text=self.data[id].name)
             self.key_frames[i].unit_label.configure(text=self.data[id].unit)
             self.key_frames[i].current_value_label.configure(
-                text=self.data[id].data[len(self.data[id].data) - 1], text_color=self.colors[i])
+                text=self.data[id].data[0], text_color=self.colors[i])
 
             # plotting the graph
-            y = self.data[id]
-            self.ax.plot(y.data[len(y.data)-self.current_time: len(y.data)] if len(y.data)
-                         > self.current_time else y.data, color=self.colors[i])
+            y = self.data[id].data
+            self.ax.plot(y[0: self.current_time] if len(y) > self.current_time else y, color=self.colors[i])
             i += 1
-
+        self.ax.invert_xaxis()
         for j in range(i, 5):
             self.key_frames[j].name_label.configure(text="")
             self.key_frames[j].unit_label.configure(text="")

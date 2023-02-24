@@ -76,5 +76,5 @@ class Model:
     def update_pinned_data(self) -> None:
         for id in self.pinned_data:
             if len(self.pinned_data[id].data) >= 600:
-                del self.pinned_data[id].data[0]
-            self.pinned_data[id].data.append(self.current_data[id])
+                self.pinned_data[id].data.pop()
+            self.pinned_data[id].data.insert(0, self.current_data[id])

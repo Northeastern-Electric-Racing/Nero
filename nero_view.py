@@ -29,7 +29,7 @@ class NeroView(customtkinter.CTk):
         self.debounce_down_value = 0
         self.debounce_left_value = 0
         self.debounce_right_value = 0
-        self.debounce_max_value = 75
+        self.debounce_max_value = 125
 
         # configure window
         self.title("NERO")
