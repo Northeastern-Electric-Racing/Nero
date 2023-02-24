@@ -29,11 +29,11 @@ class NeroView(customtkinter.CTk):
         self.debounce_down_value = 0
         self.debounce_left_value = 0
         self.debounce_right_value = 0
-        self.debounce_max_value = 75
+        self.debounce_max_value = 125
 
         # configure window
         self.title("NERO")
-        self.geometry(f"{1100}x{580}")
+        self.geometry(f"{1024}x{600}")
 
         # create the container frame that holds all modes
         container = Frame(self)
@@ -55,6 +55,8 @@ class NeroView(customtkinter.CTk):
         self.check_can()
         self.update_buttons()
         self.update_current_page()
+        self.last_pinned_update_time = time.time()
+        self.update_pinned_data()
 
     def update_mode(self):
         self.current_mode = self.modes[self.mode_index]
@@ -83,6 +85,12 @@ class NeroView(customtkinter.CTk):
             end_time = time.time()
             pass
         self.after(1, self.update_buttons)
+
+    def update_pinned_data(self):
+        if time.time() - self.last_pinned_update_time >= 1:
+            self.model.update_pinned_data()
+            self.last_pinned_update_time = time.time()
+        self.after(100, self.update_pinned_data)
 
     # Button updates with debouncing
     def update_forward_button_pressed(self):

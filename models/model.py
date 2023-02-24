@@ -68,11 +68,14 @@ class Model:
 
     def add_pinned_data(self, id: int) -> None:
         self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'],
-                                              data=[self.current_data[id]], unit=DATA_IDS[id]['units'])
+                                              data=[round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]], unit=DATA_IDS[id]['units'])
 
     def remove_pinned_data(self, id: int) -> None:
         del self.pinned_data[id]
 
     def update_pinned_data(self) -> None:
         for id in self.pinned_data:
-            self.pinned_data[id].data.append(self.current_data[id])
+            if len(self.pinned_data[id].data) >= 600:
+                self.pinned_data[id].data.pop()
+            self.pinned_data[id].data.insert(0, round(self.current_data[id], 1)
+                                             if self.current_data[id] is not None else self.current_data[id])
