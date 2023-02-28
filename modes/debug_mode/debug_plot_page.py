@@ -11,7 +11,7 @@ from modes.page import Page
 
 class DebugPlotKey(Frame):
     def __init__(self, key_value: DebugPlotValue, parent: Frame):
-        super().__init__(parent, bg="black", height=100, width=296, highlightbackground='gray', highlightthickness=2)
+        super().__init__(parent, bg="black", height=95, width=296, highlightbackground='gray', highlightthickness=2)
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.grid_propagate(False)
@@ -22,20 +22,20 @@ class DebugPlotKey(Frame):
         self.name_frame.grid_propagate(False)
         self.name_label.grid(row=0, column=0, sticky="nsew")
 
-        self.bottom_frame = Frame(self, bg="black", height=70, width=300)
+        self.bottom_frame = Frame(self, bg="black", height=65, width=300)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
         self.bottom_frame.grid_columnconfigure(1, weight=1)
         self.bottom_frame.grid_propagate(False)
         self.bottom_frame.grid(row=1, column=0, sticky="nsew")
 
-        self.current_value_frame = Frame(self.bottom_frame, bg="black", height=70, width=200)
+        self.current_value_frame = Frame(self.bottom_frame, bg="black", height=65, width=200)
         self.current_value_label = customtkinter.CTkLabel(self.current_value_frame,
                                                           text=key_value.data[len(key_value.data) - 1], font=("Lato", 60))
         self.current_value_frame.grid(row=0, column=0, sticky="w")
         self.current_value_frame.grid_propagate(False)
         self.current_value_label.grid(row=0, column=0, sticky="w")
 
-        self.right_frame = Frame(self.bottom_frame, bg="black", height=70, width=100)
+        self.right_frame = Frame(self.bottom_frame, bg="black", height=65, width=100)
         self.right_frame.grid_rowconfigure(0, weight=1)
         self.right_frame.grid_columnconfigure(1, weight=1)
         self.right_frame.grid_propagate(False)
@@ -47,8 +47,8 @@ class DebugPlotKey(Frame):
         self.unit_frame.grid_propagate(False)
         self.unit_label.grid(row=0, column=0, sticky="nsew")
 
-        self.multiplier_frame = Frame(self.right_frame, bg="black", height=40, width=100)
-        self.multiplier_label = customtkinter.CTkLabel(self.multiplier_frame, text="1x", font=("Lato", 35, "bold"))
+        self.multiplier_frame = Frame(self.right_frame, bg="black", height=35, width=100)
+        self.multiplier_label = customtkinter.CTkLabel(self.multiplier_frame, text="1x", font=("Lato", 30, "bold"))
         self.multiplier_frame.grid(row=1, column=0, sticky="nsew")
         self.multiplier_frame.grid_propagate(False)
         self.multiplier_label.grid(row=0, column=0, sticky="nsew")

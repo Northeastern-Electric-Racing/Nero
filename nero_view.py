@@ -11,6 +11,7 @@ from models.raspberry_model import RaspberryModel
 import platform
 import time
 from models.model import Model
+from header import Header
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("themes/ner.json")
@@ -45,6 +46,8 @@ class NeroView(customtkinter.CTk):
         self.modes = []
         self.mode_index = 0
 
+        self.header = Header(parent=container)
+        self.header.place(x=0, y=0, relwidth=1, relheight=0.05)
         # for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode):
         for mode_class in (EfficiencyMode, DebugMode):
             mode = mode_class(parent=container, controller=self, model=self.model)
@@ -57,10 +60,12 @@ class NeroView(customtkinter.CTk):
         self.update_current_page()
         self.last_pinned_update_time = time.time()
         self.update_pinned_data()
+        self.update_header()
 
     def update_mode(self):
         self.current_mode = self.modes[self.mode_index]
         self.current_mode.tkraise()
+        self.header.tkraise()
 
     def check_can(self):
         self.model.check_can()
@@ -162,6 +167,10 @@ class NeroView(customtkinter.CTk):
             self.debounce_enter_value = 0
         else:
             self.debounce_enter_value -= 1
+    
+    def update_header(self):
+        self.header.current_mode_label.configure(text=self.current_mode.name)
+        self.after(100, self.update_header)
 
     def increment_mode(self):
         self.mode_index += 1

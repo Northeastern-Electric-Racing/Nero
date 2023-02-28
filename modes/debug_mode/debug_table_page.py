@@ -34,7 +34,7 @@ class DebugTableRow():
         self.id_frame = DebugTableRowFrame(parent_frame, 70)
         self.id_label = DebugTableRowLabel(self.id_frame, str(values.id), "center")
 
-        self.name_frame = DebugTableRowFrame(parent_frame, 290)
+        self.name_frame = DebugTableRowFrame(parent_frame, 277)
         self.name_label = DebugTableRowLabel(self.name_frame, str(values.name), "w", 0)
 
         self.value_frame = DebugTableRowFrame(parent_frame, 70)
@@ -68,8 +68,8 @@ class DebugTable(Page):
         self.grid_columnconfigure(0, weight=1)
 
         # split the screen into two frames
-        self.left_frame = Frame(self, width=525, height=600, bg="black", highlightbackground='gray', highlightthickness=2)
-        self.right_frame = Frame(self, width=525, height=600, bg="black", highlightbackground='gray', highlightthickness=2)
+        self.left_frame = Frame(self, width=512, height=570, bg="black", highlightbackground='gray', highlightthickness=2)
+        self.right_frame = Frame(self, width=512, height=570, bg="black", highlightbackground='gray', highlightthickness=2)
 
         self.left_frame.grid_propagate(False)
         self.left_frame.grid_rowconfigure(19, weight=1)
@@ -79,8 +79,8 @@ class DebugTable(Page):
         self.right_frame.grid_rowconfigure(19, weight=1)
         self.right_frame.grid_columnconfigure(4, weight=1)
 
-        self.left_frame.grid(row=0, column=0, sticky="ew")
-        self.right_frame.grid(row=0, column=1, sticky="ew")
+        self.left_frame.grid(row=0, column=0, sticky="s")
+        self.right_frame.grid(row=0, column=1, sticky="s")
 
         # creates the table
         self.table: List[DebugTableRow] = self.create_debug_table()

@@ -13,12 +13,13 @@ class Home(Page):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
+        self.height = 285
         # create top and bottom frames
-        self.top_frame = Frame(self, width=1024, height=300)
-        self.bottom_frame = Frame(self, width=1024, height=300)
+        self.top_frame = Frame(self, width=1024, height=self.height)
+        self.bottom_frame = Frame(self, width=1024, height=self.height)
 
-        self.top_frame.grid(row=0, column=0)
-        self.bottom_frame.grid(row=1, column=0)
+        self.top_frame.grid(row=0, column=0, sticky="s")
+        self.bottom_frame.grid(row=1, column=0, sticky="n")
 
         # Configure grids for top and bottom frames
         self.top_frame.grid_rowconfigure(0, weight=1)
@@ -28,9 +29,9 @@ class Home(Page):
         self.bottom_frame.grid_columnconfigure(2, weight=1)
 
         # create the top two frames
-        self.top_right_frame = Frame(self.top_frame, width=512, height=300, bg="black",
+        self.top_right_frame = Frame(self.top_frame, width=512, height=self.height, bg="black",
                                      highlightbackground="gray", highlightthickness=1)
-        self.top_left_frame = Frame(self.top_frame, width=512, height=300, bg="black",
+        self.top_left_frame = Frame(self.top_frame, width=512, height=self.height, bg="black",
                                     highlightbackground="gray", highlightthickness=1)
 
         self.top_right_frame.grid(row=0, column=1)
@@ -46,11 +47,11 @@ class Home(Page):
 
         # create the bottom three frames
         self.bottom_right_frame = Frame(
-            self.bottom_frame, width=341, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
-        self.bottom_left_frame = Frame(self.bottom_frame, width=341, height=300,
+            self.bottom_frame, width=341, height=self.height, bg="black", highlightbackground="gray", highlightthickness=1)
+        self.bottom_left_frame = Frame(self.bottom_frame, width=341, height=self.height,
                                        bg="black", highlightbackground="gray", highlightthickness=1)
         self.bottom_middle_frame = Frame(
-            self.bottom_frame, width=341, height=300, bg="black", highlightbackground="gray", highlightthickness=1)
+            self.bottom_frame, width=341, height=self.height, bg="black", highlightbackground="gray", highlightthickness=1)
 
         self.bottom_right_frame.grid(row=0, column=2)
         self.bottom_left_frame.grid(row=0, column=0)
