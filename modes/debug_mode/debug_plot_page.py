@@ -2,7 +2,6 @@ from tkinter import Frame
 import customtkinter
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import time
 from typing import Dict
 from models.model import Model
 from modes.debug_mode.debug_utils import DebugPlotValue
@@ -84,7 +83,7 @@ class DebugPlot(Page):
         figure_frame.grid(row=0, column=1, sticky="s")
 
         # the figure that will contain the plot
-        self.fig, self.ax = plt.subplots(facecolor="black", figsize=(3.62, 2.85), dpi=100)
+        self.fig, self.ax = plt.subplots(facecolor="black", figsize=(7.24, 5.70), dpi=100)
         self.ax.set_facecolor('black')
         self.fig.suptitle('Debug Plot', color='white')
         self.ax.set_xlabel('Time [s]', color='white')

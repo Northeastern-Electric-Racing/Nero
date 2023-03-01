@@ -3,6 +3,7 @@ from tkinter import Frame
 from modes.debug_mode.debug_mode import DebugMode
 from modes.efficiency_mode.efficiency_mode import EfficiencyMode
 from modes.off_mode.off_mode import OffMode
+from modes.charging_mode.charging_mode import ChargingMode
 from modes.pit_lane_mode.pit_lane_mode import PitLaneMode
 from modes.reverse_mode.reverse_mode import ReverseMode
 from modes.speed_mode.speed_mode import SpeedMode
@@ -49,10 +50,10 @@ class NeroView(customtkinter.CTk):
         self.header = Header(parent=container)
         self.header.place(x=0, y=0, relwidth=1, relheight=0.05)
         # for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode):
-        for mode_class in (EfficiencyMode, DebugMode):
+        for mode_class in (EfficiencyMode, DebugMode, ChargingMode):
             mode = mode_class(parent=container, controller=self, model=self.model)
             self.modes.append(mode)
-            mode.grid(row=0, column=0, sticky="nsew")
+            mode.grid(row=0, column=0, sticky="s")
 
         self.update_mode()
         self.check_can()
@@ -94,6 +95,7 @@ class NeroView(customtkinter.CTk):
     def update_pinned_data(self):
         if time.time() - self.last_pinned_update_time >= 1:
             self.model.update_pinned_data()
+            self.model.update_pack_temp_data()
             self.last_pinned_update_time = time.time()
         self.after(100, self.update_pinned_data)
 
@@ -167,7 +169,7 @@ class NeroView(customtkinter.CTk):
             self.debounce_enter_value = 0
         else:
             self.debounce_enter_value -= 1
-    
+
     def update_header(self):
         self.header.current_mode_label.configure(text=self.current_mode.name)
         self.after(100, self.update_header)

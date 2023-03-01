@@ -15,8 +15,9 @@ class MockModel(Model):
         self.motor_temp = 122
         self.state_of_charge = 88
         self.lv_battery = 88
+        self.current = 7.6
         self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
-                             self.motor_temp, self.state_of_charge, self.lv_battery]
+                             self.motor_temp, self.state_of_charge, self.lv_battery, self.current]
         self.table = [DebugTableRowValue(0, "speed", self.current_data[0], "mph"), DebugTableRowValue(1, "status", self.current_data[1], "bool"), DebugTableRowValue(2, "dir", self.current_data[2], "bool"), DebugTableRowValue(
             3, "pack temp", self.current_data[3], "C"), DebugTableRowValue(4, "motor temp", self.current_data[4], "C"), DebugTableRowValue(5, "state of charge", self.current_data[5], "%"), DebugTableRowValue(6, "lv battery", self.current_data[6], "V")]
         self.forward = 0
@@ -43,6 +44,11 @@ class MockModel(Model):
         elif rng >= 985 and rng < 988:
             self.motor_temp -= 1
 
+        if rng < 2:
+            self.pack_temp += 1
+        elif rng >= 990 and rng < 992:
+            self.pack_temp -= 1
+
         if rng == 100:
             self.status = False
         elif rng == 101:
@@ -56,7 +62,7 @@ class MockModel(Model):
             self.dir = True
 
         self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
-                             self.motor_temp, self.state_of_charge, self.lv_battery]
+                             self.motor_temp, self.state_of_charge, self.lv_battery, self.current]
 
     def on_press(self, key):
         match key:
@@ -117,6 +123,9 @@ class MockModel(Model):
 
     def get_lv_battery(self) -> Optional[int]:
         return self.current_data[6]
+
+    def get_current(self) -> Optional[float]:
+        return self.current_data[7]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         return self.table

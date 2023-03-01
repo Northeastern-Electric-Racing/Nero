@@ -67,6 +67,9 @@ class RaspberryModel(Model):
 
     def get_lv_battery(self) -> Optional[int]:
         return self.current_data[63]
+    
+    def get_current(self) -> Optional[int]:
+        return self.current_data[2]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         table: List[DebugTableRowValue] = []
