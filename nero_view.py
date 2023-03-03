@@ -49,8 +49,8 @@ class NeroView(customtkinter.CTk):
 
         self.header = Header(parent=container)
         self.header.place(x=0, y=0, relwidth=1, relheight=0.05)
-        # for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode):
-        for mode_class in (EfficiencyMode, DebugMode, ChargingMode):
+        for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode, ChargingMode):
+            # for mode_class in (EfficiencyMode, DebugMode, ChargingMode):
             mode = mode_class(parent=container, controller=self, model=self.model)
             self.modes.append(mode)
             mode.grid(row=0, column=0, sticky="s")

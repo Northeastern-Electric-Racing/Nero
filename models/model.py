@@ -40,6 +40,27 @@ class Model:
     def get_current(self) -> Optional[int]:
         pass
 
+    def get_balancing_cells(self) -> Optional[int]:
+        pass
+
+    def get_pack_voltage(self) -> Optional[int]:
+        pass
+
+    def get_max_cell(self) -> Optional[int]:
+        pass
+
+    def get_min_cell(self) -> Optional[int]:
+        pass
+
+    def get_cell_delta(self) -> Optional[int]:
+        pass
+
+    def get_charging(self) -> Optional[int]:
+        pass
+
+    def get_burning_cells(self) -> Optional[int]:
+        pass
+
     def get_by_id(self, id: int) -> Optional[int]:
         return self.current_data[id]
 
