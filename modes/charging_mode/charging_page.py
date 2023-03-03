@@ -9,24 +9,6 @@ import customtkinter
 from PIL.ImageTk import BitmapImage
 
 
-def sin(degs): return math.sin(math.radians(degs))
-def cos(degs): return math.cos(math.radians(degs))
-
-
-class Celestial(object):
-    # Constants
-    COS_0, COS_180 = cos(0), cos(180)
-    SIN_90, SIN_270 = sin(90), sin(270)
-
-    def __init__(self, x, y, radius):
-        self.x, self.y = x, y
-        self.radius = radius
-
-    def bounds(self):
-        """ Return coords of rectangle surrounding circlular object. """
-        return (self.x + self.radius*self.COS_0,   self.y + self.radius*self.SIN_270,
-                self.x + self.radius*self.COS_180, self.y + self.radius*self.SIN_90)
-
 
 class Charging(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
@@ -338,3 +320,22 @@ class Charging(Page):
    #      orbital_radius = math.hypot(self.sol_obj.x - celestial_obj.x, self.sol_obj.y - celestial_obj.y)
    #      path_iter = self.circular_path(self.sol_obj.x, self.sol_obj.y, orbital_radius, self.circular_path_increment)
    #      canvas.after(self.orbit_delay, self.update_position, canvas, id, celestial_obj, path_iter)
+
+
+# def sin(degs): return math.sin(math.radians(degs))
+# def cos(degs): return math.cos(math.radians(degs))
+
+
+# class Celestial(object):
+#     # Constants
+#     COS_0, COS_180 = cos(0), cos(180)
+#     SIN_90, SIN_270 = sin(90), sin(270)
+
+#     def __init__(self, x, y, radius):
+#         self.x, self.y = x, y
+#         self.radius = radius
+
+#     def bounds(self):
+#         """ Return coords of rectangle surrounding circlular object. """
+#         return (self.x + self.radius*self.COS_0,   self.y + self.radius*self.SIN_270,
+#                 self.x + self.radius*self.COS_180, self.y + self.radius*self.SIN_90)
