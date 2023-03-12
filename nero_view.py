@@ -49,7 +49,7 @@ class NeroView(customtkinter.CTk):
 
         self.header = Header(parent=container)
         self.header.place(x=0, y=0, relwidth=1, relheight=0.05)
-        for mode_class in (OffMode, PitLaneMode, DebugMode, SpeedMode, EfficiencyMode, ReverseMode, ChargingMode):
+        for mode_class in (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, DebugMode, ReverseMode, ChargingMode):
             # for mode_class in (EfficiencyMode, DebugMode, ChargingMode):
             mode = mode_class(parent=container, controller=self, model=self.model)
             self.modes.append(mode)
@@ -64,7 +64,7 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
-        if self.model.get_is_plugged_in():
+        if self.model.get_is_plugged_in() is not None and self.model.get_is_plugged_in >= 2:
             self.current_mode = self.modes[6]
         else:
             self.current_mode = self.modes[self.mode_index]
@@ -104,11 +104,7 @@ class NeroView(customtkinter.CTk):
         self.after(100, self.update_pinned_data)
 
     def update_mode_index(self):
-        self.is_charging = self.model.get_charging() if self.model.get_charging is not None else 0
-        if self.is_charging == 1:
-            self.mode_index = 6
-        else:
-            self.mode_index = self.model.get_mode_index() if self.model.get_mode_index is not None else self.mode_index
+        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index is not None else self.mode_index
         self.update_mode()
 
     # Button updates with debouncing
