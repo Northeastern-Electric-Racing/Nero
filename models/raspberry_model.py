@@ -67,9 +67,30 @@ class RaspberryModel(Model):
 
     def get_lv_battery(self) -> Optional[int]:
         return self.current_data[63]
-    
+
     def get_current(self) -> Optional[int]:
         return self.current_data[2]
+
+    def get_max_cell_voltage(self) -> Optional[int]:
+        return self.current_data[13]
+
+    def get_max_cell_id(self) -> Optional[int]:
+        return self.current_data[14]
+
+    def get_min_cell_voltage(self) -> Optional[int]:
+        return self.current_data[15]
+
+    def get_min_cell_id(self) -> Optional[int]:
+        return self.current_data[16]
+
+    def get_pack_voltage(self) -> Optional[int]:
+        return self.current_data[1]
+
+    def get_is_charging(self) -> Optional[int]:
+        return self.current_data[106]
+    
+    def get_is_plugged_in(self) -> Optional[int]:
+        return self.current_data[107]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         table: List[DebugTableRowValue] = []
@@ -138,4 +159,4 @@ class RaspberryModel(Model):
         return value
 
     def get_mode_index(self):
-        return self.current_data[...]
+        return self.current_data[105]

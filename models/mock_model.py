@@ -29,7 +29,7 @@ class MockModel(Model):
         self.down = 0
         self.left = 0
         self.right = 0
-        self.view_index = 0
+        self.mode_index = 0
         self.listener = Listener(on_press=self.on_press, on_release=self.on_release)
         self.listener.start()
         pass
@@ -74,9 +74,9 @@ class MockModel(Model):
             self.is_burning = 1
 
         if rng == 100:
-            self.is_charging = 0
-        if rng > 48 and rng < 53:
             self.is_charging = 1
+        if rng > 48 and rng < 53:
+            self.is_charging = 0
 
         self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
                              self.motor_temp, self.state_of_charge, self.lv_battery, self.current, self.is_burning, self.is_charging]
@@ -87,10 +87,10 @@ class MockModel(Model):
                 self.enter = 1
             case Key.right:
                 self.forward = 1
-                self.view_index += 1
+                self.mode_index = (self.mode_index + 1) if self.mode_index < 6 else 0
             case Key.left:
                 self.backward = 1
-                self.view_index -= 1
+                self.mode_index = (self.mode_index - 1) if self.mode_index > 0 else 6
             case Key.up:
                 self.up = 1
             case Key.down:
@@ -117,8 +117,8 @@ class MockModel(Model):
             case Key.shift_r:
                 self.right = 0
 
-    def get_charging(self) -> Optional[bool]:
-        return self.current_data[1]
+    def get_is_charging(self) -> Optional[bool]:
+        return self.is_charging
 
     def get_burning_cells(self) -> Optional[int]:
         return self.is_burning
@@ -174,7 +174,5 @@ class MockModel(Model):
     def get_right_button_pressed(self) -> int:
         return self.right
 
-    def get_view_index(self) -> int:
-        if self.view_index == 3:
-            self.view_index = 0
-        return self.view_index
+    def get_mode_index(self) -> int:
+        return self.mode_index

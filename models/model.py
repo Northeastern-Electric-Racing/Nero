@@ -46,19 +46,28 @@ class Model:
     def get_pack_voltage(self) -> Optional[int]:
         pass
 
-    def get_max_cell(self) -> Optional[int]:
+    def get_max_cell_voltage(self) -> Optional[int]:
         pass
 
-    def get_min_cell(self) -> Optional[int]:
+    def get_max_cell_id(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_voltage(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_id(self) -> Optional[int]:
         pass
 
     def get_cell_delta(self) -> Optional[int]:
         pass
 
-    def get_charging(self) -> Optional[int]:
+    def get_is_charging(self) -> Optional[int]:
         pass
 
     def get_burning_cells(self) -> Optional[int]:
+        pass
+
+    def get_is_plugged_in(self) -> Optional[int]:
         pass
 
     def get_by_id(self, id: int) -> Optional[int]:

@@ -64,7 +64,10 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
-        self.current_mode = self.modes[self.mode_index]
+        if self.model.get_is_plugged_in():
+            self.current_mode = self.modes[6]
+        else:
+            self.current_mode = self.modes[self.mode_index]
         self.current_mode.tkraise()
         self.header.tkraise()
 
@@ -79,8 +82,9 @@ class NeroView(customtkinter.CTk):
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
         start_time = time.time()
-        self.update_forward_button_pressed()
-        self.update_backward_button_pressed()
+        # self.update_forward_button_pressed()
+        # self.update_backward_button_pressed()
+        self.update_mode_index()
         self.update_enter_button_pressed()
         self.update_up_button_pressed()
         self.update_down_button_pressed()
@@ -99,26 +103,34 @@ class NeroView(customtkinter.CTk):
             self.last_pinned_update_time = time.time()
         self.after(100, self.update_pinned_data)
 
-    # Button updates with debouncing
-    def update_forward_button_pressed(self):
-        value = self.model.get_forward_button_pressed()
-        if value is not None and int(value) == 1 and self.debounce_forward_value == 0:
-            self.debounce_forward_value = self.debounce_max_value
-            self.increment_mode()
-        elif value is not None and int(value) == 0:
-            self.debounce_forward_value = 0
+    def update_mode_index(self):
+        self.is_charging = self.model.get_charging() if self.model.get_charging is not None else 0
+        if self.is_charging == 1:
+            self.mode_index = 6
         else:
-            self.debounce_forward_value -= 1
+            self.mode_index = self.model.get_mode_index() if self.model.get_mode_index is not None else self.mode_index
+        self.update_mode()
 
-    def update_backward_button_pressed(self):
-        value = self.model.get_backward_button_pressed()
-        if value is not None and int(value) == 1 and self.debounce_backward_value == 0:
-            self.debounce_backward_value = self.debounce_max_value
-            self.decrement_mode()
-        elif value is not None and int(value) == 0:
-            self.debounce_backward_value = 0
-        else:
-            self.debounce_backward_value -= 1
+    # Button updates with debouncing
+    # def update_forward_button_pressed(self):
+    #     value = self.model.get_forward_button_pressed()
+    #     if value is not None and int(value) == 1 and self.debounce_forward_value == 0:
+    #         self.debounce_forward_value = self.debounce_max_value
+    #         self.increment_mode()
+    #     elif value is not None and int(value) == 0:
+    #         self.debounce_forward_value = 0
+    #     else:
+    #         self.debounce_forward_value -= 1
+
+    # def update_backward_button_pressed(self):
+    #     value = self.model.get_backward_button_pressed()
+    #     if value is not None and int(value) == 1 and self.debounce_backward_value == 0:
+    #         self.debounce_backward_value = self.debounce_max_value
+    #         self.decrement_mode()
+    #     elif value is not None and int(value) == 0:
+    #         self.debounce_backward_value = 0
+    #     else:
+    #         self.debounce_backward_value -= 1
 
     def update_right_button_pressed(self):
         value = self.model.get_right_button_pressed()

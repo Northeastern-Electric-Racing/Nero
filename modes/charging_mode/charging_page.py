@@ -9,7 +9,6 @@ import customtkinter
 from PIL.ImageTk import BitmapImage
 
 
-
 class Charging(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Charging")
@@ -114,33 +113,33 @@ class Charging(Page):
         self.pack_voltage_frame.grid_columnconfigure(1, weight=1)
 
         self.max_cell_label = customtkinter.CTkLabel(
-            self.max_cell_frame, text="Max Cell: ", font=customtkinter.CTkFont(size=30))
+            self.max_cell_frame, text="Max Cell: ", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.max_cell_value = customtkinter.CTkLabel(
-            self.max_cell_frame, text="N/A", font=customtkinter.CTkFont(size=50, weight="bold"))
+            self.max_cell_frame, text="N/A", font=customtkinter.CTkFont(size=30))
 
         self.max_cell_label.grid(row=0, column=0, sticky="e", padx=15)
         self.max_cell_value.grid(row=0, column=1, sticky="w")
 
         self.min_cell_label = customtkinter.CTkLabel(
-            self.min_cell_frame, text="Min Cell: ", font=customtkinter.CTkFont(size=30))
+            self.min_cell_frame, text="Min Cell: ", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.min_cell_value = customtkinter.CTkLabel(
-            self.min_cell_frame, text="N/A", font=customtkinter.CTkFont(size=50, weight="bold"))
+            self.min_cell_frame, text="N/A", font=customtkinter.CTkFont(size=30))
 
         self.min_cell_label.grid(row=0, column=0, sticky="e", padx=15)
         self.min_cell_value.grid(row=0, column=1, sticky="w")
 
         self.cell_delta_label = customtkinter.CTkLabel(
-            self.cell_delta_frame, text="Cell Delta: ", font=customtkinter.CTkFont(size=30))
+            self.cell_delta_frame, text="Cell Delta: ", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.cell_delta_value = customtkinter.CTkLabel(
-            self.cell_delta_frame, text="N/A", font=customtkinter.CTkFont(size=50, weight="bold"))
+            self.cell_delta_frame, text="N/A", font=customtkinter.CTkFont(size=30))
 
         self.cell_delta_label.grid(row=0, column=0, sticky="e", padx=15)
         self.cell_delta_value.grid(row=0, column=1, sticky="w")
 
         self.pack_voltage_label = customtkinter.CTkLabel(
-            self.pack_voltage_frame, text="Pack Voltage: ", font=customtkinter.CTkFont(size=30))
+            self.pack_voltage_frame, text="Pack Voltage: ", font=customtkinter.CTkFont(size=30, weight="bold"))
         self.pack_voltage_value = customtkinter.CTkLabel(
-            self.pack_voltage_frame, text="N/A", font=customtkinter.CTkFont(size=50, weight="bold"))
+            self.pack_voltage_frame, text="N/A", font=customtkinter.CTkFont(size=30))
 
         self.pack_voltage_label.grid(row=0, column=0, sticky="e", padx=15)
         self.pack_voltage_value.grid(row=0, column=1, sticky="w")
@@ -240,8 +239,7 @@ class Charging(Page):
             image=self.burning_cells_image) if is_burning == 1 else self.current_image_label.configure(image=self.voltage_image)
 
     def update_charging_image(self):
-        self.is_charging = self.model.get_charging() if self.model.get_charging() is not None else 0
-        print(self.is_charging)
+        self.is_charging = self.model.get_is_charging() if self.model.get_is_charging() is not None else 0
         self.charging_label.configure(image=BitmapImage(file="images/largeBatteryHorizontal.xbm",
                                                         foreground="yellow") if self.is_charging == 1 else BitmapImage(file="images/largeBatteryHorizontal.xbm",
                                                                                                                        foreground="white"))
@@ -250,12 +248,14 @@ class Charging(Page):
         self.soc_label.configure(text=str(self.soc) + "%")
 
     def update_max_cell_value(self):
-        max_cell = self.model.get_max_cell() if self.model.get_max_cell() is not None else "N/A"
-        self.max_cell_value.configure(text=str(max_cell) + "V")
+        max_cell = self.model.get_max_cell_voltage() if self.model.get_max_cell_voltage() is not None else "N/A"
+        max_cell_id = self.model.get_max_cell_id() if self.model.get_max_cell_id() is not None else "N/A"
+        self.max_cell_value.configure(text=str(max_cell) + "V, #" + str(max_cell_id))
 
     def update_min_cell_value(self):
-        min_cell = self.model.get_min_cell() if self.model.get_min_cell() is not None else "N/A"
-        self.min_cell_value.configure(text=str(min_cell) + "V")
+        min_cell = self.model.get_min_cell_voltage() if self.model.get_min_cell_voltage() is not None else "N/A"
+        min_cell_id = self.model.get_min_cell_id() if self.model.get_min_cell_id() is not None else "N/A"
+        self.min_cell_value.configure(text=str(min_cell) + "V, #" + str(min_cell_id))
 
     def update_cell_delta_value(self):
         cell_delta = self.model.get_cell_delta() if self.model.get_cell_delta() is not None else "N/A"
