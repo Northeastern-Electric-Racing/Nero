@@ -183,13 +183,12 @@ class DebugTable(Page):
 
     def up_button_pressed(self):
         # Determines if the table should reload to the prior table
-        match self.selected_id:
-            case 0:
-                return
-            case 36:
-                self.create_table(0)
-            case 72:
-                self.create_table(18)
+        if self.selected_id == 0:
+            return
+
+        if self.selected_id % 36 == 0:
+            self.create_table((self.selected_id - 36) / 2)
+
         # unhighlight the current selected row
         self.highlightItem()
         # change the selected id to the row above and highlight it
@@ -200,13 +199,8 @@ class DebugTable(Page):
         # Determines if the table should reload to the next table
         if len(self.table) - 1 == self.selected_id:
             return
-        match self.selected_id:
-            case 35:
-                self.create_table(18)
-            case 71:
-                self.create_table(36)
-            case 107:
-                return
+        if self.selected_id % 36 == 35:
+            self.create_table(self.selected_id / 2 + 1)
         # unhighlight the current selected row
         self.highlightItem()
         # change the selected id to the row below and highlight it
