@@ -61,13 +61,10 @@ class Model:
     def get_cell_delta(self) -> Optional[int]:
         pass
 
-    def get_is_charging(self) -> Optional[int]:
-        pass
-
     def get_burning_cells(self) -> Optional[int]:
         pass
 
-    def get_is_plugged_in(self) -> Optional[int]:
+    def get_BMS_state(self) -> Optional[int]:
         pass
 
     def get_by_id(self, id: int) -> Optional[int]:

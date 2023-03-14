@@ -64,7 +64,7 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
-        if self.model.get_is_plugged_in() is not None and self.model.get_is_plugged_in >= 2:
+        if self.model.get_BMS_state() is not None and self.model.get_BMS_state() >= 2:
             self.current_mode = self.modes[6]
         else:
             self.current_mode = self.modes[self.mode_index]
@@ -104,7 +104,7 @@ class NeroView(customtkinter.CTk):
         self.after(100, self.update_pinned_data)
 
     def update_mode_index(self):
-        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index is not None else self.mode_index
+        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
         self.update_mode()
 
     # Button updates with debouncing

@@ -86,11 +86,8 @@ class RaspberryModel(Model):
     def get_pack_voltage(self) -> Optional[int]:
         return self.current_data[1]
 
-    def get_is_charging(self) -> Optional[int]:
+    def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
-    
-    def get_is_plugged_in(self) -> Optional[int]:
-        return self.current_data[107]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         table: List[DebugTableRowValue] = []

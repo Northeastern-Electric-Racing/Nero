@@ -117,9 +117,6 @@ class MockModel(Model):
             case Key.shift_r:
                 self.right = 0
 
-    def get_is_charging(self) -> Optional[bool]:
-        return self.is_charging
-
     def get_burning_cells(self) -> Optional[int]:
         return self.is_burning
 

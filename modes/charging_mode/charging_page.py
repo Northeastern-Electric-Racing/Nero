@@ -1,6 +1,4 @@
-import math
-import tkinter as tk
-from tkinter import Frame, Canvas, ttk, PhotoImage
+from tkinter import Frame, ttk
 from modes.page import Page
 from models.model import Model
 import matplotlib.pyplot as plt
@@ -144,13 +142,6 @@ class Charging(Page):
         self.pack_voltage_label.grid(row=0, column=0, sticky="e", padx=15)
         self.pack_voltage_value.grid(row=0, column=1, sticky="w")
 
-        # Create the middle Frame
-      #   self.circle_canvas = Canvas(self.middle_frame, width=341.33, height=427.5, bg="black")
-
-      #   self.circle = self.circle_canvas.create_oval(10, 48.25, 331, 379.25, fill="black", outline="white", width=5)
-
-      #   self.circle_canvas.grid(row=0, column=0, sticky="n")
-
         self.battery_progress_frame = Frame(self.middle_frame, width=341.33, height=200, bg="black")
         self.battery_progress_frame.grid(row=0, column=0, sticky="n")
         self.battery_progress_frame.grid_propagate(False)
@@ -216,12 +207,11 @@ class Charging(Page):
         self.update_progress_bar()
         self.update_pack_temp_graph()
         self.update_soc_label()
-        self.update_current_value()
+        self.update_current_value_and_battery_image()
         self.update_max_cell_value()
         self.update_min_cell_value()
         self.update_cell_delta_value()
         self.update_pack_voltage_value()
-        self.update_charging_image()
         self.update_burning_cells()
 
     def update_progress_bar(self):
@@ -237,12 +227,6 @@ class Charging(Page):
 
         self.current_image_label.configure(
             image=self.burning_cells_image) if is_burning == 1 else self.current_image_label.configure(image=self.voltage_image)
-
-    def update_charging_image(self):
-        self.is_charging = self.model.get_is_charging() if self.model.get_is_charging() is not None else 0
-        self.charging_label.configure(image=BitmapImage(file="images/largeBatteryHorizontal.xbm",
-                                                        foreground="yellow") if self.is_charging == 1 else BitmapImage(file="images/largeBatteryHorizontal.xbm",
-                                                                                                                       foreground="white"))
 
     def update_soc_label(self):
         self.soc_label.configure(text=str(self.soc) + "%")
@@ -265,10 +249,11 @@ class Charging(Page):
         pack_voltage = self.model.get_pack_voltage() if self.model.get_pack_voltage() is not None else "N/A"
         self.pack_voltage_value.configure(text=str(pack_voltage) + "V")
 
-    def update_current_value(self):
+    def update_current_value_and_battery_image(self):
         current = self.model.get_current() if self.model.get_current() is not None else "N/A"
         self.current_value.configure(text=str(current) + "A")
-        #   self.circular_path_increment = current * 0.1
+        self.charging_label.configure(image=BitmapImage(file="images/largeBatteryHorizontal.xbm",
+                                                        foreground="yellow") if current >= 0.7 else BitmapImage(file="images/largeBatteryHorizontal.xbm", foreground="white"))
 
     def update_pack_temp_graph(self):
         # plotting the graph
