@@ -187,7 +187,7 @@ class DebugTable(Page):
             return
 
         if self.selected_id % 36 == 0:
-            self.create_table(int(self.selected_id - 36) / 2)
+            self.create_table(int((self.selected_id - 36) / 2))
 
         # unhighlight the current selected row
         self.highlightItem()
