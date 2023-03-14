@@ -187,7 +187,7 @@ class DebugTable(Page):
             return
 
         if self.selected_id % 36 == 0:
-            self.create_table((self.selected_id - 36) / 2)
+            self.create_table(int(self.selected_id - 36) / 2)
 
         # unhighlight the current selected row
         self.highlightItem()
@@ -200,7 +200,7 @@ class DebugTable(Page):
         if len(self.table) - 1 == self.selected_id:
             return
         if self.selected_id % 36 == 35:
-            self.create_table(self.selected_id / 2 + 1)
+            self.create_table(int(self.selected_id / 2) + 1)
         # unhighlight the current selected row
         self.highlightItem()
         # change the selected id to the row below and highlight it
