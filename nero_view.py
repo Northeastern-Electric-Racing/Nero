@@ -13,8 +13,13 @@ import platform
 import time
 from models.model import Model
 from header import Header
+import os
 
 customtkinter.set_appearance_mode("dark")
+
+if platform.platform()[0:5] == "Linux":
+    os.chdir("/home/ner/Desktop/Nero/")
+    
 customtkinter.set_default_color_theme("themes/ner.json")
 
 
