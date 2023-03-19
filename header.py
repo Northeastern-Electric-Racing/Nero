@@ -9,8 +9,8 @@ class Header(Frame):
         super().__init__(parent)
 
         self.grid_rowconfigure(0, weight=1, minsize=30)
-        self.grid_columnconfigure(0, weight=1, minsize=800)
-        self.grid_columnconfigure(1, weight=1, minsize=224)
+        self.grid_columnconfigure(0, weight=1, minsize=parent.model.page_width * 0.8)
+        self.grid_columnconfigure(1, weight=1, minsize=parent.model.page_width * 0.2)
 
         self.left_frame = Frame(self, bg="black",
                                  highlightbackground="gray", highlightthickness=1)
