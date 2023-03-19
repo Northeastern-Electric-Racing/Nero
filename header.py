@@ -13,7 +13,7 @@ class Header(Frame):
         self.grid_columnconfigure(1, weight=1, minsize=parent.model.page_width * 0.2)
 
         self.left_frame = Frame(self, bg="black",
-                                 highlightbackground="gray", highlightthickness=1)
+                                highlightbackground="gray", highlightthickness=1)
         self.right_frame = Frame(self, bg="black", highlightbackground="gray", highlightthickness=1)
 
         self.left_frame.grid(row=0, column=0, sticky="nsew")
@@ -21,9 +21,3 @@ class Header(Frame):
 
         self.current_mode_label = customtkinter.CTkLabel(self.left_frame, text="Current Mode: ")
         self.current_mode_label.grid(row=0, column=0, sticky="w")
-
-
-
-
-
-

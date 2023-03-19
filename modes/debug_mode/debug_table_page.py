@@ -74,6 +74,7 @@ class DebugTableRow(Frame):
     def is_pinned(self):
         return self.id_frame.cget("bg") == "cyan" or self.id_frame.cget("bg") == "blue"
 
+
 class DebugTable(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Debug Table")

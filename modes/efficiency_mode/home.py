@@ -9,7 +9,7 @@ class Home(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Home")
 
-        # configure the grid (configure is responsible for configuring 
+        # configure the grid (configure is responsible for configuring
         # a specific row or column at the given index)
         self.grid_rowconfigure(0, weight=1, minsize=self.height/2)
         self.grid_rowconfigure(1, weight=1, minsize=self.height/2)

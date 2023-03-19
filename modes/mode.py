@@ -2,6 +2,7 @@ from tkinter import Frame
 from models.model import Model
 from modes.page import Page
 
+
 class Mode(Frame):
     def __init__(self, parent: Frame, controller: Frame, model: Model, name: str, page_classes) -> None:
         super().__init__(parent)

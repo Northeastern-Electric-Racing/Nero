@@ -60,7 +60,7 @@ class DebugPlot(Page):
         self.key_frame.grid_columnconfigure(0, weight=1)
         self.key_frame.grid(row=0, column=0, sticky="nsew")
 
-        self.key_frames : List[DebugPlotKey] = []
+        self.key_frames: List[DebugPlotKey] = []
         # Create the keys
         for i in range(6):
             self.key_frame.grid_rowconfigure(i, weight=1, minsize=self.height/6)
