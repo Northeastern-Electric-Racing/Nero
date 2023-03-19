@@ -7,6 +7,9 @@ class Page(Frame):
         super().__init__(parent, width=1024, height=570)
         self.name = name
         self.model = model
+        self.height = model.page_height
+        self.width = model.page_width
+
         self.grid_propagate(False)
 
         label = Label(self, text=self.name)

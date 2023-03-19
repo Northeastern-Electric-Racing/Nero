@@ -12,49 +12,49 @@ class Charging(Page):
         super().__init__(parent, model, "Charging")
         self.model = model
 
-        self.orbit_delay = 10
-        self.circular_path_increment = 0
-
-        self.grid_rowconfigure(1, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1, minsize=self.height * 4/5)
+        self.grid_rowconfigure(1, weight=1, minsize=self.height / 5)
+        self.grid_columnconfigure(0, weight=1, minsize=self.width)
 
         # The top and bottom frame that compose the frame
-        self.top_frame = Frame(self, width=1024, height=427.5, bg="black")
-        self.bottom_frame = Frame(self, width=1024, height=142.5, bg="black",
+        self.top_frame = Frame(self, bg="black")
+        self.bottom_frame = Frame(self, bg="black",
                                   highlightbackground="gray", highlightthickness=1)
 
-        self.top_frame.grid(row=0, column=0, sticky="s")
-        self.top_frame.grid_propagate(False)
+        self.top_frame.grid(row=0, column=0, sticky="nsew")
+        self.top_frame.grid_rowconfigure(0, weight=1)
+        self.top_frame.grid_columnconfigure(0, weight=1, minsize=self.width / 3)
+        self.top_frame.grid_columnconfigure(1, weight=1, minsize=self.width / 3)
+        self.top_frame.grid_columnconfigure(2, weight=1, minsize=self.width / 3)
 
-        self.bottom_frame.grid(row=1, column=0, sticky="n")
-        self.bottom_frame.grid_propagate(False)
+        self.bottom_frame.grid(row=1, column=0, sticky="nsew")
+        self.bottom_frame.grid_rowconfigure(0, weight=1)
+        self.bottom_frame.grid_columnconfigure(0, weight=1)
 
-        # Create the three frames that compose the bottom frame
-        self.left_frame = Frame(self.top_frame, width=341.33, height=427.5, bg="black",
+        # Create the three frames that compose the top frame
+        self.left_frame = Frame(self.top_frame, bg="black",
                                 highlightbackground="gray", highlightthickness=1)
-        self.middle_frame = Frame(self.top_frame, width=341.33, height=427.5, bg="black",
+        self.middle_frame = Frame(self.top_frame, bg="black",
                                   highlightbackground="gray", highlightthickness=1)
-        self.right_frame = Frame(self.top_frame, width=341.33, height=427.5, bg="black",
+        self.right_frame = Frame(self.top_frame, bg="black",
                                  highlightbackground="gray", highlightthickness=1)
 
-        self.left_frame.grid(row=0, column=0, sticky="s")
-        self.left_frame.grid_propagate(False)
-        self.left_frame.grid_rowconfigure(1, weight=1)
+        self.left_frame.grid(row=0, column=0, sticky="nsew")
+        self.left_frame.grid_rowconfigure(0, weight=1, minsize=self.height * 2/5)
+        self.left_frame.grid_rowconfigure(1, weight=1, minsize=self.height * 1/5)
         self.left_frame.grid_columnconfigure(0, weight=1)
 
-        self.middle_frame.grid(row=0, column=1, sticky="s")
-        self.middle_frame.grid_propagate(False)
+        self.middle_frame.grid(row=0, column=1, sticky="nsew")
         self.middle_frame.grid_rowconfigure(2, weight=1)
         self.middle_frame.grid_columnconfigure(0, weight=1)
 
-        self.right_frame.grid(row=0, column=2, sticky="s")
-        self.right_frame.grid_propagate(False)
-        self.right_frame.grid_rowconfigure(3, weight=1)
+        self.right_frame.grid(row=0, column=2, sticky="nsew")
+        for x in range(4):
+            self.right_frame.grid_rowconfigure(x, weight=1, minsize=self.height * 1/5)
         self.right_frame.grid_columnconfigure(0, weight=1)
 
         # the figure that will contain the plot
-        # self.fig, self.ax = plt.subplots(facecolor="black", figsize=(10.24, 1.425), dpi=100)
-        self.fig, self.ax = plt.subplots(facecolor="black", figsize=(5.12, .7125), dpi=100)
+        self.fig, self.ax = plt.subplots(facecolor="black", dpi=100)
         self.ax.set_facecolor('black')
         self.fig.suptitle('Pack Temp', color='white', fontsize=5)
         self.ax.set_xlabel('Time [s]', color='white')
@@ -65,48 +65,38 @@ class Charging(Page):
         self.canvas.draw()
 
         # placing the canvas on the Tkinter window
-        self.canvas.get_tk_widget().grid(row=0, column=0, sticky="w")
+        self.canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
         # Create The top left frame
-        self.current_frame = Frame(self.left_frame, width=341.33, height=250, bg="black")
-        self.current_frame.grid(row=0, column=0, sticky="s")
-        self.current_frame.grid_propagate(False)
-        self.current_frame.grid_rowconfigure(0, weight=1)
-        self.current_frame.grid_columnconfigure(0, weight=1)
-
         self.current_value = customtkinter.CTkLabel(
-            self.current_frame, text="N/A", font=customtkinter.CTkFont(size=125, weight="bold"))
-        self.current_value.grid(row=0, column=0, sticky="s")
+            self.left_frame, text="N/A", font=customtkinter.CTkFont(size=125, weight="bold"))
+        self.current_value.grid(row=0, column=0, sticky="sew")
 
         self.current_label = customtkinter.CTkLabel(self.left_frame, text="Current", font=customtkinter.CTkFont(size=20))
-        self.current_label.grid(row=1, column=0, sticky="n")
+        self.current_label.grid(row=1, column=0, sticky="new")
 
         # Create the top right frame
-        self.max_cell_frame = Frame(self.right_frame, width=341.33, height=106.875, bg="black")
+        self.max_cell_frame = Frame(self.right_frame, bg="black")
 
-        self.min_cell_frame = Frame(self.right_frame, width=341.33, height=106.875, bg="black")
+        self.min_cell_frame = Frame(self.right_frame, bg="black")
 
-        self.cell_delta_frame = Frame(self.right_frame, width=341.33, height=106.875, bg="black")
+        self.cell_delta_frame = Frame(self.right_frame, bg="black")
 
-        self.pack_voltage_frame = Frame(self.right_frame, width=341.33, height=106.875, bg="black")
+        self.pack_voltage_frame = Frame(self.right_frame, bg="black")
 
-        self.max_cell_frame.grid(row=0, column=0, sticky="s")
-        self.max_cell_frame.grid_propagate(False)
+        self.max_cell_frame.grid(row=0, column=0, sticky="nsew")
         self.max_cell_frame.grid_rowconfigure(0, weight=1)
         self.max_cell_frame.grid_columnconfigure(1, weight=1)
 
-        self.min_cell_frame.grid(row=1, column=0, sticky="s")
-        self.min_cell_frame.grid_propagate(False)
+        self.min_cell_frame.grid(row=1, column=0, sticky="nsew")
         self.min_cell_frame.grid_rowconfigure(0, weight=1)
         self.min_cell_frame.grid_columnconfigure(1, weight=1)
 
-        self.cell_delta_frame.grid(row=2, column=0, sticky="s")
-        self.cell_delta_frame.grid_propagate(False)
+        self.cell_delta_frame.grid(row=2, column=0, sticky="nsew")
         self.cell_delta_frame.grid_rowconfigure(0, weight=1)
         self.cell_delta_frame.grid_columnconfigure(1, weight=1)
 
-        self.pack_voltage_frame.grid(row=3, column=0, sticky="s")
-        self.pack_voltage_frame.grid_propagate(False)
+        self.pack_voltage_frame.grid(row=3, column=0, sticky="nsew")
         self.pack_voltage_frame.grid_rowconfigure(0, weight=1)
         self.pack_voltage_frame.grid_columnconfigure(1, weight=1)
 
@@ -142,15 +132,15 @@ class Charging(Page):
         self.pack_voltage_label.grid(row=0, column=0, sticky="e", padx=15)
         self.pack_voltage_value.grid(row=0, column=1, sticky="w")
 
-        self.battery_progress_frame = Frame(self.middle_frame, width=341.33, height=200, bg="black")
+        # Create the middle frame
+        self.battery_progress_frame = Frame(self.middle_frame, bg="black")
         self.battery_progress_frame.grid(row=0, column=0, sticky="n")
-        self.battery_progress_frame.grid_propagate(False)
+        self.battery_progress_frame.grid_rowconfigure(0, weight=1, minsize=self.height * 2 / 5)
         self.battery_progress_frame.grid_rowconfigure(1, weight=1)
         self.battery_progress_frame.grid_columnconfigure(0, weight=1)
 
         # Build the progress bar
-        self.progress_bar_frame = Frame(self.battery_progress_frame, height=200, bg="black")
-        self.grid_propagate(False)
+        self.progress_bar_frame = Frame(self.battery_progress_frame, bg="black")
         self.progress_bar_frame.grid(row=0, column=0, sticky="ew")
         self.progress_bar_frame.grid_rowconfigure(0, weight=1)
         self.progress_bar_frame.grid_columnconfigure(0, weight=1)
@@ -163,7 +153,7 @@ class Charging(Page):
         self.progress_bar.grid(row=0, column=0, sticky="ew", padx=(75, 25))
 
         # Build the SOC label
-        self.soc_frame = Frame(self.middle_frame, width=341, height=50, bg="black")
+        self.soc_frame = Frame(self.middle_frame, bg="black")
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
@@ -174,12 +164,11 @@ class Charging(Page):
         self.soc_label.grid(row=0, column=0, sticky="n")
 
         # Build the battery image
-        self.charging_frame = Frame(self.battery_progress_frame, width=341/2, height=200, bg="black")
+        self.charging_frame = Frame(self.battery_progress_frame, bg="black")
         self.charging_frame.grid(row=0, column=1, sticky="nsew", padx=15)
 
         self.charging_frame.grid_rowconfigure(0, weight=1)
         self.charging_frame.grid_columnconfigure(0, weight=1)
-        self.charging_frame.grid_propagate(False)
 
         self.charging_image = BitmapImage(
             file="images/largeBatteryHorizontal.xbm", foreground="white", background="black")
@@ -191,7 +180,6 @@ class Charging(Page):
         self.burning_cells_frame.grid(row=2, column=0, sticky="nsew")
         self.burning_cells_frame.grid_rowconfigure(0, weight=1)
         self.burning_cells_frame.grid_columnconfigure(0, weight=1)
-        self.burning_cells_frame.grid_propagate(False)
 
         self.burning_cells_image = BitmapImage(file="images/burningIcon.xbm", foreground="orange", background="black")
 
@@ -262,65 +250,3 @@ class Charging(Page):
         self.ax.plot(y[0: 600] if len(y) > 600 else y, color="blue")
         self.ax.invert_xaxis()
         self.canvas.draw()
-
-#   # Create Animation Object
-        #   self.sol_obj = Celestial(341/2, 427.5/2, 25)
-        #   planet_obj1 = Celestial(341/2+160, 250, 5)
-        #   self.planet1 = self.circle_canvas.create_oval(planet_obj1.bounds(), fill='gray', width=0)
-
-        #   orbital_radius = math.hypot(self.sol_obj.x - planet_obj1.x, self.sol_obj.y - planet_obj1.y)
-        #   path_iter = self.circular_path(self.sol_obj.x, self.sol_obj.y, orbital_radius, self.circular_path_increment)
-        #   next(path_iter)  # prime generator
-        #   self.after(self.orbit_delay, self.update_position, self.circle_canvas, self, self.planet1, path_iter)
-#  def update_circle_color(self):
-   #      self.is_balancing_cells = self.model.get_balancing_cells() if self.model.get_balancing_cells() is not None else False
-   #      if self.is_charging:
-   #          if self.is_balancing_cells:
-   #              self.circle_canvas.itemconfig(self.circle, outline="orange")
-   #              self.circle_canvas.itemconfig(self.planet1, fill="red")
-   #          else:
-   #              self.circle_canvas.itemconfig(self.circle, outline="green")
-   #              self.circle_canvas.itemconfig(self.planet1, fill="cyan")
-   #      else:
-   #          self.circle_canvas.itemconfig(self.circle, outline="white")
-   #          self.circle_canvas.itemconfig(self.planet1, fill="gray")
-
-     #   self.update_circle_color()
-
-   #  def circular_path(self, x, y, radius, delta_ang, start_ang=0):
-   #      """ Endlessly generate coords of a circular path every delta angle degrees. """
-   #      ang = start_ang % 360
-   #      while True:
-   #          yield x + radius*cos(ang), y + radius*sin(ang)
-   #          ang = (ang+delta_ang) % 360
-
-   #  def update_position(self, canvas, id, celestial_obj, path_iter):
-   #      celestial_obj.x, celestial_obj.y = next(path_iter)  # iterate path and set new position
-   #      # update the position of the corresponding canvas obj
-   #      x0, y0, x1, y1 = canvas.coords(id)  # coordinates of canvas oval object
-   #      oldx, oldy = (x0+x1) // 2, (y0+y1) // 2  # current center point
-   #      dx, dy = celestial_obj.x - oldx, celestial_obj.y - oldy  # amount of movement
-   #      canvas.move(id, dx, dy)  # move canvas oval object that much
-   #      # repeat after delay
-   #      orbital_radius = math.hypot(self.sol_obj.x - celestial_obj.x, self.sol_obj.y - celestial_obj.y)
-   #      path_iter = self.circular_path(self.sol_obj.x, self.sol_obj.y, orbital_radius, self.circular_path_increment)
-   #      canvas.after(self.orbit_delay, self.update_position, canvas, id, celestial_obj, path_iter)
-
-
-# def sin(degs): return math.sin(math.radians(degs))
-# def cos(degs): return math.cos(math.radians(degs))
-
-
-# class Celestial(object):
-#     # Constants
-#     COS_0, COS_180 = cos(0), cos(180)
-#     SIN_90, SIN_270 = sin(90), sin(270)
-
-#     def __init__(self, x, y, radius):
-#         self.x, self.y = x, y
-#         self.radius = radius
-
-#     def bounds(self):
-#         """ Return coords of rectangle surrounding circlular object. """
-#         return (self.x + self.radius*self.COS_0,   self.y + self.radius*self.SIN_270,
-#                 self.x + self.radius*self.COS_180, self.y + self.radius*self.SIN_90)

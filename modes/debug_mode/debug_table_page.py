@@ -7,16 +7,14 @@ from models.model import Model
 
 class DebugTableRowFrame(Frame):
     # The frame that holds the label of the row
-    def __init__(self, parent: Frame, width: int):
-        super().__init__(parent, bg="black", height=30, width=width)
-        self.grid_propagate(False)
+    def __init__(self, parent: Frame):
+        super().__init__(parent, bg="black")
 
 
 class DebugTableRowLabel(customtkinter.CTkLabel):
     # The label that displays the text of the row
-    def __init__(self, parent: Frame, text: str, anchor: str, relx: float = 0.5):
-        super().__init__(parent, font=('Lato', 20), text_color="white", text=text)
-        self.place(relx=relx, rely=0.5, anchor=anchor)
+    def __init__(self, parent: Frame, text: str, anchor: str):
+        super().__init__(parent, font=('Lato', 20), text_color="white", text=text, anchor=anchor)
 
 
 class DebugTableRowValue():
@@ -28,20 +26,39 @@ class DebugTableRowValue():
         self.unit = unit
 
 
-class DebugTableRow():
+class DebugTableRow(Frame):
     # The row of the debug table
-    def __init__(self, parent_frame: Frame, values: DebugTableRowValue):
-        self.id_frame = DebugTableRowFrame(parent_frame, 70)
+    def __init__(self, parent: Frame, values: DebugTableRowValue, width: int):
+        super().__init__(parent)
+        self.grid_rowconfigure(0, weight=1, minsize=30)
+        self.grid_columnconfigure(0, weight=1, minsize=width/14)
+        self.grid_columnconfigure(1, weight=1, minsize=width/3.7)
+        self.grid_columnconfigure(2, weight=1, minsize=width/14)
+        self.grid_columnconfigure(3, weight=1, minsize=width/13.7)
+
+        self.id_frame = DebugTableRowFrame(self)
         self.id_label = DebugTableRowLabel(self.id_frame, str(values.id), "center")
 
-        self.name_frame = DebugTableRowFrame(parent_frame, 277)
-        self.name_label = DebugTableRowLabel(self.name_frame, str(values.name), "w", 0)
+        self.id_frame.grid(row=0, column=0, sticky="nsew")
+        self.id_label.grid(row=0, column=0, sticky="nsew")
 
-        self.value_frame = DebugTableRowFrame(parent_frame, 70)
-        self.value_label = DebugTableRowLabel(self.value_frame, str(values.value), "e", 1)
+        self.name_frame = DebugTableRowFrame(self)
+        self.name_label = DebugTableRowLabel(self.name_frame, str(values.name), "w")
 
-        self.unit_frame = DebugTableRowFrame(parent_frame, 75)
-        self.unit_label = DebugTableRowLabel(self.unit_frame, str(values.unit), "w", 0.2)
+        self.name_frame.grid(row=0, column=1, sticky="nsew")
+        self.name_label.grid(row=0, column=0, sticky="nsew")
+
+        self.value_frame = DebugTableRowFrame(self)
+        self.value_label = DebugTableRowLabel(self.value_frame, str(values.value), "e")
+
+        self.value_frame.grid(row=0, column=2, sticky="nsew")
+        self.value_label.grid(row=0, column=0, sticky="nsew")
+
+        self.unit_frame = DebugTableRowFrame(self)
+        self.unit_label = DebugTableRowLabel(self.unit_frame, str(values.unit), "w")
+
+        self.unit_frame.grid(row=0, column=3, sticky="nsew")
+        self.unit_label.grid(row=0, column=0, sticky="nsew")
 
     # highlights the row with the given color
     def highlight(self, color):
@@ -57,62 +74,57 @@ class DebugTableRow():
     def is_pinned(self):
         return self.id_frame.cget("bg") == "cyan" or self.id_frame.cget("bg") == "blue"
 
-
 class DebugTable(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Debug Table")
         self.selected_id: int = 0
 
         # configure the grid
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1, minsize=self.height)
+        self.grid_columnconfigure(0, weight=1, minsize=self.width/2)
+        self.grid_columnconfigure(1, weight=1, minsize=self.width/2)
 
         # split the screen into two frames
-        self.left_frame = Frame(self, width=512, height=570, bg="black", highlightbackground='gray', highlightthickness=2)
-        self.right_frame = Frame(self, width=512, height=570, bg="black", highlightbackground='gray', highlightthickness=2)
+        self.left_frame = Frame(self, bg="black", highlightbackground='gray', highlightthickness=2)
+        self.right_frame = Frame(self, bg="black", highlightbackground='gray', highlightthickness=2)
 
-        self.left_frame.grid_propagate(False)
-        self.left_frame.grid_rowconfigure(19, weight=1)
-        self.left_frame.grid_columnconfigure(4, weight=1)
+        for x in range(int(self.height/30)):
+            self.left_frame.grid_rowconfigure(x, weight=1, minsize=30)
+            self.right_frame.grid_rowconfigure(x, weight=1, minsize=30)
 
-        self.right_frame.grid_propagate(False)
-        self.right_frame.grid_rowconfigure(19, weight=1)
-        self.right_frame.grid_columnconfigure(4, weight=1)
+        self.left_frame.grid_columnconfigure(0, weight=1)
+        self.right_frame.grid_columnconfigure(0, weight=1)
 
-        self.left_frame.grid(row=0, column=0, sticky="s")
-        self.right_frame.grid(row=0, column=1, sticky="s")
+        self.left_frame.grid(row=0, column=0, sticky="nsew")
+        self.right_frame.grid(row=0, column=1, sticky="nsew")
 
-        # creates the table
+        # creates the table (self.selected_id is 0)
         self.table: List[DebugTableRow] = self.create_debug_table()
-        self.create_table(0)
+        self.create_table(self.selected_id)
 
     def create_table(self, baseId: int):
         # Empty values for rows that are not used
-        debug_table_row_Empty_right = DebugTableRow(self.right_frame, DebugTableRowValue("", "", "", ""))
-        debug_table_row_Empty_left = DebugTableRow(self.left_frame, DebugTableRowValue("", "", "", ""))
+        debug_table_row_empty_right = DebugTableRow(self.right_frame, DebugTableRowValue("", "", "", ""), self.width)
+        debug_table_row_empty_left = DebugTableRow(self.left_frame, DebugTableRowValue("", "", "", ""), self.width)
 
         # header rows for the table
-        debug_table_row_top_right = DebugTableRow(self.right_frame, DebugTableRowValue("ID", "Name", "Value", "Unit"))
-        debug_table_row_top_right.name_label.place(relx=0.5, rely=0.5, anchor="center")
-        debug_table_row_top_right.value_label.place(relx=0.5, rely=0.5, anchor="center")
-        debug_table_row_top_right.unit_label.place(relx=0.5, rely=0.5, anchor="center")
+        debug_table_row_top_left = DebugTableRow(
+            self.left_frame, DebugTableRowValue("ID", "Name", "Value", "Unit"), self.width)
 
-        debug_table_row_top_left = DebugTableRow(self.left_frame, DebugTableRowValue("ID", "Name", "Value", "Unit"))
-        debug_table_row_top_left.name_label.place(relx=0.5, rely=0.5, anchor="center")
-        debug_table_row_top_left.value_label.place(relx=0.5, rely=0.5, anchor="center")
-        debug_table_row_top_left.unit_label.place(relx=0.5, rely=0.5, anchor="center")
+        debug_table_row_top_right = DebugTableRow(
+            self.right_frame, DebugTableRowValue("ID", "Name", "Value", "Unit"), self.width)
 
         # Creates the rows, and places them in the table
-        for i in range(0, 19):
+        for i in range(int(self.height/60)):
             # determines the id for the rows
             left_id = baseId*2
             # if the leftid is out of range then the right id is also out of range so make the row empty
             if (left_id >= len(self.table)):
-                debug_table_row_left = debug_table_row_Empty_left
-                debug_table_row_right = debug_table_row_Empty_right
+                debug_table_row_left = debug_table_row_empty_left
+                debug_table_row_right = debug_table_row_empty_right
             # if the left id is the last id then the right id is out of range so make the right row empty
             elif (left_id >= len(self.table) - 1):
-                debug_table_row_right = debug_table_row_Empty_right
+                debug_table_row_right = debug_table_row_empty_right
                 debug_table_row_left = self.table[left_id]
             # otherwise the left and right ids are in range
             else:
@@ -121,35 +133,14 @@ class DebugTable(Page):
             match i:
                 # create the header row
                 case 0:
-                    debug_table_row_top_left.id_frame.grid(row=i, column=0, sticky="ew")
-                    debug_table_row_top_right.id_frame.grid(row=i, column=4, sticky="ew")
-                    debug_table_row_top_left.name_frame.grid(row=i, column=1, sticky="ew")
-                    debug_table_row_top_right.name_frame.grid(row=i, column=5, sticky="ew")
-                    debug_table_row_top_left.value_frame.grid(row=i, column=2, sticky="ew")
-                    debug_table_row_top_right.value_frame.grid(row=i, column=6, sticky="ew")
-                    debug_table_row_top_left.unit_frame.grid(row=i, column=3, sticky="ew")
-                    debug_table_row_top_right.unit_frame.grid(row=i, column=7, sticky="ew")
+                    debug_table_row_top_left.grid(row=0, column=0, sticky="nsew", padx=5)
+                    debug_table_row_top_right.grid(row=0, column=0, sticky="nsew", padx=5)
                 # Create the other rows. If they already exist, raise them to the top
                 case i:
-                    debug_table_row_left.id_frame.grid(row=i, column=0, sticky="ew")
-                    debug_table_row_left.id_frame.tkraise()
-                    debug_table_row_right.id_frame.grid(row=i, column=4, sticky="ew")
-                    debug_table_row_right.id_frame.tkraise()
-
-                    debug_table_row_left.name_frame.grid(row=i, column=1, sticky="ew")
-                    debug_table_row_left.name_frame.tkraise()
-                    debug_table_row_right.name_frame.grid(row=i, column=5, sticky="ew")
-                    debug_table_row_right.name_frame.tkraise()
-
-                    debug_table_row_left.value_frame.grid(row=i, column=2, sticky="ew")
-                    debug_table_row_left.value_frame.tkraise()
-                    debug_table_row_right.value_frame.grid(row=i, column=6, sticky="ew")
-                    debug_table_row_right.value_frame.tkraise()
-
-                    debug_table_row_left.unit_frame.grid(row=i, column=3, sticky="ew")
-                    debug_table_row_left.unit_frame.tkraise()
-                    debug_table_row_right.unit_frame.grid(row=i, column=7, sticky="ew")
-                    debug_table_row_right.unit_frame.tkraise()
+                    debug_table_row_left.grid(row=i, column=0, sticky="nsew", padx=5)
+                    debug_table_row_left.tkraise()
+                    debug_table_row_right.grid(row=i, column=0, sticky="nsew", padx=5)
+                    debug_table_row_right.tkraise()
             # if were making the header row, dont increase the baseid yet
             if not i == 0:
                 baseId += 1
@@ -186,8 +177,8 @@ class DebugTable(Page):
         if self.selected_id == 0:
             return
 
-        if self.selected_id % 36 == 0:
-            self.create_table(int((self.selected_id - 36) / 2))
+        if self.selected_id % int(self.height/30) == 0:
+            self.create_table(int((self.selected_id - self.height/30) / 2))
 
         # unhighlight the current selected row
         self.highlightItem()
@@ -199,7 +190,7 @@ class DebugTable(Page):
         # Determines if the table should reload to the next table
         if len(self.table) - 1 == self.selected_id:
             return
-        if self.selected_id % 36 == 35:
+        if self.selected_id % int(self.height/30) == int(self.height/30) - 1:
             self.create_table(int(self.selected_id / 2) + 1)
         # unhighlight the current selected row
         self.highlightItem()
@@ -212,7 +203,7 @@ class DebugTable(Page):
         table: List[DebugTableRow] = []
         for i in range(len(values)):
             parent: Frame = self.left_frame if i % 2 == 0 else self.right_frame
-            table.append(DebugTableRow(parent, values[i]))
+            table.append(DebugTableRow(parent, values[i], width=self.width))
         return table
 
     def update_by_id(self, id: int):
