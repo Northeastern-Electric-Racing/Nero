@@ -116,7 +116,7 @@ class DebugTable(Page):
             self.right_frame, DebugTableRowValue("ID", "Name", "Value", "Unit"), self.width)
 
         # Creates the rows, and places them in the table
-        for i in range(int(self.height/60)):
+        for i in range(int(self.height/30)):
             # determines the id for the rows
             left_id = baseId*2
             # if the leftid is out of range then the right id is also out of range so make the row empty
