@@ -179,7 +179,7 @@ class DebugTable(Page):
             return
 
         if self.selected_id % int(self.height/30) == 0:
-            self.create_table(int((self.selected_id - self.height/30) / 2))
+            self.create_table(int((self.selected_id / 2 - self.height/30)))
 
         # unhighlight the current selected row
         self.highlightItem()
