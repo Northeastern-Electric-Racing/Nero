@@ -179,6 +179,7 @@ class DebugTable(Page):
         # Determines if the table should reload to the prior table
         if self.selected_id == 0:
             new_base_id = int((len(self.table) - 1) / 2) - int(self.height/30) if int((len(self.table) - 1) / 2) - int(self.height/30) > 0 else 0
+            new_base_id = new_base_id + 1 if len(self.table) - 1 % 2 == 1 else new_base_id
             self.selected_id = len(self.table) - 1
             self.create_table(new_base_id)
         elif self.selected_id % int(self.height/30) == 0:
