@@ -183,7 +183,7 @@ class DebugTable(Page):
             self.selected_id = len(self.table) - 1
             self.create_table(new_base_id)
         elif int(self.selected_id / 2) % (self.max_row_count - 1) == 0:
-            self.create_table(int(self.selected_id / 2 - self.max_row_count -  1))
+            self.create_table(int(self.selected_id / 2) - (self.max_row_count - 1))
             self.selected_id -= 1
         else:
             self.selected_id -= 1
@@ -196,7 +196,7 @@ class DebugTable(Page):
         if len(self.table) - 1 == self.selected_id:
             self.create_table(0)
             self.selected_id = 0
-        elif int(self.selected_id / 2) % (self.max_row_count - 1) == self.max_row_count - 2:
+        elif int(self.selected_id / 2) % (self.max_row_count - 1) == self.max_row_count - 2 and self.selected_id % 2 == 1:
             self.create_table(int(self.selected_id / 2) + 1)
             self.selected_id += 1
         else:
