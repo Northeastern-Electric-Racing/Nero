@@ -191,7 +191,7 @@ class DebugTable(Page):
         # Determines if the table should reload to the next table
         if len(self.table) - 1 == self.selected_id:
             return
-        if self.selected_id % int(self.height/30) == int(self.height/30) - 1:
+        if self.selected_id * 2 % int(self.height/30) == int(self.height/30) - 1:
             self.create_table(int(self.selected_id / 2) + 1)
         # unhighlight the current selected row
         self.highlightItem()
