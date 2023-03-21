@@ -79,6 +79,7 @@ class DebugTable(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Debug Table")
         self.selected_id: int = 0
+        self.max_row_count: int = int(self.height/30)
 
         # configure the grid
         self.grid_rowconfigure(0, weight=1, minsize=self.height)
@@ -89,7 +90,7 @@ class DebugTable(Page):
         self.left_frame = Frame(self, bg="black", highlightbackground='gray', highlightthickness=2)
         self.right_frame = Frame(self, bg="black", highlightbackground='gray', highlightthickness=2)
 
-        for x in range(int(self.height/30)):
+        for x in range(self.max_row_count):
             self.left_frame.grid_rowconfigure(x, weight=1, minsize=30)
             self.right_frame.grid_rowconfigure(x, weight=1, minsize=30)
 
@@ -116,7 +117,7 @@ class DebugTable(Page):
             self.right_frame, DebugTableRowValue("ID", "Name", "Value", "Unit"), self.width)
 
         # Creates the rows, and places them in the table
-        for i in range(int(self.height/30)):
+        for i in range(self.max_row_count):
             # determines the id for the rows
             left_id = baseId*2
             # if the leftid is out of range then the right id is also out of range so make the row empty
@@ -178,12 +179,12 @@ class DebugTable(Page):
         self.highlightItem()
         # Determines if the table should reload to the prior table
         if self.selected_id == 0:
-            new_base_id = int((len(self.table) - 1) / 2) - int(self.height/30) if int((len(self.table) - 1) / 2) - int(self.height/30) > 0 else 0
+            new_base_id = int((len(self.table) - 1) / 2) - self.max_row_count if int((len(self.table) - 1) / 2) - self.max_row_count > 0 else 0
             new_base_id = new_base_id + 1 if len(self.table) - 1 % 2 == 1 else new_base_id
             self.selected_id = len(self.table) - 1
             self.create_table(new_base_id)
-        elif self.selected_id % int(self.height/30) == 0:
-            self.create_table(int((self.selected_id / 2 - int(self.height/30))))
+        elif self.selected_id % self.max_row_count == 0:
+            self.create_table(int((self.selected_id / 2 - self.max_row_count)))
             self.selected_id -= 1
         else:
             self.selected_id -= 1
@@ -196,8 +197,8 @@ class DebugTable(Page):
         if len(self.table) - 1 == self.selected_id:
             self.create_table(0)
             self.selected_id = 0
-        elif self.selected_id / 2 % int(self.height/30) == int(self.height/30) - 1:
-            self.create_table(int(self.selected_id / 2))
+        elif int((self.selected_id - 1) / 2) % self.max_row_count == 0:
+            self.create_table(int(self.selected_id / 2) + 1)
             self.selected_id += 1
         else:
             self.selected_id += 1

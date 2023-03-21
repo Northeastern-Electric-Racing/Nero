@@ -21,7 +21,7 @@ class MockModel(Model):
         self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
                              self.motor_temp, self.state_of_charge, self.lv_battery, self.current, self.is_burning, self.is_charging]
         self.table = [DebugTableRowValue(0, "speed", self.current_data[0], "mph"), DebugTableRowValue(1, "status", self.current_data[1], "bool"), DebugTableRowValue(2, "dir", self.current_data[2], "bool"), DebugTableRowValue(
-            3, "pack temp", self.current_data[3], "C"), DebugTableRowValue(4, "motor temp", self.current_data[4], "C"), DebugTableRowValue(5, "state of charge", self.current_data[5], "%"), DebugTableRowValue(6, "lv battery", self.current_data[6], "V")]
+            3, "pack temp", self.current_data[3], "C"), DebugTableRowValue(4, "motor temp", self.current_data[4], "C"), DebugTableRowValue(5, "state of charge", self.current_data[5], "%"), DebugTableRowValue(6, "lv battery", self.current_data[6], "V"), DebugTableRowValue(7, "current", self.current_data[7], "A"), DebugTableRowValue(8, "is burning", self.current_data[8], "bool")]
         self.forward = 0
         self.backward = 0
         self.enter = 0
