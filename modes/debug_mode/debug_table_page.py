@@ -196,7 +196,7 @@ class DebugTable(Page):
         if len(self.table) - 1 == self.selected_id:
             self.create_table(0)
             self.selected_id = 0
-        elif int((self.selected_id - 1) / 2) % self.max_row_count == 0:
+        elif int((self.selected_id) / 2) % self.max_row_count == self.max_row_count:
             self.create_table(int(self.selected_id / 2) + 1)
             self.selected_id += 1
         else:
