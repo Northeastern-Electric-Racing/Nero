@@ -174,29 +174,32 @@ class DebugTable(Page):
             self.model.add_pinned_data(self.selected_id)
 
     def up_button_pressed(self):
-        # Determines if the table should reload to the prior table
-        if self.selected_id == 0:
-            return
-
-        if self.selected_id % int(self.height/30) == 0:
-            self.create_table(int((self.selected_id / 2 - self.height/30)))
-
         # unhighlight the current selected row
         self.highlightItem()
-        # change the selected id to the row above and highlight it
-        self.selected_id -= 1
+        # Determines if the table should reload to the prior table
+        if self.selected_id == 0:
+            new_base_id = int((len(self.table) - 1) / 2) - int(self.height/30) if int((len(self.table) - 1) / 2) - int(self.height/30) > 0 else 0
+            self.selected_id = len(self.table) - 1
+            self.create_table(new_base_id)
+        elif self.selected_id % int(self.height/30) == 0:
+            self.create_table(int((self.selected_id / 2 - int(self.height/30))))
+            self.selected_id -= 1
+        else:
+            self.selected_id -= 1
         self.highlightItem()
 
     def down_button_pressed(self):
-        # Determines if the table should reload to the next table
-        if len(self.table) - 1 == self.selected_id:
-            return
-        if self.selected_id / 2 % int(self.height/30) == int(self.height/30) - 1:
-            self.create_table(int(self.selected_id / 2) + 1)
         # unhighlight the current selected row
         self.highlightItem()
-        # change the selected id to the row below and highlight it
-        self.selected_id += 1
+        # Determines if the table should reload to the next table
+        if len(self.table) - 1 == self.selected_id:
+            self.create_table(0)
+            self.selected_id = 0
+        elif self.selected_id / 2 % int(self.height/30) == int(self.height/30) - 1:
+            self.create_table(int(self.selected_id / 2))
+            self.selected_id += 1
+        else:
+            self.selected_id += 1
         self.highlightItem()
 
     def create_debug_table(self):
