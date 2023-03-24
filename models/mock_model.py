@@ -18,6 +18,7 @@ class MockModel(Model):
         self.current = 7.6
         self.is_burning = 0
         self.is_charging = 0
+        self.is_debug = 0
         self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
                              self.motor_temp, self.state_of_charge, self.lv_battery, self.current, self.is_burning, self.is_charging]
         self.table = [DebugTableRowValue(0, "speed", self.current_data[0], "mph"), DebugTableRowValue(1, "status", self.current_data[1], "bool"), DebugTableRowValue(2, "dir", self.current_data[2], "bool"), DebugTableRowValue(
@@ -96,7 +97,7 @@ class MockModel(Model):
             case Key.down:
                 self.down = 1
             case Key.shift_l:
-                self.mode_index = 6
+                self.is_debug = 1
             case Key.shift_r:
                 self.right = 1
 
@@ -113,7 +114,7 @@ class MockModel(Model):
             case Key.down:
                 self.down = 0
             case Key.shift_l:
-                self.left = 0
+                self.is_debug = 0
             case Key.shift_r:
                 self.right = 0
 
@@ -166,7 +167,7 @@ class MockModel(Model):
         return self.backward
 
     def get_debug_pressed(self) -> int:
-        return self.mode_index
+        return self.is_debug
 
     def get_right_button_pressed(self) -> int:
         return self.right

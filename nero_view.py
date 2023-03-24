@@ -29,6 +29,8 @@ class NeroView(customtkinter.CTk):
         self.isLinux = platform.platform()[0:5] == "Linux"
         self.model: Model = RaspberryModel() if self.isLinux else MockModel()
 
+        self.is_debug = False
+
         self.debounce_forward_value = 0
         self.debounce_backward_value = 0
         self.debounce_enter_value = 0
@@ -71,6 +73,8 @@ class NeroView(customtkinter.CTk):
 
     def update_mode(self):
         if self.model.get_BMS_state() is not None and self.model.get_BMS_state() >= 2:
+            self.current_mode = self.modes[5]
+        elif self.is_debug:
             self.current_mode = self.modes[6]
         else:
             self.current_mode = self.modes[self.mode_index]
@@ -88,8 +92,6 @@ class NeroView(customtkinter.CTk):
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
         start_time = time.time()
-        # self.update_forward_button_pressed()
-        # self.update_backward_button_pressed()
         self.update_mode_index()
         self.update_enter_button_pressed()
         self.update_up_button_pressed()
@@ -127,8 +129,7 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_debug_pressed()
         if value is not None and int(value) == 1 and self.debounce_left_value == 0:
             self.debounce_left_value = self.debounce_max_value
-            self.mode_index = 6
-            self.update_mode()
+            self.is_debug = not self.is_debug
         elif value is not None and int(value) == 0:
             self.debounce_left_value = 0
         else:
