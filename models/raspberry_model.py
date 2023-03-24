@@ -115,7 +115,7 @@ class RaspberryModel(Model):
             value = binary[7] if len(binary) >= 8 else 0
         return value
 
-    def get_left_button_pressed(self) -> Optional[str]:
+    def get_debug_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
             binary = bin(value)

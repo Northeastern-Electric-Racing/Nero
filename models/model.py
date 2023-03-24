@@ -81,7 +81,7 @@ class Model:
     def get_backward_button_pressed(self) -> Optional[str]:
         pass
 
-    def get_left_button_pressed(self) -> Optional[str]:
+    def get_debug_pressed(self) -> Optional[str]:
         pass
 
     def get_right_button_pressed(self) -> Optional[str]:

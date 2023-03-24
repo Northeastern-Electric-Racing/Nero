@@ -39,9 +39,6 @@ class Mode(Frame):
     def down_button_pressed(self):
         self.current_page.down_button_pressed()
 
-    def left_button_pressed(self):
-        self.decrement_page()
-
     def right_button_pressed(self):
         self.increment_page()
 
@@ -49,12 +46,6 @@ class Mode(Frame):
         self.page_index += 1
         if (self.page_index >= len(self.pages)):
             self.page_index = 0
-        self.update_page()
-
-    def decrement_page(self):
-        self.page_index -= 1
-        if (self.page_index < 0):
-            self.page_index = len(self.pages) - 1
         self.update_page()
 
     def update(self):

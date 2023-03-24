@@ -96,7 +96,7 @@ class MockModel(Model):
             case Key.down:
                 self.down = 1
             case Key.shift_l:
-                self.left = 1
+                self.mode_index = 6
             case Key.shift_r:
                 self.right = 1
 
@@ -165,8 +165,8 @@ class MockModel(Model):
     def get_backward_button_pressed(self) -> int:
         return self.backward
 
-    def get_left_button_pressed(self) -> int:
-        return self.left
+    def get_debug_pressed(self) -> int:
+        return self.mode_index
 
     def get_right_button_pressed(self) -> int:
         return self.right

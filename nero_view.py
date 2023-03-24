@@ -56,7 +56,7 @@ class NeroView(customtkinter.CTk):
         # create the modes that the container will hold
         self.modes = []
         self.mode_index = 0
-        for mode_class in (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, DebugMode, ReverseMode, ChargingMode):
+        for mode_class in (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, ReverseMode, ChargingMode, DebugMode):
             mode = mode_class(parent=container, controller=self, model=self.model)
             self.modes.append(mode)
             mode.grid(row=0, column=0, sticky="nsew")
@@ -94,7 +94,7 @@ class NeroView(customtkinter.CTk):
         self.update_enter_button_pressed()
         self.update_up_button_pressed()
         self.update_down_button_pressed()
-        self.update_left_button_pressed()
+        self.update_debug_pressed()
         self.update_right_button_pressed()
         end_time = time.time()
         while end_time - start_time < 0.0001:
@@ -123,11 +123,12 @@ class NeroView(customtkinter.CTk):
         else:
             self.debounce_right_value -= 1
 
-    def update_left_button_pressed(self):
-        value = self.model.get_left_button_pressed()
+    def update_debug_pressed(self):
+        value = self.model.get_debug_pressed()
         if value is not None and int(value) == 1 and self.debounce_left_value == 0:
             self.debounce_left_value = self.debounce_max_value
-            self.current_mode.left_button_pressed()
+            self.mode_index = 6
+            self.update_mode()
         elif value is not None and int(value) == 0:
             self.debounce_left_value = 0
         else:
