@@ -88,6 +88,9 @@ class RaspberryModel(Model):
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
+    
+    def get_BMS_fault(self) -> Optional[int]:
+        return self.current_data[107]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         table: List[DebugTableRowValue] = []

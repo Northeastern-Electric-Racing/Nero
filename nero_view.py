@@ -48,7 +48,7 @@ class NeroView(customtkinter.CTk):
         self.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)
 
         # The consistent Header across all modes
-        self.header = Header(parent=self)
+        self.header = Header(parent=self, model=self.model, controller=self)
         self.header.grid(row=0, column=0, sticky="nsew")
 
         # create the container frame that holds all modes
@@ -90,7 +90,7 @@ class NeroView(customtkinter.CTk):
     def update_mode_index(self):
         self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
         self.update_mode()
-        self.after(1, self.update_mode_index)
+        self.after(10, self.update_mode_index)
 
     def check_can(self):
         self.model.check_can()
@@ -99,6 +99,10 @@ class NeroView(customtkinter.CTk):
     def update_current_page(self):
         self.current_screen.current_page.update()
         self.after(100, self.update_current_page)
+
+    def update_header(self):
+        self.header.update()
+        self.after(100, self.update_header)
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
@@ -169,10 +173,6 @@ class NeroView(customtkinter.CTk):
             self.debounce_enter_value = 0
         else:
             self.debounce_enter_value -= 1
-
-    def update_header(self):
-        self.header.current_mode_label.configure(text=self.current_mode.name)
-        self.after(100, self.update_header)
 
     def run(self):
         if (self.isLinux):
