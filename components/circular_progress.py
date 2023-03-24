@@ -24,7 +24,8 @@ class CircularProgressbar(object):
                                                 font=self.custom_font)
 
     def set(self, value):
-        self.extent = value
+        self.extent = value if isinstance(value, int) else 0
         self.canvas.itemconfigure(self.arc_id, extent=((self.extent / 100) * self.full_extent))
         # Update percentage value displayed.
-        self.canvas.itemconfigure(self.label_id, text=self.extent)
+        self.percent = value if isinstance(value, int) else "N/A"
+        self.canvas.itemconfigure(self.label_id, text=self.percent)

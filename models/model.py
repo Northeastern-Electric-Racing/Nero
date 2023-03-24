@@ -74,7 +74,7 @@ class Model:
     
     def get_MPU_fault(self) -> Optional[int]:
         pass
-    
+
     def get_by_id(self, id: int) -> Optional[int]:
         return self.current_data[id]
 
