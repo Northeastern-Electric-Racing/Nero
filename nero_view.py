@@ -72,10 +72,10 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
-        if self.model.get_BMS_state() is not None and self.model.get_BMS_state() >= 2:
-            self.current_mode = self.modes[5]
-        elif self.is_debug:
+        if self.is_debug:
             self.current_mode = self.modes[6]
+        elif self.model.get_BMS_state() is not None and self.model.get_BMS_state() >= 2:
+            self.current_mode = self.modes[5]
         else:
             self.current_mode = self.modes[self.mode_index]
         self.current_mode.tkraise()
