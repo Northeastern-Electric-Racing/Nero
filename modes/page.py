@@ -4,9 +4,13 @@ from models.model import Model
 
 class Page(Frame):
     def __init__(self, parent: Frame, model: Model, name: str) -> None:
-        super().__init__(parent)
+        super().__init__(parent, width=1024, height=570)
         self.name = name
         self.model = model
+        self.height = model.page_height
+        self.width = model.page_width
+
+        self.grid_propagate(False)
 
         label = Label(self, text=self.name)
         label.grid(row=0, column=0, sticky="nsew")

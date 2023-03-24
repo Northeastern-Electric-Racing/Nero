@@ -7,6 +7,9 @@ class Model:
     def __init__(self) -> None:
         self.pinned_data: Dict[int, DebugPlotValue] = {}
         self.current_data: List[Optional[int]] = []
+        self.pack_temp_data: List[Optional[int]] = []
+        self.page_height = 570
+        self.page_width = 1024
         pass
 
     def check_can(self) -> None:
@@ -36,6 +39,36 @@ class Model:
     def get_lv_battery(self) -> Optional[int]:
         pass
 
+    def get_current(self) -> Optional[int]:
+        pass
+
+    def get_balancing_cells(self) -> Optional[int]:
+        pass
+
+    def get_pack_voltage(self) -> Optional[int]:
+        pass
+
+    def get_max_cell_voltage(self) -> Optional[int]:
+        pass
+
+    def get_max_cell_id(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_voltage(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_id(self) -> Optional[int]:
+        pass
+
+    def get_cell_delta(self) -> Optional[int]:
+        pass
+
+    def get_burning_cells(self) -> Optional[int]:
+        pass
+
+    def get_BMS_state(self) -> Optional[int]:
+        pass
+
     def get_by_id(self, id: int) -> Optional[int]:
         return self.current_data[id]
 
@@ -48,7 +81,7 @@ class Model:
     def get_backward_button_pressed(self) -> Optional[str]:
         pass
 
-    def get_left_button_pressed(self) -> Optional[str]:
+    def get_debug_pressed(self) -> Optional[str]:
         pass
 
     def get_right_button_pressed(self) -> Optional[str]:
@@ -65,6 +98,11 @@ class Model:
 
     def get_mode_index(self):
         pass
+
+    def update_pack_temp_data(self) -> None:
+        if len(self.pack_temp_data) >= 600:
+            self.pack_temp_data.pop()
+        self.pack_temp_data.insert(0, self.get_pack_temp())
 
     def add_pinned_data(self, id: int) -> None:
         self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'],

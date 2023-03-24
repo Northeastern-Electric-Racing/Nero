@@ -1,8 +1,10 @@
 from tkinter import Frame
 from modes.page import Page
 from models.model import Model
+from modes.efficiency_mode.home import Home
 
 
-class Speed(Page):
+class Speed(Home):
     def __init__(self, parent: Frame, model: Model) -> None:
-        super().__init__(parent, model, "Speed")
+        super().__init__(parent, model)
+        self.name = "Speed"

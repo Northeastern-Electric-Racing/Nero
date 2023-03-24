@@ -1,5 +1,6 @@
 from tkinter import Frame
 from models.model import Model
+from modes.page import Page
 
 
 class Mode(Frame):
@@ -11,7 +12,7 @@ class Mode(Frame):
 
         # create the container frame that holds all pages
         container = Frame(self)
-        container.pack(side="top", fill="both", expand=True)
+        container.grid(row=0, column=0, sticky="nsew")
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
@@ -19,7 +20,7 @@ class Mode(Frame):
         self.page_index = 0
 
         for page_class in page_classes:
-            page = page_class(parent=container, model=model)
+            page: Page = page_class(parent=container, model=model)
             self.pages.append(page)
             page.grid(row=0, column=0, sticky="nsew")
 
@@ -38,9 +39,6 @@ class Mode(Frame):
     def down_button_pressed(self):
         self.current_page.down_button_pressed()
 
-    def left_button_pressed(self):
-        self.decrement_page()
-
     def right_button_pressed(self):
         self.increment_page()
 
@@ -48,12 +46,6 @@ class Mode(Frame):
         self.page_index += 1
         if (self.page_index >= len(self.pages)):
             self.page_index = 0
-        self.update_page()
-
-    def decrement_page(self):
-        self.page_index -= 1
-        if (self.page_index < 0):
-            self.page_index = len(self.pages) - 1
         self.update_page()
 
     def update(self):
