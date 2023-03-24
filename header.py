@@ -27,7 +27,9 @@ class Header(Frame):
         self.mpu_fault_frame.grid(row=0, column=1, sticky="nsew")
 
         self.mpu_fault_image_label = customtkinter.CTkLabel(
-            self.mpu_fault_frame, image=PhotoImage(file="images/mpu.png"), text="")
+            self.mpu_fault_frame, 
+            # image=PhotoImage(file="images/mpu.png"),
+            text="")
         self.mpu_fault_image_label.grid(row=0, column=0, sticky="nsew")
 
         self.mpu_fault_label = customtkinter.CTkLabel(self.mpu_fault_frame, text="N/A")
