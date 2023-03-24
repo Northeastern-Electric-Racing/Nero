@@ -10,6 +10,9 @@ class Model:
         self.pack_temp_data: List[Optional[int]] = []
         self.page_height = 570
         self.page_width = 1024
+        self.debounce_max_value = 125
+        self.up_debounce_max_value = 125
+        self.down_debounce_max_value = 125
         pass
 
     def check_can(self) -> None:
@@ -74,7 +77,7 @@ class Model:
     
     def get_MPU_fault(self) -> Optional[int]:
         pass
-    
+
     def get_by_id(self, id: int) -> Optional[int]:
         return self.current_data[id]
 

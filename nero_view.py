@@ -40,7 +40,6 @@ class NeroView(customtkinter.CTk):
         self.debounce_down_value = 0
         self.debounce_left_value = 0
         self.debounce_right_value = 0
-        self.debounce_max_value = 125
 
         # configure window
         self.title("NERO")
@@ -127,7 +126,7 @@ class NeroView(customtkinter.CTk):
     def update_right_button_pressed(self):
         value = self.model.get_right_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_right_value == 0:
-            self.debounce_right_value = self.debounce_max_value
+            self.debounce_right_value = self.model.debounce_max_value
             self.current_screen.right_button_pressed()
         elif value is not None and int(value) == 0:
             self.debounce_right_value = 0
@@ -137,7 +136,7 @@ class NeroView(customtkinter.CTk):
     def update_debug_pressed(self):
         value = self.model.get_debug_pressed()
         if value is not None and int(value) == 1 and self.debounce_left_value == 0:
-            self.debounce_left_value = self.debounce_max_value
+            self.debounce_left_value = self.model.debounce_max_value
             self.is_debug = not self.is_debug
         elif value is not None and int(value) == 0:
             self.debounce_left_value = 0
@@ -148,9 +147,11 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_up_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_up_value == 0:
             self.current_screen.up_button_pressed()
-            self.debounce_up_value = self.debounce_max_value
+            self.debounce_up_value = self.model.up_debounce_max_value
+            self.model.up_debounce_max_value -= 5 if self.model.up_debounce_max_value - 5 > 1 else 0
         elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
+            self.model.up_debounce_max_value = 125
         else:
             self.debounce_up_value -= 1
 
@@ -158,9 +159,11 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_down_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_down_value == 0:
             self.current_screen.down_button_pressed()
-            self.debounce_down_value = self.debounce_max_value
+            self.debounce_down_value = self.model.down_debounce_max_value
+            self.model.down_debounce_max_value -= 5 if self.model.down_debounce_max_value - 5 > 1 else 0
         elif value is not None and int(value) == 0:
             self.debounce_down_value = 0
+            self.model.down_debounce_max_value = 125
         else:
             self.debounce_down_value -= 1
 
@@ -168,7 +171,7 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_enter_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_enter_value == 0:
             self.current_screen.enter_button_pressed()
-            self.debounce_enter_value = self.debounce_max_value
+            self.debounce_enter_value = self.model.debounce_max_value
         elif value is not None and int(value) == 0:
             self.debounce_enter_value = 0
         else:
