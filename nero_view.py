@@ -60,17 +60,15 @@ class NeroView(customtkinter.CTk):
         # create the modes that the container will hold
         self.modes: List[Mode] = []
         self.mode_index = 0
-        for mode_class in (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, ReverseMode):
+        for mode_class in (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, ReverseMode, ChargingMode):
             mode = mode_class(parent=container, controller=self, model=self.model)
             self.modes.append(mode)
             mode.grid(row=0, column=0, sticky="nsew")
-        
-        self.charging_screen = ChargingMode(parent=container, controller=self, model=self.model)
-        self.charging_screen.grid(row=0, column=0, sticky="nsew")
 
         self.debug_screen = DebugMode(parent=container, controller=self, model=self.model)
         self.debug_screen.grid(row=0, column=0, sticky="nsew")
 
+        self.update_mode_index()
         self.update_mode()
         self.check_can()
         self.start_time = time.time()
@@ -83,13 +81,16 @@ class NeroView(customtkinter.CTk):
     def update_mode(self):
         if self.is_debug:
             self.current_screen = self.debug_screen
-        elif self.model.get_BMS_state() is not None and self.model.get_BMS_state() >= 2:
-            self.current_screen = self.charging_screen
         else:
             self.current_screen = self.modes[self.mode_index]
         self.current_mode = self.modes[self.mode_index]
         self.current_screen.tkraise()
         self.header.tkraise()
+
+    def update_mode_index(self):
+        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
+        self.update_mode()
+        self.after(1, self.update_mode_index)
 
     def check_can(self):
         self.model.check_can()
@@ -104,7 +105,6 @@ class NeroView(customtkinter.CTk):
         end_time = time.time()
         if end_time - self.start_time < .001:
             pass
-        self.update_mode_index()
         self.update_enter_button_pressed()
         self.update_up_button_pressed()
         self.update_down_button_pressed()
@@ -119,10 +119,6 @@ class NeroView(customtkinter.CTk):
             self.model.update_pack_temp_data()
             self.last_pinned_update_time = time.time()
         self.after(100, self.update_pinned_data)
-
-    def update_mode_index(self):
-        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
-        self.update_mode()
 
     def update_right_button_pressed(self):
         value = self.model.get_right_button_pressed()

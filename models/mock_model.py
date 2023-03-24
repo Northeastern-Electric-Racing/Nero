@@ -88,10 +88,10 @@ class MockModel(Model):
                 self.enter = 1
             case Key.right:
                 self.forward = 1
-                self.mode_index = (self.mode_index + 1) if self.mode_index < 4 else 0
+                self.mode_index = (self.mode_index + 1) if self.mode_index < 5 else 0
             case Key.left:
                 self.backward = 1
-                self.mode_index = (self.mode_index - 1) if self.mode_index > 0 else 4
+                self.mode_index = (self.mode_index - 1) if self.mode_index > 0 else 5
             case Key.up:
                 self.up = 1
             case Key.down:
