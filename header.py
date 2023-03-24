@@ -33,7 +33,7 @@ class Header(Frame):
         self.mpu_fault_image_label.grid(row=0, column=0, sticky="nsew")
 
         self.mpu_fault_label = customtkinter.CTkLabel(self.mpu_fault_frame, text="N/A")
-        self.mpu_fault_label.grid(row=0, column=1, sticky="nsew")
+        self.mpu_fault_label.grid(row=0, column=1, sticky="nsew", padx=5)
 
         #configure current mode label
         self.current_mode_label = customtkinter.CTkLabel(self, text="Current Mode: ")
@@ -47,17 +47,33 @@ class Header(Frame):
             self.BMS_fault_frame, image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="white"), text="")
         self.BMS_fault_image_label.grid(row=0, column=0, sticky="nsew", pady=1)
 
-        self.BMS_fault_label = customtkinter.CTkLabel(self.mpu_fault_frame, text="N/A")
-        self.BMS_fault_label.grid(row=0, column=1, sticky="nsew")
+        self.BMS_fault_label = customtkinter.CTkLabel(self.BMS_fault_frame, text="N/A")
+        self.BMS_fault_label.grid(row=0, column=1, sticky="nsew", padx=5)
 
         #configure precharge label
         self.precharge_label = customtkinter.CTkLabel(self, text="Precharge")
         self.precharge_label.grid(row=0, column=4, sticky="e", padx=5)
 
     def update(self) -> None:
+        self.update_soc()
+        self.update_mpu_label()
+        self.update_bms_label()
+        self.update_precharge_label()
+        self.update_current_mode_label()
+
+    def update_bms_label(self) -> None:
         BMS_faults = hex(self.model.get_BMS_fault()) if self.model.get_BMS_fault() is not None else "N/A"
-        MPU_faults = hex(self.model.get_MPU_fault()) if self.model.get_MPU_fault() is not None else "N/A"
-        self.current_mode_label.configure(text=self.controller.current_mode.name.upper())
         self.BMS_fault_label.configure(text=str(BMS_faults))
+    
+    def update_mpu_label(self) -> None:
+        MPU_faults = hex(self.model.get_MPU_fault()) if self.model.get_MPU_fault() is not None else "N/A"
         self.mpu_fault_label.configure(text=str(MPU_faults))
+
+    def update_precharge_label(self) -> None:
+        pass
+
+    def update_soc(self) -> None:
         self.soc.set(self.model.get_state_of_charge() if self.model.get_state_of_charge() is not None else "N/A")
+
+    def update_current_mode_label(self) -> None:
+        self.current_mode_label.configure(text=self.controller.current_mode.name.upper())
