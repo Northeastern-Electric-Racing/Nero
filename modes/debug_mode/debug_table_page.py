@@ -213,6 +213,8 @@ class DebugTable(Page):
 
     def update_by_id(self, id: int):
         generic_text = self.model.get_by_id(id)
+        if id == 107:
+            generic_text = bin(int(generic_text))
         self.table[id].value_label.configure(text=generic_text)
 
     def update(self):
