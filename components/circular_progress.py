@@ -13,19 +13,30 @@ class CircularProgressbar(Canvas):
         # draw static bar outline
         w2 = width / 2
         self.extent = 0
+
         self.oval_id1 = self.create_oval(self.x0-w2, self.y0-w2,
                                                 self.x1+w2, self.y1+w2)
         self.oval_id2 = self.create_oval(self.x0+w2, self.y0+w2,
-                                                self.x1-w2, self.y1-w2)
+                                         self.x1-w2, self.y1-w2)
         self.arc_id = self.create_arc(self.x0, self.y0, self.x1, self.y1,
                                              start=self.start_ang, extent=self.extent,
-                                             width=self.width, style='arc')
+                                      width=self.width, style='arc')
         self.label_id = self.create_text(self.tx, self.ty, text=self.extent,
-                                                font=self.custom_font)
+                                                font=self.custom_font, fill="black")
 
     def set(self, value):
         self.extent = value if isinstance(value, int) else 0
         self.itemconfigure(self.arc_id, extent=((self.extent / 100) * self.full_extent))
         # Update percentage value displayed.
-        self.percent = value if isinstance(value, int) else "N/A"
-        self.itemconfigure(self.label_id, text=self.percent)
+        percent = value
+        self.itemconfigure(self.label_id, text=percent)
+
+        color = "red"
+        if self.extent > 80:
+            color = "green"
+        elif self.extent > 50:
+            color = "yellow"
+        elif self.extent > 20:
+            color = "orange"
+        self.itemconfigure(self.oval_id2, fill=color)
+         

@@ -13,7 +13,7 @@ class MockModel(Model):
         self.dir = True
         self.pack_temp = 47
         self.motor_temp = 122
-        self.state_of_charge = 88
+        self.state_of_charge = 55
         self.lv_battery = 88
         self.current = 7.6
         self.is_burning = 0
