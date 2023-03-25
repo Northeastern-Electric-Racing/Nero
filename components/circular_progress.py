@@ -26,7 +26,7 @@ class CircularProgressbar(Canvas):
 
     def set(self, value):
         self.extent = value if isinstance(value, int) else 0
-        self.itemconfigure(self.arc_id, extent=((self.extent / 100) * self.full_extent))
+        self.itemconfigure(self.arc_id, extent=(((self.extent / 100) * self.full_extent) - 1))
         # Update percentage value displayed.
         percent = value
         self.itemconfigure(self.label_id, text=percent)
