@@ -51,7 +51,7 @@ class NeroView(customtkinter.CTk):
         self.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)
 
         # The consistent Header across all modes
-        self.header = Header(parent=self, model=self.model, controller=self)
+        self.header = Header(parent=self, model=self.model)
         self.header.grid(row=0, column=0, sticky="nsew")
 
         # create the container frame that holds all modes

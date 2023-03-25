@@ -40,7 +40,7 @@ class RaspberryModel(Model):
 
     def get_mph(self) -> Optional[int]:
         mph = self.current_data[101]
-        return mph 
+        return mph
 
     def get_kph(self) -> Optional[int]:
         kph = self.current_data[101]
@@ -88,7 +88,7 @@ class RaspberryModel(Model):
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
-    
+
     def get_BMS_fault(self) -> Optional[int]:
         return self.current_data[107]
 

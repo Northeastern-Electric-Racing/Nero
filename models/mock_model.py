@@ -149,10 +149,10 @@ class MockModel(Model):
 
     def get_current(self) -> Optional[float]:
         return self.current_data[7]
-    
+
     def get_BMS_fault(self) -> Optional[int]:
         return self.bms_faults
-    
+
     def get_MPU_fault(self) -> Optional[int]:
         return self.mpu_faults
 

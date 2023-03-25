@@ -68,10 +68,10 @@ class Model:
 
     def get_BMS_state(self) -> Optional[int]:
         pass
-    
+
     def get_BMS_fault(self) -> Optional[int]:
         pass
-    
+
     def get_MPU_fault(self) -> Optional[int]:
         pass
 
