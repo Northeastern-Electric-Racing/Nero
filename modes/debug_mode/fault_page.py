@@ -40,7 +40,7 @@ class Fault(Page):
         self.current_info_frame.grid_columnconfigure(0, weight=1)
 
         # The high cell temp and voltage
-        self.high_cell_frame = CellInfoFrame(self.cell_info_frame, "->")
+        self.high_cell_frame = CellInfoFrame(self.cell_info_frame, "⬆")
         self.high_cell_frame.grid(row=0, column=0, sticky="nsew")
 
         # The average cell temp and voltage
@@ -48,7 +48,7 @@ class Fault(Page):
         self.avg_cell_frame.grid(row=1, column=0, sticky="nsew")
 
         # The low cell temp and voltage
-        self.low_cell_frame = CellInfoFrame(self.cell_info_frame, "<-")
+        self.low_cell_frame = CellInfoFrame(self.cell_info_frame, "⬇")
         self.low_cell_frame.grid(row=2, column=0, sticky="nsew")
 
         # The fault name list
