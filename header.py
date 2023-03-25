@@ -1,4 +1,4 @@
-from tkinter import Frame
+from tkinter import Frame, Canvas
 import customtkinter
 from models.model import Model
 from components.circular_progress import CircularProgressbar
@@ -18,7 +18,7 @@ class Header(Frame):
         self.grid_columnconfigure(4, weight=1, minsize=model.page_width / 8)
 
         # configure state of charge circle
-        self.soc_canvas = customtkinter.CTkCanvas(self, height=200, width=200)
+        self.soc_canvas = Canvas(self, height=200, width=200)
         self.soc = CircularProgressbar(self.soc_canvas, 0, 0, 200, 200)
         self.soc_canvas.configure(background="black", highlightthickness=0)
         self.soc_canvas.grid(row=0, column=0, sticky="nsew")
