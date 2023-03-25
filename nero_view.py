@@ -2,13 +2,8 @@ import customtkinter
 from tkinter import Frame
 from typing import List
 from modes.debug_mode.debug_mode import DebugMode
-from modes.efficiency_mode.efficiency_mode import EfficiencyMode
-from modes.off_mode.off_mode import OffMode
-from modes.charging_mode.charging_mode import ChargingMode
-from modes.pit_lane_mode.pit_lane_mode import PitLaneMode
-from modes.reverse_mode.reverse_mode import ReverseMode
-from modes.speed_mode.speed_mode import SpeedMode
 from modes.mode import Mode
+from models.mock_model import MODES
 from models.mock_model import MockModel
 from models.raspberry_model import RaspberryModel
 import platform
@@ -44,6 +39,7 @@ class NeroView(customtkinter.CTk):
 
         # configure window
         self.title("NERO")
+        self.grid_rowconfigure(0, weight=1, minsize=30)
         self.grid_rowconfigure(1, weight=1, minsize=self.model.page_height)
         self.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)
 
@@ -51,22 +47,16 @@ class NeroView(customtkinter.CTk):
         self.header = Header(parent=self)
         self.header.grid(row=0, column=0, sticky="nsew")
 
-        # create the container frame that holds all modes
-        container = Frame(self)
-        container.grid(row=1, column=0, sticky="nsew")
-        container.grid_rowconfigure(0, weight=1, minsize=self.model.page_height)
-        container.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)
-
         # create the modes that the container will hold
         self.modes: List[Mode] = []
         self.mode_index = 0
-        for mode_class in (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, ReverseMode, ChargingMode):
-            mode = mode_class(parent=container, controller=self, model=self.model)
+        for mode_class in MODES:
+            mode = mode_class(parent=self, controller=self, model=self.model)
             self.modes.append(mode)
-            mode.grid(row=0, column=0, sticky="nsew")
+            mode.grid(row=1, column=0, sticky="nsew")
 
-        self.debug_screen = DebugMode(parent=container, controller=self, model=self.model)
-        self.debug_screen.grid(row=0, column=0, sticky="nsew")
+        self.debug_screen = DebugMode(parent=self, controller=self, model=self.model)
+        self.debug_screen.grid(row=1, column=0, sticky="nsew")
 
         self.update_mode_index()
         self.update_mode()

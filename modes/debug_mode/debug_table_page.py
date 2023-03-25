@@ -69,10 +69,10 @@ class DebugTableRow(Frame):
 
     # determines if the row is highlighted
     def is_highlighted(self):
-        return self.id_frame.cget("bg") == "gray" or self.id_frame.cget("bg") == "cyan"
+        return self.id_frame.cget("bg") == "gray" or self.id_frame.cget("bg") == "purple"
 
     def is_pinned(self):
-        return self.id_frame.cget("bg") == "cyan" or self.id_frame.cget("bg") == "blue"
+        return self.id_frame.cget("bg") == "purple" or self.id_frame.cget("bg") == "blue"
 
 
 class DebugTable(Page):
@@ -156,7 +156,7 @@ class DebugTable(Page):
             self.table[self.selected_id].highlight("blue")
         # otherwise if its pinned and not highlighted then highlight it cyan
         elif self.table[self.selected_id].is_pinned():
-            self.table[self.selected_id].highlight("cyan")
+            self.table[self.selected_id].highlight("purple")
         # otherwise if its not pinned and highlighted then unhighlight it
         elif self.table[self.selected_id].is_highlighted():
             self.table[self.selected_id].highlight("black")
@@ -171,7 +171,7 @@ class DebugTable(Page):
             self.model.remove_pinned_data(self.selected_id)
         # otherwise if the selected id is not pinned and there are less than 6 pinned then pin it
         elif len(self.model.pinned_data.keys()) < 6:
-            self.table[self.selected_id].highlight("cyan")
+            self.table[self.selected_id].highlight("purple")
             self.model.add_pinned_data(self.selected_id)
 
     def up_button_pressed(self):
