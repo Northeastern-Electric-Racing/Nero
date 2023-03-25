@@ -6,6 +6,7 @@ import can
 import os
 from modes.debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
+from modes.debug_mode.debug_utils import FaultInstance
 
 
 class RaspberryModel(Model):
@@ -88,8 +89,20 @@ class RaspberryModel(Model):
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
+    
+    def get_pack_current(self) -> Optional[int]:
+        return self.current_data[2]
+    
+    def get_dcl(self) -> Optional[int]:
+        return self.current_data[89]
+    
+    def get_ccl(self) -> Optional[int]:
+        return self.current_data[90]
 
     def get_BMS_fault(self) -> Optional[int]:
+        fault_status = self.current_data[107]
+        if fault_status is not None and fault_status > 0:
+            self.fault_instances.append(FaultInstance(fault_status, self.get_max_cell_temp(), self.get_max_cell_voltage(), self.get_ave_cell_temp(), self.get_ave_cell_voltage(), self.get_min_cell_temp(), self.get_min_cell_voltage(), self.get_pack_current(), self.get_dcl(), self.get_ccl()))
         return self.current_data[107]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
