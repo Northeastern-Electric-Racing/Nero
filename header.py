@@ -18,10 +18,8 @@ class Header(Frame):
         self.grid_columnconfigure(4, weight=1, minsize=model.page_width / 8)
 
         # configure state of charge circle
-        self.soc_canvas = Canvas(self, height=200, width=200)
-        self.soc = CircularProgressbar(self.soc_canvas, 0, 0, 200, 200)
-        self.soc_canvas.configure(background="black", highlightthickness=0)
-        self.soc_canvas.grid(row=0, column=0, sticky="nsew")
+        self.soc = CircularProgressbar(self, 5, 0, 35, 30)
+        self.soc.grid(row=0, column=0, sticky="nsew")
 
         # configure mpu fault frame
         self.mpu_fault_frame = Frame(self, bg="black")
