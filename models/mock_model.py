@@ -1,9 +1,15 @@
 from typing import Optional, List
 import random
 from pynput.keyboard import Listener, Key
-from modes.debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
-
+from modes.debug_mode.debug_table_page import DebugTableRowValue
+from modes.efficiency_mode.efficiency_mode import EfficiencyMode
+from modes.off_mode.off_mode import OffMode
+from modes.charging_mode.charging_mode import ChargingMode
+from modes.pit_lane_mode.pit_lane_mode import PitLaneMode
+from modes.reverse_mode.reverse_mode import ReverseMode
+from modes.speed_mode.speed_mode import SpeedMode
+MODES = (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, ReverseMode, ChargingMode)
 
 class MockModel(Model):
     def __init__(self) -> None:
@@ -90,10 +96,10 @@ class MockModel(Model):
                 self.enter = 1
             case Key.right:
                 self.forward = 1
-                self.mode_index = (self.mode_index + 1) if self.mode_index < 5 else 0
+                self.mode_index = (self.mode_index + 1) if self.mode_index < len(MODES) - 1 else 0
             case Key.left:
                 self.backward = 1
-                self.mode_index = (self.mode_index - 1) if self.mode_index > 0 else 5
+                self.mode_index = (self.mode_index - 1) if self.mode_index > 0 else len(MODES) - 1
             case Key.up:
                 self.up = 1
             case Key.down:

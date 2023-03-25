@@ -1,33 +1,27 @@
 from tkinter import Frame
-from models.model import Model
 from modes.page import Page
-
+from typing import List
 
 class Mode(Frame):
-    def __init__(self, parent: Frame, controller: Frame, model: Model, name: str, page_classes) -> None:
+    def __init__(self, parent: Frame, controller: Frame, model, name: str, page_classes: List[Page]) -> None:
         super().__init__(parent)
         self.controller = controller
         self.name = name
         self.model = model
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
-        # create the container frame that holds all pages
-        container = Frame(self)
-        container.grid(row=0, column=0, sticky="nsew")
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
-
-        self.pages = []
         self.page_index = 0
-
+        self.pages: List[Page] = []
         for page_class in page_classes:
-            page: Page = page_class(parent=container, model=model)
+            page: Page = page_class(parent=self, model=model)
             self.pages.append(page)
             page.grid(row=0, column=0, sticky="nsew")
 
         self.update_page()
 
     def update_page(self):
-        self.current_page = self.pages[self.page_index]
+        self.current_page: Page = self.pages[self.page_index]
         self.current_page.tkraise()
 
     def enter_button_pressed(self):
