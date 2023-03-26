@@ -60,7 +60,7 @@ class Header(Frame):
         self.pack_voltage_label.grid(row=0, column=2, sticky="nsew")
 
         # configure precharge label
-        self.precharge_label = customtkinter.CTkLabel(self, text="Precharge")
+        self.precharge_label = customtkinter.CTkLabel(self, text="Precharge", font=customtkinter.CTkFont(size=30))
         self.precharge_label.grid(row=0, column=4, sticky="e", padx=5)
 
     def update(self) -> None:
@@ -76,15 +76,14 @@ class Header(Frame):
     def update_bms_image(self) -> None:
         if self.model.get_BMS_fault() is not None and self.model.get_BMS_fault() > 0:
             self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="red"))
-        else :
+        else:
             self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="green"))
 
     def update_mpu_image(self) -> None:
         if self.model.get_MPU_fault() is not None and self.model.get_MPU_fault() > 0:
             self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="red"))
-        else :
+        else:
             self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="green"))
-        pass
 
     def update_precharge_label(self) -> None:
         pass
@@ -98,7 +97,7 @@ class Header(Frame):
         motor_temp_value = self.model.get_motor_temp() if self.model.get_motor_temp() is not None else 0
         color = "purple" if motor_temp_value < 20 else "blue" if motor_temp_value < 40 else "green" if motor_temp_value < 60 else "yellow" if motor_temp_value < 70 else "orange" if motor_temp_value < 85 else "red"
         self.motor_temp_label.configure(image=BitmapImage(file="images/motorTemp.xbm", foreground=color))
-    
+
     def update_pack_voltage(self) -> None:
         pack_voltage_value = self.model.get_pack_voltage() if self.model.get_pack_voltage() is not None else 0
         color = "red" if pack_voltage_value < 200 else "orange" if pack_voltage_value < 240 else "yellow" if pack_voltage_value < 280 else "green"
