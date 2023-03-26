@@ -114,7 +114,7 @@ class DebugPlot(Page):
                 text=self.data[id].data[0], text_color=self.colors[i])
 
             # plotting the graph
-            transformed_data = self.transform_data_to_time(self.data[id].data)[0:600]
+            transformed_data = self.transform_data_to_time(self.data[id].data)
             print(len(transformed_data))
             y = np.array(transformed_data)
             self.ax.plot(y, color=self.colors[i])
@@ -133,5 +133,7 @@ class DebugPlot(Page):
         for i in range(len(data)):
             if i % (self.current_time / 600 * 20) == 0:
                 transform.append(data[i])
+            if len(transform) == 600:
+                break
         print(time.time() - startTime)
         return transform
