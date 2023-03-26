@@ -118,7 +118,7 @@ class Model:
     def update_pinned_data(self) -> None:
         # update the given pinned data, if we already have 600 values, pop the last one and then insert the newest value at zero
         for id in self.pinned_data:
-            if len(self.pinned_data[id].data) >= 3000:
+            if len(self.pinned_data[id].data) >= 12000:
                 self.pinned_data[id].data.pop()
             self.pinned_data[id].data.insert(0, round(self.current_data[id], 1)
                                       if self.current_data[id] is not None else self.current_data[id])

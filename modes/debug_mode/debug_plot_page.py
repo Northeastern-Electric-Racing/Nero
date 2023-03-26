@@ -7,6 +7,7 @@ from models.model import Model
 from modes.debug_mode.debug_utils import DebugPlotValue
 from modes.page import Page
 import numpy as np
+import time
 
 
 class DebugPlotKey(Frame):
@@ -113,7 +114,9 @@ class DebugPlot(Page):
                 text=self.data[id].data[0], text_color=self.colors[i])
 
             # plotting the graph
-            y = np.array(self.transform_data_to_time(self.data[id].data)[0:600])
+            transformed_data = self.transform_data_to_time(self.data[id].data)[0:600]
+            print(len(transformed_data))
+            y = np.array(transformed_data)
             self.ax.plot(y, color=self.colors[i])
             self.ax.xaxis.set_major_formatter(lambda x, pos: str(int(x / 600 * self.current_time)) + "s")
             i += 1
@@ -125,8 +128,10 @@ class DebugPlot(Page):
         self.canvas.draw()
 
     def transform_data_to_time(self, data: List[float]) -> List[float]:
+        startTime = time.time()
         transform : List[float] = []
         for i in range(len(data)):
             if i % (self.current_time / 600 * 20) == 0:
                 transform.append(data[i])
+        print(time.time() - startTime)
         return transform
