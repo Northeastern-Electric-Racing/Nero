@@ -3,7 +3,7 @@ from tkinter import Frame
 from typing import List
 from modes.debug_mode.debug_mode import DebugMode
 from modes.mode import Mode
-from models.mock_model import MODES
+from constants import MODES
 from models.mock_model import MockModel
 from models.raspberry_model import RaspberryModel
 import platform
@@ -69,6 +69,7 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
+        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
         if self.is_debug:
             self.current_screen = self.debug_screen
         else:
@@ -76,11 +77,7 @@ class NeroView(customtkinter.CTk):
         self.current_mode = self.modes[self.mode_index]
         self.current_screen.tkraise()
         self.header.tkraise()
-
-    def update_mode_index(self):
-        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
-        self.update_mode()
-        self.after(1, self.update_mode_index)
+        self.after(1, self.update_mode)
 
     def check_can(self):
         self.model.check_can()
