@@ -42,6 +42,7 @@ class NeroView(customtkinter.CTk):
 
         # configure window
         self.title("NERO")
+        self.geometry(f"{self.model.page_width}x{self.model.page_height + 60}")
         self.grid_rowconfigure(0, weight=1, minsize=60)
         self.grid_rowconfigure(1, weight=1, minsize=self.model.page_height)
         self.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)

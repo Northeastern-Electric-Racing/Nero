@@ -36,7 +36,7 @@ class Header(Frame):
         self.BMS_fault_image_label.grid(row=0, column=1, sticky="nsew", pady=1)
 
         # configure current mode label
-        self.current_mode_label = customtkinter.CTkLabel(self, text="Current Mode: ", font=customtkinter.CTkFont(size=30))
+        self.current_mode_label = customtkinter.CTkLabel(self, text="Current Mode: ", font=customtkinter.CTkFont(size=28))
         self.current_mode_label.grid(row=0, column=2, sticky="nsew", padx=5)
 
         # configure summary frame
@@ -60,7 +60,7 @@ class Header(Frame):
         self.pack_voltage_label.grid(row=0, column=2, sticky="nsew")
 
         # configure precharge label
-        self.precharge_label = customtkinter.CTkLabel(self, text="Precharge", font=customtkinter.CTkFont(size=30))
+        self.precharge_label = customtkinter.CTkLabel(self, text="Precharge", font=customtkinter.CTkFont(size=25))
         self.precharge_label.grid(row=0, column=4, sticky="e", padx=5)
 
     def update(self) -> None:
