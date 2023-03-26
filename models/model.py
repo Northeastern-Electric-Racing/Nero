@@ -5,7 +5,13 @@ from ner_processing.master_mapping import DATA_IDS
 
 class Model:
     def __init__(self) -> None:
-        self.pinned_data: Dict[int, DebugPlotValue] = {}
+        self.pinned_data_600: Dict[int, DebugPlotValue] = {}
+        self.pinned_data_300: Dict[int, DebugPlotValue] = {}
+        self.pinned_data_120: Dict[int, DebugPlotValue] = {}
+        self.pinned_data_60: Dict[int, DebugPlotValue] = {}
+        self.pinned_data_30: Dict[int, DebugPlotValue] = {}
+        self.pinned_data = [self.pinned_data_30, self.pinned_data_60,
+                            self.pinned_data_120, self.pinned_data_300, self.pinned_data_600]
         self.current_data: List[Optional[int]] = []
         self.pack_temp_data: List[Optional[int]] = []
         pass
@@ -103,15 +109,20 @@ class Model:
         self.pack_temp_data.insert(0, self.get_pack_temp())
 
     def add_pinned_data(self, id: int) -> None:
-        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'],
-                                              data=[round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]], unit=DATA_IDS[id]['units'])
+        data = [round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]]
+        name = DATA_IDS[id]['name']
+        unit = DATA_IDS[id]['units']
+        for pinned_data in self.pinned_data:
+            pinned_data[id] = DebugPlotValue(name=name, data=data, unit=unit)
 
     def remove_pinned_data(self, id: int) -> None:
-        del self.pinned_data[id]
+        for pinned_data in self.pinned_data:
+            if id in pinned_data:
+                del pinned_data[id]
 
-    def update_pinned_data(self) -> None:
-        for id in self.pinned_data:
-            if len(self.pinned_data[id].data) >= 600:
-                self.pinned_data[id].data.pop()
-            self.pinned_data[id].data.insert(0, round(self.current_data[id], 1)
-                                             if self.current_data[id] is not None else self.current_data[id])
+    def update_pinned_data(self, data_dict: Dict[int, DebugPlotValue]) -> None:
+        for id in data_dict:
+            if len(data_dict[id].data) >= 600:
+                data_dict[id].data.pop()
+            data_dict[id].data.insert(0, round(self.current_data[id], 1)
+                                        if self.current_data[id] is not None else self.current_data[id])

@@ -6,6 +6,7 @@ from typing import Dict
 from models.model import Model
 from modes.debug_mode.debug_utils import DebugPlotValue
 from modes.page import Page
+import numpy as np
 
 
 class DebugPlotKey(Frame):
@@ -56,10 +57,10 @@ class DebugPlotKey(Frame):
 class DebugPlot(Page):
     def __init__(self, parent: Frame, model: Model):
         super().__init__(parent, model, "Debug Plot")
-        self.data: Dict[int, DebugPlotValue] = model.pinned_data
         self.time_presets = [30, 60, 120, 300, 600]
         self.current_time_index = 0
         self.current_time = self.time_presets[self.current_time_index]
+        self.data: Dict[int, DebugPlotValue] = self.model.pinned_data[self.current_time_index]
         self.colors = {0: "red", 1: "green", 2: "blue", 3: "yellow", 4: "orange", 5: "purple"}
 
         self.grid_columnconfigure(1, weight=1)
@@ -83,7 +84,7 @@ class DebugPlot(Page):
         figure_frame.grid(row=0, column=1, sticky="s")
 
         # the figure that will contain the plot
-        self.fig, self.ax = plt.subplots(facecolor="black", figsize=(7.24, 5.70), dpi=100)
+        self.fig, self.ax = plt.subplots(facecolor="black", figsize=(7.24/2, 5.70/2), dpi=100)
         self.ax.set_facecolor('black')
         self.fig.suptitle('Debug Plot', color='white')
         self.ax.set_xlabel('Time [s]', color='white')
@@ -100,6 +101,7 @@ class DebugPlot(Page):
         self.current_time_index = (self.current_time_index +
                                    1) if self.current_time_index < len(self.time_presets) - 1 else 0
         self.current_time = self.time_presets[self.current_time_index]
+        self.data = self.model.pinned_data[self.current_time_index]
 
     def update(self):
         self.ax.clear()
@@ -113,7 +115,8 @@ class DebugPlot(Page):
 
             # plotting the graph
             y = self.data[id].data
-            self.ax.plot(y[0: self.current_time] if len(y) > self.current_time else y, color=self.colors[i])
+            self.ax.plot(y, color=self.colors[i])
+            self.ax.xaxis.set_major_formatter(lambda x, pos: str(int(x / 600 * self.current_time)) + "s")
             i += 1
         self.ax.invert_xaxis()
         for j in range(i, 5):
