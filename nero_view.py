@@ -123,10 +123,6 @@ class NeroView(customtkinter.CTk):
             self.model.update_pinned_data(self.model.pinned_data_30)
             self.last_pinned_update_time_30 = time.time()
 
-        for pinned in self.model.pinned_data:
-            print("new")
-            for data in pinned.values():
-                print(len(data.data))
         self.after(10, self.update_pinned_data)
 
     def update_mode_index(self):

@@ -114,7 +114,7 @@ class DebugPlot(Page):
                 text=self.data[id].data[0], text_color=self.colors[i])
 
             # plotting the graph
-            y = self.data[id].data
+            y = np.array(self.data[id].data)
             self.ax.plot(y, color=self.colors[i])
             self.ax.xaxis.set_major_formatter(lambda x, pos: str(int(x / 600 * self.current_time)) + "s")
             i += 1

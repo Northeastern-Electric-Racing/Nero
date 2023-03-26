@@ -109,11 +109,11 @@ class Model:
         self.pack_temp_data.insert(0, self.get_pack_temp())
 
     def add_pinned_data(self, id: int) -> None:
-        data = [round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]]
+        data = round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]
         name = DATA_IDS[id]['name']
         unit = DATA_IDS[id]['units']
         for pinned_data in self.pinned_data:
-            pinned_data[id] = DebugPlotValue(name=name, data=data, unit=unit)
+            pinned_data[id] = DebugPlotValue(name=name, data=[data], unit=unit)
 
     def remove_pinned_data(self, id: int) -> None:
         for pinned_data in self.pinned_data:
