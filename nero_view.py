@@ -143,6 +143,7 @@ class NeroView(customtkinter.CTk):
         if value is not None and int(value) == 1 and self.debounce_up_value == 0:
             self.current_screen.up_button_pressed()
             self.debounce_up_value = self.up_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
             self.up_debounce_max_value -= 5 if self.up_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
@@ -155,6 +156,7 @@ class NeroView(customtkinter.CTk):
         if value is not None and int(value) == 1 and self.debounce_down_value == 0:
             self.current_screen.down_button_pressed()
             self.debounce_down_value = self.down_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
             self.down_debounce_max_value -= 5 if self.down_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_down_value = 0
