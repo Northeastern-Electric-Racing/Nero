@@ -5,6 +5,7 @@ from ner_processing.master_mapping import DATA_IDS
 
 class Model:
     def __init__(self) -> None:
+        # Individual arrays for each time interval (30s, 60s, 120s, 300s, 600s)
         self.pinned_data_600: Dict[int, DebugPlotValue] = {}
         self.pinned_data_300: Dict[int, DebugPlotValue] = {}
         self.pinned_data_120: Dict[int, DebugPlotValue] = {}
@@ -12,6 +13,7 @@ class Model:
         self.pinned_data_30: Dict[int, DebugPlotValue] = {}
         self.pinned_data = [self.pinned_data_30, self.pinned_data_60,
                             self.pinned_data_120, self.pinned_data_300, self.pinned_data_600]
+
         self.current_data: List[Optional[int]] = []
         self.pack_temp_data: List[Optional[int]] = []
         pass
@@ -104,11 +106,13 @@ class Model:
         pass
 
     def update_pack_temp_data(self) -> None:
+        # if we already have 600 values, pop the last one and then insert the newest value at zero
         if len(self.pack_temp_data) >= 600:
             self.pack_temp_data.pop()
         self.pack_temp_data.insert(0, self.get_pack_temp())
 
     def add_pinned_data(self, id: int) -> None:
+        # add the given id to all pinned data
         data = round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]
         name = DATA_IDS[id]['name']
         unit = DATA_IDS[id]['units']
@@ -116,13 +120,15 @@ class Model:
             pinned_data[id] = DebugPlotValue(name=name, data=[data], unit=unit)
 
     def remove_pinned_data(self, id: int) -> None:
+        # remove the given id from all pinned data
         for pinned_data in self.pinned_data:
             if id in pinned_data:
                 del pinned_data[id]
 
     def update_pinned_data(self, data_dict: Dict[int, DebugPlotValue]) -> None:
+        # update the given pinned data, if we already have 600 values, pop the last one and then insert the newest value at zero
         for id in data_dict:
             if len(data_dict[id].data) >= 600:
                 data_dict[id].data.pop()
             data_dict[id].data.insert(0, round(self.current_data[id], 1)
-                                        if self.current_data[id] is not None else self.current_data[id])
+                                      if self.current_data[id] is not None else self.current_data[id])
