@@ -10,7 +10,7 @@ class Header(Frame):
         super().__init__(parent, bg="black")
         self.model = model
         self.parent = parent
-        self.grid_rowconfigure(0, weight=1, minsize=30)
+        self.grid_rowconfigure(0, weight=1, minsize=60)
         self.grid_columnconfigure(0, weight=1, minsize=model.page_width / 8)
         self.grid_columnconfigure(1, weight=1, minsize=model.page_width / 4)
         self.grid_columnconfigure(2, weight=1, minsize=model.page_width / 4)
@@ -18,36 +18,46 @@ class Header(Frame):
         self.grid_columnconfigure(4, weight=1, minsize=model.page_width / 8)
 
         # configure state of charge circle
-        self.soc = CircularProgressbar(self, 5, 0, 35, 30)
+        self.soc = CircularProgressbar(self, 5, 0, 65, 60)
         self.soc.grid(row=0, column=0, sticky="nsew")
 
-        # configure mpu fault frame
-        self.mpu_fault_frame = Frame(self, bg="black")
-        self.mpu_fault_frame.grid(row=0, column=1, sticky="nsew")
+        # configure fault frame
+        self.fault_frame = Frame(self, bg="black")
+        self.fault_frame.grid_rowconfigure(0, weight=1)
+        self.fault_frame.grid_columnconfigure(0, weight=1)
+        self.fault_frame.grid_columnconfigure(1, weight=1)
+        self.fault_frame.grid(row=0, column=1, sticky="nsew")
 
-        self.mpu_fault_image_label = customtkinter.CTkLabel(
-            self.mpu_fault_frame,
-            # image=PhotoImage(file="images/mpu.png"),
-            text="")
-        self.mpu_fault_image_label.grid(row=0, column=0, sticky="nsew")
-
-        self.mpu_fault_label = customtkinter.CTkLabel(self.mpu_fault_frame, text="N/A")
-        self.mpu_fault_label.grid(row=0, column=1, sticky="nsew", padx=5)
-
-        # configure current mode label
-        self.current_mode_label = customtkinter.CTkLabel(self, text="Current Mode: ")
-        self.current_mode_label.grid(row=0, column=2, sticky="nsew", padx=5)
-
-        # configure BMS fault frame
-        self.BMS_fault_frame = Frame(self, bg="black")
-        self.BMS_fault_frame.grid(row=0, column=3, sticky="nsew")
+        self.mpu_fault_image_label = customtkinter.CTkLabel(self.fault_frame, text="")
+        self.mpu_fault_image_label.grid(row=0, column=0, sticky="nsew", pady=1)
 
         self.BMS_fault_image_label = customtkinter.CTkLabel(
-            self.BMS_fault_frame, image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="white"), text="")
-        self.BMS_fault_image_label.grid(row=0, column=0, sticky="nsew", pady=1)
+            self.fault_frame, text="")
+        self.BMS_fault_image_label.grid(row=0, column=1, sticky="nsew", pady=1)
 
-        self.BMS_fault_label = customtkinter.CTkLabel(self.BMS_fault_frame, text="N/A")
-        self.BMS_fault_label.grid(row=0, column=1, sticky="nsew", padx=5)
+        # configure current mode label
+        self.current_mode_label = customtkinter.CTkLabel(self, text="Current Mode: ", font=customtkinter.CTkFont(size=30))
+        self.current_mode_label.grid(row=0, column=2, sticky="nsew", padx=5)
+
+        # configure summary frame
+        self.summary_frame = Frame(self, bg="black")
+        self.summary_frame.grid_rowconfigure(0, weight=1)
+        self.summary_frame.grid_columnconfigure(0, weight=1)
+        self.summary_frame.grid_columnconfigure(1, weight=1)
+        self.summary_frame.grid_columnconfigure(2, weight=1)
+        self.summary_frame.grid(row=0, column=3, sticky="nsew")
+
+        self.pack_temp_image = BitmapImage(file="images/packTemp.xbm", foreground="white")
+        self.pack_temp_label = customtkinter.CTkLabel(self.summary_frame, image=self.pack_temp_image, text="")
+        self.pack_temp_label.grid(row=0, column=0, sticky="nsew")
+
+        self.motor_temp_image = BitmapImage(file="images/motorTemp.xbm", foreground="white")
+        self.motor_temp_label = customtkinter.CTkLabel(self.summary_frame, image=self.motor_temp_image, text="")
+        self.motor_temp_label.grid(row=0, column=1, sticky="nsew")
+
+        self.pack_voltage_image = BitmapImage(file="images/packVoltage.xbm", foreground="white")
+        self.pack_voltage_label = customtkinter.CTkLabel(self.summary_frame, image=self.pack_voltage_image, text="")
+        self.pack_voltage_label.grid(row=0, column=2, sticky="nsew")
 
         # configure precharge label
         self.precharge_label = customtkinter.CTkLabel(self, text="Precharge")
@@ -55,21 +65,44 @@ class Header(Frame):
 
     def update(self) -> None:
         self.update_soc()
-        self.update_mpu_label()
-        self.update_bms_label()
+        self.update_mpu_image()
+        self.update_bms_image()
         self.update_precharge_label()
         self.update_current_mode_label()
+        self.update_pack_temp()
+        self.update_motor_temp()
+        self.update_pack_voltage()
 
-    def update_bms_label(self) -> None:
-        BMS_faults = hex(self.model.get_BMS_fault()) if self.model.get_BMS_fault() is not None else "N/A"
-        self.BMS_fault_label.configure(text=str(BMS_faults))
+    def update_bms_image(self) -> None:
+        if self.model.get_BMS_fault() is not None and self.model.get_BMS_fault() > 0:
+            self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="red"))
+        else :
+            self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="green"))
 
-    def update_mpu_label(self) -> None:
-        MPU_faults = hex(self.model.get_MPU_fault()) if self.model.get_MPU_fault() is not None else "N/A"
-        self.mpu_fault_label.configure(text=str(MPU_faults))
+    def update_mpu_image(self) -> None:
+        if self.model.get_MPU_fault() is not None and self.model.get_MPU_fault() > 0:
+            self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="red"))
+        else :
+            self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="green"))
+        pass
 
     def update_precharge_label(self) -> None:
         pass
+
+    def update_pack_temp(self) -> None:
+        pack_temp_value = self.model.get_pack_temp() if self.model.get_pack_temp() is not None else 0
+        color = "purple" if pack_temp_value < 0 else "blue" if pack_temp_value < 20 else "green" if pack_temp_value < 30 else "yellow" if pack_temp_value < 40 else "orange" if pack_temp_value < 50 else "red"
+        self.pack_temp_label.configure(image=BitmapImage(file="images/packTemp.xbm", foreground=color))
+
+    def update_motor_temp(self) -> None:
+        motor_temp_value = self.model.get_motor_temp() if self.model.get_motor_temp() is not None else 0
+        color = "purple" if motor_temp_value < 20 else "blue" if motor_temp_value < 40 else "green" if motor_temp_value < 60 else "yellow" if motor_temp_value < 70 else "orange" if motor_temp_value < 85 else "red"
+        self.motor_temp_label.configure(image=BitmapImage(file="images/motorTemp.xbm", foreground=color))
+    
+    def update_pack_voltage(self) -> None:
+        pack_voltage_value = self.model.get_pack_voltage() if self.model.get_pack_voltage() is not None else 0
+        color = "red" if pack_voltage_value < 200 else "orange" if pack_voltage_value < 240 else "yellow" if pack_voltage_value < 280 else "green"
+        self.pack_voltage_label.configure(image=BitmapImage(file="images/packVoltage.xbm", foreground=color))
 
     def update_soc(self) -> None:
         self.soc.set(self.model.get_state_of_charge() if self.model.get_state_of_charge() is not None else "N/A")
