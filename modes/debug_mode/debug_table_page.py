@@ -177,7 +177,7 @@ class DebugTable(Page):
             self.table[self.selected_id].highlight("gray")
             self.model.remove_pinned_data(self.selected_id)
         # otherwise if the selected id is not pinned and there are less than 6 pinned then pin it
-        elif len(self.model.pinned_data[0]) < 6:
+        elif len(self.model.pinned_data) < 6:
             self.table[self.selected_id].highlight("cyan")
             self.model.add_pinned_data(self.selected_id)
 

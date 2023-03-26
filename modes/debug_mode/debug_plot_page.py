@@ -2,7 +2,7 @@ from tkinter import Frame
 import customtkinter
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from typing import Dict
+from typing import Dict, List
 from models.model import Model
 from modes.debug_mode.debug_utils import DebugPlotValue
 from modes.page import Page
@@ -60,7 +60,7 @@ class DebugPlot(Page):
         self.time_presets = [30, 60, 120, 300, 600]
         self.current_time_index = 0
         self.current_time = self.time_presets[self.current_time_index]
-        self.data: Dict[int, DebugPlotValue] = self.model.pinned_data[self.current_time_index]
+        self.data: Dict[int, DebugPlotValue] = self.model.pinned_data
         self.colors = {0: "red", 1: "green", 2: "blue", 3: "yellow", 4: "orange", 5: "purple"}
 
         self.grid_columnconfigure(1, weight=1)
@@ -101,7 +101,6 @@ class DebugPlot(Page):
         self.current_time_index = (self.current_time_index +
                                    1) if self.current_time_index < len(self.time_presets) - 1 else 0
         self.current_time = self.time_presets[self.current_time_index]
-        self.data = self.model.pinned_data[self.current_time_index]
 
     def update(self):
         self.ax.clear()
@@ -114,7 +113,7 @@ class DebugPlot(Page):
                 text=self.data[id].data[0], text_color=self.colors[i])
 
             # plotting the graph
-            y = np.array(self.data[id].data)
+            y = np.array(self.transform_data_to_time(self.data[id].data)[0:600])
             self.ax.plot(y, color=self.colors[i])
             self.ax.xaxis.set_major_formatter(lambda x, pos: str(int(x / 600 * self.current_time)) + "s")
             i += 1
@@ -124,3 +123,10 @@ class DebugPlot(Page):
             self.key_frames[j].unit_label.configure(text="")
             self.key_frames[j].current_value_label.configure(text="")
         self.canvas.draw()
+
+    def transform_data_to_time(self, data: List[float]) -> List[float]:
+        transform : List[float] = []
+        for i in range(len(data)):
+            if i % (self.current_time / 600 * 20) == 0:
+                transform.append(data[i])
+        return transform

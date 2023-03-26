@@ -64,11 +64,8 @@ class NeroView(customtkinter.CTk):
         self.check_can()
         self.update_buttons()
         self.update_current_page()
-        self.last_pinned_update_time_600 = time.time()
-        self.last_pinned_update_time_300 = time.time()
-        self.last_pinned_update_time_120 = time.time()
-        self.last_pinned_update_time_60 = time.time()
-        self.last_pinned_update_time_30 = time.time()
+        self.last_pack_temp_update_time = time.time()
+        self.last_pinned_update_time = time.time()
         self.update_pinned_data()
         self.update_header()
 
@@ -106,23 +103,12 @@ class NeroView(customtkinter.CTk):
         self.after(1, self.update_buttons)
 
     def update_pinned_data(self):
-        if time.time() - self.last_pinned_update_time_600 >= 1:
+        if time.time() - self.last_pack_temp_update_time >= 1:
             self.model.update_pack_temp_data()
-            self.model.update_pinned_data(self.model.pinned_data_600)
-            self.last_pinned_update_time_600 = time.time()
-        if time.time() - self.last_pinned_update_time_300 >= 0.5:
-            self.model.update_pinned_data(self.model.pinned_data_300)
-            self.last_pinned_update_time_300 = time.time()
-        if time.time() - self.last_pinned_update_time_120 >= 0.2:
-            self.model.update_pinned_data(self.model.pinned_data_120)
-            self.last_pinned_update_time_120 = time.time()
-        if time.time() - self.last_pinned_update_time_60 >= 0.1:
-            self.model.update_pinned_data(self.model.pinned_data_60)
-            self.last_pinned_update_time_60 = time.time()
-        if time.time() - self.last_pinned_update_time_30 >= 0.05:
-            self.model.update_pinned_data(self.model.pinned_data_30)
-            self.last_pinned_update_time_30 = time.time()
-
+            self.last_pack_temp_update_time = time.time()
+        if time.time() - self.last_pinned_update_time >= .05:
+            self.model.update_pinned_data()
+            self.last_pinned_update_time = time.time()
         self.after(10, self.update_pinned_data)
 
     def update_mode_index(self):
