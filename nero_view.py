@@ -62,7 +62,6 @@ class NeroView(customtkinter.CTk):
         self.debug_screen = DebugMode(parent=self, controller=self, model=self.model)
         self.debug_screen.grid(row=1, column=0, sticky="nsew")
 
-        self.update_mode_index()
         self.update_mode()
         self.check_can()
         self.start_time = time.time()
