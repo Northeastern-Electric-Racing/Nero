@@ -35,16 +35,20 @@ class NeroView(customtkinter.CTk):
         self.debounce_down_value = 0
         self.debounce_left_value = 0
         self.debounce_right_value = 0
+
         self.debounce_max_value = 125
+        self.up_debounce_max_value = 125
+        self.down_debounce_max_value = 125
 
         # configure window
         self.title("NERO")
-        self.grid_rowconfigure(0, weight=1, minsize=30)
+        self.geometry(f"{self.model.page_width}x{self.model.page_height + 60}")
+        self.grid_rowconfigure(0, weight=1, minsize=60)
         self.grid_rowconfigure(1, weight=1, minsize=self.model.page_height)
         self.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)
 
         # The consistent Header across all modes
-        self.header = Header(parent=self)
+        self.header = Header(parent=self, model=self.model)
         self.header.grid(row=0, column=0, sticky="nsew")
 
         # create the modes that the container will hold
@@ -58,7 +62,6 @@ class NeroView(customtkinter.CTk):
         self.debug_screen = DebugMode(parent=self, controller=self, model=self.model)
         self.debug_screen.grid(row=1, column=0, sticky="nsew")
 
-        self.update_mode_index()
         self.update_mode()
         self.check_can()
         self.start_time = time.time()
@@ -86,6 +89,10 @@ class NeroView(customtkinter.CTk):
     def update_current_page(self):
         self.current_screen.current_page.update()
         self.after(100, self.update_current_page)
+
+    def update_header(self):
+        self.header.update()
+        self.after(100, self.update_header)
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
@@ -131,9 +138,12 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_up_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_up_value == 0:
             self.current_screen.up_button_pressed()
-            self.debounce_up_value = self.debounce_max_value
+            self.debounce_up_value = self.up_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
+            self.up_debounce_max_value -= 5 if self.up_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
+            self.up_debounce_max_value = 125
         else:
             self.debounce_up_value -= 1
 
@@ -141,9 +151,12 @@ class NeroView(customtkinter.CTk):
         value = self.model.get_down_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_down_value == 0:
             self.current_screen.down_button_pressed()
-            self.debounce_down_value = self.debounce_max_value
+            self.debounce_down_value = self.down_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
+            self.down_debounce_max_value -= 5 if self.down_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_down_value = 0
+            self.down_debounce_max_value = 125
         else:
             self.debounce_down_value -= 1
 
@@ -156,10 +169,6 @@ class NeroView(customtkinter.CTk):
             self.debounce_enter_value = 0
         else:
             self.debounce_enter_value -= 1
-
-    def update_header(self):
-        self.header.current_mode_label.configure(text=self.current_mode.name)
-        self.after(100, self.update_header)
 
     def run(self):
         if (self.isLinux):

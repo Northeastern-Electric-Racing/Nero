@@ -13,12 +13,14 @@ class MockModel(Model):
         self.dir = True
         self.pack_temp = 47
         self.motor_temp = 122
-        self.state_of_charge = 88
+        self.state_of_charge = 55
         self.lv_battery = 88
         self.current = 7.6
         self.is_burning = 0
         self.is_charging = 0
         self.is_debug = 0
+        self.bms_faults = 0
+        self.mpu_faults = 0
         self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
                              self.motor_temp, self.state_of_charge, self.lv_battery, self.current, self.is_burning, self.is_charging]
         self.table = [DebugTableRowValue(0, "speed", self.current_data[0], "mph"), DebugTableRowValue(1, "status", self.current_data[1], "bool"), DebugTableRowValue(2, "dir", self.current_data[2], "bool"), DebugTableRowValue(
@@ -147,6 +149,12 @@ class MockModel(Model):
 
     def get_current(self) -> Optional[float]:
         return self.current_data[7]
+
+    def get_BMS_fault(self) -> Optional[int]:
+        return self.bms_faults
+
+    def get_MPU_fault(self) -> Optional[int]:
+        return self.mpu_faults
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         return self.table
