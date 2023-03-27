@@ -74,15 +74,33 @@ class RaspberryModel(Model):
 
     def get_max_cell_voltage(self) -> Optional[int]:
         return self.current_data[13]
-
-    def get_max_cell_id(self) -> Optional[int]:
+    
+    def get_max_cell_voltage_id(self) -> Optional[int]:
         return self.current_data[14]
+    
+    def get_max_cell_temp(self) -> Optional[int]:
+        return self.current_data[114]
+    
+    def get_max_cell_temp_id(self) -> Optional[int]:
+        return self.current_data[115]
 
     def get_min_cell_voltage(self) -> Optional[int]:
         return self.current_data[15]
-
-    def get_min_cell_id(self) -> Optional[int]:
+    
+    def get_min_cell_voltage_id(self) -> Optional[int]:
         return self.current_data[16]
+    
+    def get_min_cell_temp(self) -> Optional[int]:
+        return self.current_data[116]
+    
+    def get_min_cell_temp_id(self) -> Optional[int]:
+        return self.current_data[117]
+    
+    def get_ave_cell_temp(self) -> Optional[int]:
+        return self.current_data[118]
+    
+    def get_ave_cell_voltage(self) -> Optional[int]:
+        return self.current_data[17]
 
     def get_pack_voltage(self) -> Optional[int]:
         return self.current_data[1]
