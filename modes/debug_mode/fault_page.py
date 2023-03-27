@@ -78,7 +78,7 @@ class Fault(Page):
 
     def update(self):
         if self.model.fault_instances:
-            self.fault_instance = self.model.fault_instances[self.fault_index]
+            self.fault_instance: FaultInstance = self.model.fault_instances[self.fault_index]
             self.update_high_cell()
             self.update_avg_cell()
             self.update_low_cell()
@@ -97,16 +97,16 @@ class Fault(Page):
         self.fault_index = 0 if self.fault_index != 0 else self.prev_fault_index
 
     def update_high_cell(self):
-        self.high_cell_frame.cell_temp_label.configure(text=(str(self.fault_instance.high_cell_temp) + "°"))
-        self.high_cell_frame.cell_voltage_label.configure(text=(str(self.fault_instance.high_cell_voltage) + "V"))
+        self.high_cell_frame.cell_temp_label.configure(text=(str(self.fault_instance.max_cell_temp) + "°"))
+        self.high_cell_frame.cell_voltage_label.configure(text=(str(self.fault_instance.max_cell_voltage) + "V"))
 
     def update_avg_cell(self):
-        self.avg_cell_frame.cell_temp_label.configure(text=(str(self.fault_instance.avg_cell_temp) + "°"))
-        self.avg_cell_frame.cell_voltage_label.configure(text=(str(self.fault_instance.avg_cell_voltage) + "V"))
+        self.avg_cell_frame.cell_temp_label.configure(text=(str(self.fault_instance.average_cell_temp) + "°"))
+        self.avg_cell_frame.cell_voltage_label.configure(text=(str(self.fault_instance.average_cell_voltage) + "V"))
 
     def update_low_cell(self):
-        self.low_cell_frame.cell_temp_label.configure(text=(str(self.fault_instance.low_cell_temp) + "°"))
-        self.low_cell_frame.cell_voltage_label.configure(text=(str(self.fault_instance.low_cell_voltage) + "V"))
+        self.low_cell_frame.cell_temp_label.configure(text=(str(self.fault_instance.min_cell_temp) + "°"))
+        self.low_cell_frame.cell_voltage_label.configure(text=(str(self.fault_instance.min_cell_voltage) + "V"))
 
     def update_fault_list(self):
         for widget in self.fault_list_frame.winfo_children():
