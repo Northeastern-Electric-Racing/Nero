@@ -5,7 +5,7 @@ from tkinter import *
 class CircularProgressbar(Canvas):
     def __init__(self, parent, x0: int, y0: int, x1: int, y1: int, width=2, start_ang=0, full_extent=360.):
         super().__init__(parent, background="black", highlightthickness=0, width=0, height=0)
-        self.custom_font = tkFont.Font(family="Helvetica", size=10, weight='bold')
+        self.custom_font = tkFont.Font(family="Helvetica", size=15, weight='bold')
         self.x0, self.y0, self.x1, self.y1 = x0+width, y0+width, x1-width, y1-width
         self.tx, self.ty = (x1+x0) / 2, (y1+y0) / 2
         self.width = width
@@ -22,13 +22,13 @@ class CircularProgressbar(Canvas):
                                              start=self.start_ang, extent=self.extent,
                                       width=self.width, style='arc', outline="white")
         self.label_id = self.create_text(self.tx, self.ty, text=self.extent,
-                                                font=self.custom_font, fill="black")
+                                                font=self.custom_font, fill="white")
 
     def set(self, value):
         self.extent = value if isinstance(value, int) else 0
         self.itemconfigure(self.arc_id, extent=(((self.extent / 100) * self.full_extent) - 1))
         # Update percentage value displayed.
-        percent = value
+        percent = str(value) + "%"
         self.itemconfigure(self.label_id, text=percent)
 
         color = "red"
@@ -38,5 +38,6 @@ class CircularProgressbar(Canvas):
             color = "yellow"
         elif self.extent > 20:
             color = "orange"
-        self.itemconfigure(self.oval_id2, fill=color)
-         
+        self.itemconfigure(self.oval_id2, outline=color)
+        self.itemconfigure(self.arc_id, outline=color)
+        self.itemconfigure(self.oval_id1, outline=color)

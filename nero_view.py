@@ -3,7 +3,7 @@ from tkinter import Frame
 from typing import List
 from modes.debug_mode.debug_mode import DebugMode
 from modes.mode import Mode
-from models.mock_model import MODES
+from constants import MODES
 from models.mock_model import MockModel
 from models.raspberry_model import RaspberryModel
 import platform
@@ -42,7 +42,8 @@ class NeroView(customtkinter.CTk):
 
         # configure window
         self.title("NERO")
-        self.grid_rowconfigure(0, weight=1, minsize=30)
+        self.geometry(f"{self.model.page_width}x{self.model.page_height + 60}")
+        self.grid_rowconfigure(0, weight=1, minsize=60)
         self.grid_rowconfigure(1, weight=1, minsize=self.model.page_height)
         self.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)
 
@@ -61,7 +62,6 @@ class NeroView(customtkinter.CTk):
         self.debug_screen = DebugMode(parent=self, controller=self, model=self.model)
         self.debug_screen.grid(row=1, column=0, sticky="nsew")
 
-        self.update_mode_index()
         self.update_mode()
         self.check_can()
         self.start_time = time.time()
@@ -72,6 +72,7 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
+        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
         if self.is_debug:
             self.current_screen = self.debug_screen
         else:
@@ -79,11 +80,7 @@ class NeroView(customtkinter.CTk):
         self.current_mode = self.modes[self.mode_index]
         self.current_screen.tkraise()
         self.header.tkraise()
-
-    def update_mode_index(self):
-        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
-        self.update_mode()
-        self.after(10, self.update_mode_index)
+        self.after(1, self.update_mode)
 
     def check_can(self):
         self.model.check_can()
@@ -142,6 +139,7 @@ class NeroView(customtkinter.CTk):
         if value is not None and int(value) == 1 and self.debounce_up_value == 0:
             self.current_screen.up_button_pressed()
             self.debounce_up_value = self.up_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
             self.up_debounce_max_value -= 5 if self.up_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
@@ -154,6 +152,7 @@ class NeroView(customtkinter.CTk):
         if value is not None and int(value) == 1 and self.debounce_down_value == 0:
             self.current_screen.down_button_pressed()
             self.debounce_down_value = self.down_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
             self.down_debounce_max_value -= 5 if self.down_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_down_value = 0

@@ -9,7 +9,7 @@ class Model:
         self.current_data: List[Optional[int]] = []
         self.pack_temp_data: List[Optional[int]] = []
         self.fault_instances: List[FaultInstance] = []
-        self.page_height = 570
+        self.page_height = 540
         self.page_width = 1024
         pass
 
