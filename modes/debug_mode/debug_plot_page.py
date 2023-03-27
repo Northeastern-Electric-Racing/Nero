@@ -115,7 +115,6 @@ class DebugPlot(Page):
 
             # plotting the graph
             transformed_data = self.transform_data_to_time(self.data[id].data)
-            print(len(transformed_data))
             y = np.array(transformed_data)
             self.ax.plot(y, color=self.colors[i])
             self.ax.xaxis.set_major_formatter(lambda x, pos: str(int(x / 600 * self.current_time)) + "s")
@@ -128,12 +127,10 @@ class DebugPlot(Page):
         self.canvas.draw()
 
     def transform_data_to_time(self, data: List[float]) -> List[float]:
-        startTime = time.time()
         transform : List[float] = []
         for i in range(len(data)):
             if i % (self.current_time / 600 * 20) == 0:
                 transform.append(data[i])
             if len(transform) == 600:
                 break
-        print(time.time() - startTime)
         return transform
