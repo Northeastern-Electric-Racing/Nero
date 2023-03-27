@@ -4,14 +4,13 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from typing import Dict, List
 from models.model import Model
-from modes.debug_mode.debug_utils import DebugPlotValue
+from modes.debug_mode.debug_utils import DebugPlotLineData
 from modes.page import Page
 import numpy as np
-import time
 
 
 class DebugPlotKey(Frame):
-    def __init__(self, key_value: DebugPlotValue, parent: Frame):
+    def __init__(self, key_value: DebugPlotLineData, parent: Frame):
         super().__init__(parent, bg="black", height=95, width=296, highlightbackground='gray', highlightthickness=2)
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -61,7 +60,7 @@ class DebugPlot(Page):
         self.time_presets = [30, 60, 120, 300, 600]
         self.current_time_index = 0
         self.current_time = self.time_presets[self.current_time_index]
-        self.data: Dict[int, DebugPlotValue] = self.model.pinned_data
+        self.data: Dict[int, DebugPlotLineData] = self.model.pinned_data
         self.colors = {0: "red", 1: "green", 2: "blue", 3: "yellow", 4: "orange", 5: "purple"}
 
         self.grid_columnconfigure(1, weight=1)
@@ -77,7 +76,7 @@ class DebugPlot(Page):
         self.key_frames = []
         # Create the keys
         for i in range(6):
-            self.key_frames.append(DebugPlotKey(DebugPlotValue("", "", [""]), self.key_frame))
+            self.key_frames.append(DebugPlotKey(DebugPlotLineData("", "", [""]), self.key_frame))
             self.key_frames[i].grid(row=i, column=0, sticky="s")
 
         # the frame that will hold the figure
@@ -126,6 +125,11 @@ class DebugPlot(Page):
             self.key_frames[j].current_value_label.configure(text="")
         self.canvas.draw()
 
+    """Takes in all the data and transforms it to include the indices of the time preset that is currently selected 
+        Args:
+            data: the data that needs to be transformed
+        Returns:
+            the transformed data"""
     def transform_data_to_time(self, data: List[float]) -> List[float]:
         transform : List[float] = []
         for i in range(len(data)):

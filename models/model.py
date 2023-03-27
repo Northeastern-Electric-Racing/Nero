@@ -1,12 +1,11 @@
 from typing import List, Optional, Dict
-from modes.debug_mode.debug_utils import DebugPlotValue
+from modes.debug_mode.debug_utils import DebugPlotLineData
 from ner_processing.master_mapping import DATA_IDS
-
+MAXIMUM_DATA_POINTS = 12000
 
 class Model:
     def __init__(self) -> None:
-        # Individual arrays for each time interval (30s, 60s, 120s, 300s, 600s)
-        self.pinned_data: Dict[int, DebugPlotValue] = {}
+        self.pinned_data: Dict[int, DebugPlotLineData] = {}
         self.current_data: List[Optional[int]] = []
         self.pack_temp_data: List[Optional[int]] = []
         pass
@@ -106,19 +105,20 @@ class Model:
 
     def add_pinned_data(self, id: int) -> None:
         # add the given id to all pinned data
-        data = round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]
+        value = self.current_data[id]
+        data = round(value, 1) if value is not None else value
         name = DATA_IDS[id]['name']
         unit = DATA_IDS[id]['units']
-        self.pinned_data[id] = DebugPlotValue(name=name, data=[data], unit=unit)
+        self.pinned_data[id] = DebugPlotLineData(name=name, data=[data], unit=unit)
 
     def remove_pinned_data(self, id: int) -> None:
         # remove the given id from all pinned data
         del self.pinned_data[id]
 
     def update_pinned_data(self) -> None:
-        # update the given pinned data, if we already have 600 values, pop the last one and then insert the newest value at zero
+        # update the given pinned data, if we already have MAXIMUM_DATA_POINTS values, pop the last one and then insert the newest value at zero
         for id in self.pinned_data:
-            if len(self.pinned_data[id].data) >= 12000:
+            if len(self.pinned_data[id].data) >= MAXIMUM_DATA_POINTS:
                 self.pinned_data[id].data.pop()
             self.pinned_data[id].data.insert(0, round(self.current_data[id], 1)
                                       if self.current_data[id] is not None else self.current_data[id])
