@@ -8,6 +8,8 @@ class Model:
         self.pinned_data: Dict[int, DebugPlotValue] = {}
         self.current_data: List[Optional[int]] = []
         self.pack_temp_data: List[Optional[int]] = []
+        self.page_height = 540
+        self.page_width = 1024
         pass
 
     def check_can(self) -> None:
@@ -67,6 +69,12 @@ class Model:
     def get_BMS_state(self) -> Optional[int]:
         pass
 
+    def get_BMS_fault(self) -> Optional[int]:
+        pass
+
+    def get_MPU_fault(self) -> Optional[int]:
+        pass
+
     def get_by_id(self, id: int) -> Optional[int]:
         return self.current_data[id]
 
@@ -79,7 +87,7 @@ class Model:
     def get_backward_button_pressed(self) -> Optional[str]:
         pass
 
-    def get_left_button_pressed(self) -> Optional[str]:
+    def get_debug_pressed(self) -> Optional[str]:
         pass
 
     def get_right_button_pressed(self) -> Optional[str]:

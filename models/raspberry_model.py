@@ -39,12 +39,12 @@ class RaspberryModel(Model):
             print('Timeout occurred, no message.')
 
     def get_mph(self) -> Optional[int]:
-        mph = self.current_data[45]
-        return (round(mph * 0.01272) if mph is not None else mph)
+        mph = self.current_data[101]
+        return mph
 
     def get_kph(self) -> Optional[int]:
-        kph = self.current_data[45]
-        return (round(kph * 0.02047) if kph is not None else kph)
+        kph = self.current_data[101]
+        return (round(kph * 1.601) if kph is not None else kph)
 
     def get_status(self) -> Optional[int]:
         status: Optional[int] = self.current_data[85]
@@ -89,6 +89,9 @@ class RaspberryModel(Model):
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
 
+    def get_BMS_fault(self) -> Optional[int]:
+        return self.current_data[107]
+
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         table: List[DebugTableRowValue] = []
         for i in range(0, len(self.current_data)):
@@ -115,7 +118,7 @@ class RaspberryModel(Model):
             value = binary[7] if len(binary) >= 8 else 0
         return value
 
-    def get_left_button_pressed(self) -> Optional[str]:
+    def get_debug_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
             binary = bin(value)

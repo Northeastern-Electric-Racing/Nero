@@ -1,4 +1,4 @@
-from tkinter import Frame
+from tkinter import Frame, Label
 import customtkinter
 from modes.page import Page
 from models.model import Model
@@ -9,89 +9,98 @@ class Home(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Home")
 
-        # configure the grid
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        # configure the grid (configure is responsible for configuring
+        # a specific row or column at the given index)
+        self.grid_rowconfigure(0, weight=1, minsize=self.height/2)
+        self.grid_rowconfigure(1, weight=1, minsize=self.height/2)
+        self.grid_columnconfigure(0, weight=1, minsize=self.width)
 
-        self.height = 285
         # create top and bottom frames
-        self.top_frame = Frame(self, width=1024, height=self.height)
-        self.bottom_frame = Frame(self, width=1024, height=self.height)
+        self.top_frame = Frame(self)
+        self.bottom_frame = Frame(self)
 
-        self.top_frame.grid(row=0, column=0, sticky="s")
-        self.bottom_frame.grid(row=1, column=0, sticky="n")
+        self.top_frame.grid(row=0, column=0, sticky="nsew")
+        self.bottom_frame.grid(row=1, column=0, sticky="nsew")
 
         # Configure grids for top and bottom frames
         self.top_frame.grid_rowconfigure(0, weight=1)
-        self.top_frame.grid_columnconfigure(1, weight=1)
+        self.top_frame.grid_columnconfigure(0, weight=1, minsize=self.width/2)
+        self.top_frame.grid_columnconfigure(1, weight=1, minsize=self.width/2)
 
         self.bottom_frame.grid_rowconfigure(0, weight=1)
-        self.bottom_frame.grid_columnconfigure(2, weight=1)
+        self.bottom_frame.grid_columnconfigure(0, weight=1, minsize=self.width/3)
+        self.bottom_frame.grid_columnconfigure(1, weight=1, minsize=self.width/3)
+        self.bottom_frame.grid_columnconfigure(2, weight=1, minsize=self.width/3)
 
         # create the top two frames
-        self.top_right_frame = Frame(self.top_frame, width=512, height=self.height, bg="black",
-                                     highlightbackground="gray", highlightthickness=1)
-        self.top_left_frame = Frame(self.top_frame, width=512, height=self.height, bg="black",
+        self.top_right_frame = Frame(self.top_frame,
+                                     highlightbackground="gray", bg="black", highlightthickness=1)
+        self.top_left_frame = Frame(self.top_frame,
                                     highlightbackground="gray", highlightthickness=1)
 
-        self.top_right_frame.grid(row=0, column=1)
-        self.top_left_frame.grid(row=0, column=0)
+        self.top_right_frame.grid(row=0, column=1, sticky="nsew")
+        self.top_left_frame.grid(row=0, column=0, sticky="nsew")
 
-        self.top_left_frame.grid_propagate(False)
+        self.top_left_frame.grid_rowconfigure(0, weight=1)
         self.top_left_frame.grid_rowconfigure(1, weight=1)
         self.top_left_frame.grid_columnconfigure(0, weight=1)
 
-        self.top_right_frame.grid_propagate(False)
+        self.top_right_frame.grid_rowconfigure(0, weight=1)
         self.top_right_frame.grid_rowconfigure(1, weight=1)
         self.top_right_frame.grid_columnconfigure(0, weight=1)
 
         # create the bottom three frames
         self.bottom_right_frame = Frame(
-            self.bottom_frame, width=341, height=self.height, bg="black", highlightbackground="gray", highlightthickness=1)
-        self.bottom_left_frame = Frame(self.bottom_frame, width=341, height=self.height,
-                                       bg="black", highlightbackground="gray", highlightthickness=1)
+            self.bottom_frame, highlightbackground="gray", bg="black", highlightthickness=1)
+        self.bottom_left_frame = Frame(self.bottom_frame, highlightbackground="gray", bg="black", highlightthickness=1)
         self.bottom_middle_frame = Frame(
-            self.bottom_frame, width=341, height=self.height, bg="black", highlightbackground="gray", highlightthickness=1)
+            self.bottom_frame, highlightbackground="gray", bg="black", highlightthickness=1)
 
-        self.bottom_right_frame.grid(row=0, column=2)
-        self.bottom_left_frame.grid(row=0, column=0)
-        self.bottom_middle_frame.grid(row=0, column=1)
+        self.bottom_left_frame.grid(row=0, column=0, sticky="nsew")
+        self.bottom_middle_frame.grid(row=0, column=1, sticky="nsew")
+        self.bottom_right_frame.grid(row=0, column=2, sticky="nsew")
 
-        self.bottom_left_frame.grid_propagate(False)
+        self.bottom_left_frame.grid_rowconfigure(0, weight=1)
         self.bottom_left_frame.grid_rowconfigure(1, weight=1)
         self.bottom_left_frame.grid_columnconfigure(0, weight=1)
 
-        self.bottom_middle_frame.grid_propagate(False)
+        self.bottom_middle_frame.grid_rowconfigure(0, weight=1)
         self.bottom_middle_frame.grid_rowconfigure(1, weight=1)
         self.bottom_middle_frame.grid_columnconfigure(0, weight=1)
 
-        self.bottom_right_frame.grid_propagate(False)
+        self.bottom_right_frame.grid_rowconfigure(0, weight=1)
         self.bottom_right_frame.grid_rowconfigure(1, weight=1)
         self.bottom_right_frame.grid_columnconfigure(0, weight=1)
 
         # create top left frame
-        self.mph_frame = Frame(self.top_left_frame,
-                               width=512, height=150, bg="black")
+        self.mph_frame = Frame(self.top_left_frame, bg="black")
+        self.mph_frame.grid_rowconfigure(0, weight=1)
+        self.mph_frame.grid_columnconfigure(0, weight=1)
+        self.mph_frame.grid_columnconfigure(1, weight=1)
+
         self.mph = customtkinter.CTkLabel(
             master=self.mph_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
 
         self.mph_label = customtkinter.CTkLabel(
-            master=self.mph_frame, text="mph", font=customtkinter.CTkFont(size=20))
+            master=self.mph_frame, text=" mph", font=customtkinter.CTkFont(size=20))
 
-        self.mph_frame.grid(row=0, column=0, sticky="s")
-        self.mph.grid(row=0, column=0)
-        self.mph_label.grid(row=0, column=1, sticky="s")
+        self.mph_frame.grid(row=0, column=0, sticky="nsew")
+        self.mph.grid(row=0, column=0, sticky="se")
+        self.mph_label.grid(row=0, column=1, sticky="sw")
 
-        self.kph_frame = Frame(self.top_left_frame,
-                               width=512, height=150, bg="black")
+        self.kph_frame = Frame(self.top_left_frame, bg="black")
+        self.kph_frame.grid_rowconfigure(0, weight=1)
+        self.kph_frame.grid_columnconfigure(0, weight=1)
+        self.kph_frame.grid_columnconfigure(1, weight=1)
+
         self.kph = customtkinter.CTkLabel(
-            master=self.kph_frame, text="N/A", font=customtkinter.CTkFont(size=25))
+            master=self.kph_frame, text="N/A", font=customtkinter.CTkFont(size=20))
         self.kph_label = customtkinter.CTkLabel(
-            master=self.kph_frame, text=" kmph", font=customtkinter.CTkFont(size=25))
+            master=self.kph_frame, text=" kmph", font=customtkinter.CTkFont(size=20))
 
-        self.kph_frame.grid(row=1, column=0, sticky="n")
-        self.kph.grid(row=0, column=0)
-        self.kph_label.grid(row=0, column=1)
+        self.kph_frame.grid(row=1, column=0, sticky="nsew")
+        self.kph.grid(row=0, column=0, sticky="ne")
+        self.kph_label.grid(row=0, column=1, sticky="nw")
 
         # create top right frame
         self.status = customtkinter.CTkLabel(
@@ -100,8 +109,8 @@ class Home(Page):
         self.dir = customtkinter.CTkLabel(
             master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=75, weight="bold"))
 
-        self.status.grid(row=0, column=0, sticky="s")
-        self.dir.grid(row=1, column=0, sticky="n")
+        self.status.grid(row=0, column=0, sticky="sew")
+        self.dir.grid(row=1, column=0, sticky="new")
 
         # create bottom left frame
         self.pack_temp = customtkinter.CTkLabel(
