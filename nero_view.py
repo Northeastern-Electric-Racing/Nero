@@ -96,16 +96,16 @@ class NeroView(customtkinter.CTk):
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
-        end_time = time.time()
-        if end_time - self.start_time < .001:
-            pass
+        # end_time = time.time()
+        # if end_time - self.start_time < .001:
+        #     self.after(100, self.update_buttons)
         self.update_enter_button_pressed()
         self.update_up_button_pressed()
         self.update_down_button_pressed()
         self.update_debug_pressed()
         self.update_right_button_pressed()
-        self.start_time = time.time()
-        self.after(1, self.update_buttons)
+        # self.start_time = time.time()
+        self.after(100, self.update_buttons)
 
     def update_pinned_data(self):
         if time.time() - self.last_pinned_update_time >= 1:
