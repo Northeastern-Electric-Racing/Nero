@@ -80,7 +80,7 @@ class NeroView(customtkinter.CTk):
         self.current_mode = self.modes[self.mode_index]
         self.current_screen.tkraise()
         self.header.tkraise()
-        self.after(1, self.update_mode)
+        self.after(100, self.update_mode)
 
     def check_can(self):
         self.model.check_can()
