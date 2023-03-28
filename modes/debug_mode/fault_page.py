@@ -77,7 +77,9 @@ class Fault(Page):
         self.canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
     def update(self):
-        if self.model.fault_instances:
+        print(self.model.fault_instances)
+        if len(self.model.fault_instances) > 0:
+            print("test")
             self.fault_instance: FaultInstance = self.model.fault_instances[self.fault_index]
             self.update_high_cell()
             self.update_avg_cell()
