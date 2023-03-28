@@ -104,8 +104,8 @@ class NeroView(customtkinter.CTk):
         self.update_down_button_pressed()
         self.update_debug_pressed()
         self.update_right_button_pressed()
-        self.after(1, self.update_buttons)
         self.start_time = time.time()
+        self.after(1, self.update_buttons)
 
     def update_pinned_data(self):
         if time.time() - self.last_pinned_update_time >= 1:
