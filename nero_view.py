@@ -1,12 +1,9 @@
 import customtkinter
 from tkinter import Frame
+from typing import List
 from modes.debug_mode.debug_mode import DebugMode
-from modes.efficiency_mode.efficiency_mode import EfficiencyMode
-from modes.off_mode.off_mode import OffMode
-from modes.charging_mode.charging_mode import ChargingMode
-from modes.pit_lane_mode.pit_lane_mode import PitLaneMode
-from modes.reverse_mode.reverse_mode import ReverseMode
-from modes.speed_mode.speed_mode import SpeedMode
+from modes.mode import Mode
+from constants import MODES
 from models.mock_model import MockModel
 from models.raspberry_model import RaspberryModel
 import platform
@@ -19,7 +16,7 @@ customtkinter.set_appearance_mode("dark")
 
 if platform.platform()[0:5] == "Linux":
     os.chdir("/home/ner/Desktop/Nero/")
-    
+
 customtkinter.set_default_color_theme("themes/ner.json")
 
 
@@ -29,6 +26,8 @@ class NeroView(customtkinter.CTk):
         self.isLinux = platform.platform()[0:5] == "Linux"
         self.model: Model = RaspberryModel() if self.isLinux else MockModel()
 
+        self.is_debug = False
+
         self.debounce_forward_value = 0
         self.debounce_backward_value = 0
         self.debounce_enter_value = 0
@@ -36,32 +35,36 @@ class NeroView(customtkinter.CTk):
         self.debounce_down_value = 0
         self.debounce_left_value = 0
         self.debounce_right_value = 0
+
         self.debounce_max_value = 125
+        self.up_debounce_max_value = 125
+        self.down_debounce_max_value = 125
 
         # configure window
         self.title("NERO")
-        self.geometry(f"{1024}x{600}")
+        self.geometry(f"{self.model.page_width}x{self.model.page_height + 60}")
+        self.grid_rowconfigure(0, weight=1, minsize=60)
+        self.grid_rowconfigure(1, weight=1, minsize=self.model.page_height)
+        self.grid_columnconfigure(0, weight=1, minsize=self.model.page_width)
 
-        # create the container frame that holds all modes
-        container = Frame(self)
-        container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+        # The consistent Header across all modes
+        self.header = Header(parent=self, model=self.model)
+        self.header.grid(row=0, column=0, sticky="nsew")
 
         # create the modes that the container will hold
-        self.modes = []
+        self.modes: List[Mode] = []
         self.mode_index = 0
-
-        self.header = Header(parent=container)
-        self.header.place(x=0, y=0, relwidth=1, relheight=0.05)
-        for mode_class in (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, DebugMode, ReverseMode, ChargingMode):
-            # for mode_class in (EfficiencyMode, DebugMode, ChargingMode):
-            mode = mode_class(parent=container, controller=self, model=self.model)
+        for mode_class in MODES:
+            mode = mode_class(parent=self, controller=self, model=self.model)
             self.modes.append(mode)
-            mode.grid(row=0, column=0, sticky="s")
+            mode.grid(row=1, column=0, sticky="nsew")
+
+        self.debug_screen = DebugMode(parent=self, controller=self, model=self.model)
+        self.debug_screen.grid(row=1, column=0, sticky="nsew")
 
         self.update_mode()
         self.check_can()
+        self.start_time = time.time()
         self.update_buttons()
         self.update_current_page()
         self.last_pack_temp_update_time = time.time()
@@ -70,37 +73,40 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
-        if self.model.get_BMS_state() is not None and self.model.get_BMS_state() >= 2:
-            self.current_mode = self.modes[6]
+        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
+        if self.is_debug:
+            self.current_screen = self.debug_screen
         else:
-            self.current_mode = self.modes[self.mode_index]
-        self.current_mode.tkraise()
+            self.current_screen = self.modes[self.mode_index]
+        self.current_mode = self.modes[self.mode_index]
+        self.current_screen.tkraise()
         self.header.tkraise()
+        self.after(1, self.update_mode)
 
     def check_can(self):
         self.model.check_can()
         self.after(1, self.check_can)
 
     def update_current_page(self):
-        self.current_mode.current_page.update()
+        self.current_screen.current_page.update()
         self.after(100, self.update_current_page)
+
+    def update_header(self):
+        self.header.update()
+        self.after(100, self.update_header)
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
-        start_time = time.time()
-        # self.update_forward_button_pressed()
-        # self.update_backward_button_pressed()
-        self.update_mode_index()
+        end_time = time.time()
+        if end_time - self.start_time < .001:
+            pass
         self.update_enter_button_pressed()
         self.update_up_button_pressed()
         self.update_down_button_pressed()
-        self.update_left_button_pressed()
+        self.update_debug_pressed()
         self.update_right_button_pressed()
-        end_time = time.time()
-        while end_time - start_time < 0.0001:
-            end_time = time.time()
-            pass
         self.after(1, self.update_buttons)
+        self.start_time = time.time()
 
     def update_pinned_data(self):
         if time.time() - self.last_pack_temp_update_time >= 1:
@@ -111,46 +117,21 @@ class NeroView(customtkinter.CTk):
             self.last_pinned_update_time = time.time()
         self.after(10, self.update_pinned_data)
 
-    def update_mode_index(self):
-        self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
-        self.update_mode()
-
-    # Button updates with debouncing
-    # def update_forward_button_pressed(self):
-    #     value = self.model.get_forward_button_pressed()
-    #     if value is not None and int(value) == 1 and self.debounce_forward_value == 0:
-    #         self.debounce_forward_value = self.debounce_max_value
-    #         self.increment_mode()
-    #     elif value is not None and int(value) == 0:
-    #         self.debounce_forward_value = 0
-    #     else:
-    #         self.debounce_forward_value -= 1
-
-    # def update_backward_button_pressed(self):
-    #     value = self.model.get_backward_button_pressed()
-    #     if value is not None and int(value) == 1 and self.debounce_backward_value == 0:
-    #         self.debounce_backward_value = self.debounce_max_value
-    #         self.decrement_mode()
-    #     elif value is not None and int(value) == 0:
-    #         self.debounce_backward_value = 0
-    #     else:
-    #         self.debounce_backward_value -= 1
-
     def update_right_button_pressed(self):
         value = self.model.get_right_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_right_value == 0:
             self.debounce_right_value = self.debounce_max_value
-            self.current_mode.right_button_pressed()
+            self.current_screen.right_button_pressed()
         elif value is not None and int(value) == 0:
             self.debounce_right_value = 0
         else:
             self.debounce_right_value -= 1
 
-    def update_left_button_pressed(self):
-        value = self.model.get_left_button_pressed()
+    def update_debug_pressed(self):
+        value = self.model.get_debug_pressed()
         if value is not None and int(value) == 1 and self.debounce_left_value == 0:
             self.debounce_left_value = self.debounce_max_value
-            self.current_mode.left_button_pressed()
+            self.is_debug = not self.is_debug
         elif value is not None and int(value) == 0:
             self.debounce_left_value = 0
         else:
@@ -159,48 +140,38 @@ class NeroView(customtkinter.CTk):
     def update_up_button_pressed(self):
         value = self.model.get_up_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_up_value == 0:
-            self.current_mode.up_button_pressed()
-            self.debounce_up_value = self.debounce_max_value
+            self.current_screen.up_button_pressed()
+            self.debounce_up_value = self.up_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
+            self.up_debounce_max_value -= 5 if self.up_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
+            self.up_debounce_max_value = 125
         else:
             self.debounce_up_value -= 1
 
     def update_down_button_pressed(self):
         value = self.model.get_down_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_down_value == 0:
-            self.current_mode.down_button_pressed()
-            self.debounce_down_value = self.debounce_max_value
+            self.current_screen.down_button_pressed()
+            self.debounce_down_value = self.down_debounce_max_value
+            # As you continue to hold the button, the debounce time decreases until the minimum of 40
+            self.down_debounce_max_value -= 5 if self.down_debounce_max_value - 5 > 40 else 0
         elif value is not None and int(value) == 0:
             self.debounce_down_value = 0
+            self.down_debounce_max_value = 125
         else:
             self.debounce_down_value -= 1
 
     def update_enter_button_pressed(self):
         value = self.model.get_enter_button_pressed()
         if value is not None and int(value) == 1 and self.debounce_enter_value == 0:
-            self.current_mode.enter_button_pressed()
+            self.current_screen.enter_button_pressed()
             self.debounce_enter_value = self.debounce_max_value
         elif value is not None and int(value) == 0:
             self.debounce_enter_value = 0
         else:
             self.debounce_enter_value -= 1
-
-    def update_header(self):
-        self.header.current_mode_label.configure(text=self.current_mode.name)
-        self.after(100, self.update_header)
-
-    def increment_mode(self):
-        self.mode_index += 1
-        if (self.mode_index >= len(self.modes)):
-            self.mode_index = 0
-        self.update_mode()
-
-    def decrement_mode(self):
-        self.mode_index -= 1
-        if (self.mode_index < 0):
-            self.mode_index = len(self.modes) - 1
-        self.update_mode()
 
     def run(self):
         if (self.isLinux):
