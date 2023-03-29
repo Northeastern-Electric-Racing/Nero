@@ -40,8 +40,8 @@ class RaspberryModel(Model):
             print('Timeout occurred, no message.')
 
     def get_mph(self) -> Optional[int]:
-        mph = round(self.current_data[101] if mph is not None else mph)
-        return mph
+        mph = self.current_data[101]
+        return (round(mph) if mph is not None else mph)
 
     def get_kph(self) -> Optional[int]:
         kph = self.current_data[101]
