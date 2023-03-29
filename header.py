@@ -75,9 +75,9 @@ class Header(Frame):
 
     def update_bms_image(self) -> None:
         if self.model.get_BMS_fault() is not None and self.model.get_BMS_fault() > 0:
-            self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="red"))
+            self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryWarning.xbm", foreground="red"))
         else:
-            self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryHorizontal.xbm", foreground="green"))
+            self.BMS_fault_image_label.configure(image=BitmapImage(file="images/batteryWarning.xbm", foreground="green"))
 
     def update_mpu_image(self) -> None:
         if self.model.get_MPU_fault() is not None and self.model.get_MPU_fault() > 0:

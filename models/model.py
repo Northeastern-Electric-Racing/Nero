@@ -52,25 +52,37 @@ class Model:
     def get_max_cell_temp(self) -> Optional[int]:
         pass
 
-    def get_max_cell_temp_id(self) -> Optional[int]:
+    def get_max_cell_temp_chip_number(self) -> Optional[int]:
         pass
-    
+
+    def get_max_cell_temp_cell_number(self) -> Optional[int]:
+        pass
+
     def get_max_cell_voltage(self) -> Optional[int]:
         pass
 
-    def get_max_cell_voltage_id(self) -> Optional[int]:
+    def get_max_cell_voltage_chip_number(self) -> Optional[int]:
+        pass
+
+    def get_max_cell_voltage_cell_number(self) -> Optional[int]:
         pass
 
     def get_min_cell_temp(self) -> Optional[int]:
         pass
 
-    def get_min_cell_temp_id(self) -> Optional[int]:
+    def get_min_cell_temp_chip_number(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_temp_cell_number(self) -> Optional[int]:
         pass
 
     def get_min_cell_voltage(self) -> Optional[int]:
         pass
 
-    def get_min_cell_voltage_id(self) -> Optional[int]:
+    def get_min_cell_voltage_chip_number(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_voltage_cell_number(self) -> Optional[int]:
         pass
 
     def get_ave_cell_temp(self) -> Optional[int]:
