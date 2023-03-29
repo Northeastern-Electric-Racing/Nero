@@ -1,5 +1,5 @@
 from typing import List
-from constants import FAULTS
+from utils.fault_statuses import FAULTS
 class DebugPlotValue:
     def __init__(self, name: str, unit: str, data: List[float]):
         self.data = data
