@@ -3,7 +3,7 @@ import customtkinter
 from typing import List
 from modes.page import Page
 from models.model import Model
-
+MAX_ITEMS_PINNED = 6
 
 class DebugTableRowFrame(Frame):
     # The frame that holds the label of the row
@@ -169,8 +169,8 @@ class DebugTable(Page):
         if self.table[self.selected_id].is_pinned():
             self.table[self.selected_id].highlight("gray")
             self.model.remove_pinned_data(self.selected_id)
-        # otherwise if the selected id is not pinned and there are less than 6 pinned then pin it
-        elif len(self.model.pinned_data.keys()) < 6:
+        # otherwise if the selected id is not pinned and there are less than MAX_ITEMS_PINNED pinned then pin it
+        elif len(self.model.pinned_data) < MAX_ITEMS_PINNED:
             self.table[self.selected_id].highlight("purple")
             self.model.add_pinned_data(self.selected_id)
 

@@ -67,6 +67,7 @@ class NeroView(customtkinter.CTk):
         self.start_time = time.time()
         self.update_buttons()
         self.update_current_page()
+        self.last_pack_temp_update_time = time.time()
         self.last_pinned_update_time = time.time()
         self.update_pinned_data()
         self.update_header()
@@ -108,11 +109,13 @@ class NeroView(customtkinter.CTk):
         self.after(100, self.update_buttons)
 
     def update_pinned_data(self):
-        if time.time() - self.last_pinned_update_time >= 1:
-            self.model.update_pinned_data()
+        if time.time() - self.last_pack_temp_update_time >= 1:
             self.model.update_pack_temp_data()
+            self.last_pack_temp_update_time = time.time()
+        if time.time() - self.last_pinned_update_time >= .05:
+            self.model.update_pinned_data()
             self.last_pinned_update_time = time.time()
-        self.after(100, self.update_pinned_data)
+        self.after(10, self.update_pinned_data)
 
     def update_right_button_pressed(self):
         value = self.model.get_right_button_pressed()
