@@ -40,7 +40,7 @@ class RaspberryModel(Model):
 
     def get_mph(self) -> Optional[int]:
         mph = self.current_data[101]
-        return (round(mph) if mph is not None else mph)
+        return mph
 
     def get_kph(self) -> Optional[int]:
         kph = self.current_data[101]
