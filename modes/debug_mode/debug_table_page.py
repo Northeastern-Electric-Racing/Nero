@@ -3,6 +3,7 @@ import customtkinter
 from typing import List
 from modes.page import Page
 from models.model import Model
+import time
 MAX_ITEMS_PINNED = 6
 
 class DebugTableRowFrame(Frame):
@@ -103,6 +104,8 @@ class DebugTable(Page):
         # creates the table (self.selected_id is 0)
         self.table: List[DebugTableRow] = self.create_debug_table()
         self.create_table(self.selected_id)
+
+        self.start_time = time.time()
 
     def create_table(self, baseId: int):
         # Empty values for rows that are not used
@@ -218,5 +221,7 @@ class DebugTable(Page):
 
     def update(self):
         # updates the values in the table every 100 ms
-        for i in range(0, len(self.table)):
-            self.update_by_id(i)
+        if time.time() - self.start_time >= 1:
+            for i in range(0, len(self.table)):
+                self.update_by_id(i)
+            self.start_time = time.time()
