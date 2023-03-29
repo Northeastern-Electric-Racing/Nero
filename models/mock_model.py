@@ -5,6 +5,7 @@ from models.model import Model
 from modes.debug_mode.debug_table_page import DebugTableRowValue
 from constants import MODES
 
+
 class MockModel(Model):
     def __init__(self) -> None:
         super().__init__()

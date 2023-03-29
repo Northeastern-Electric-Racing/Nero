@@ -5,6 +5,7 @@ from modes.mode import Mode
 from models.model import Model
 from modes.debug_mode.fault_page import Fault
 
+
 class DebugMode(Mode):
     def __init__(self, parent: Frame, controller: Frame, model: Model):
         super().__init__(parent, controller, model, "Debug Mode", [DebugTable, DebugPlot, Fault])

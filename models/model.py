@@ -3,6 +3,7 @@ from modes.debug_mode.debug_utils import DebugPlotValue
 from ner_processing.master_mapping import DATA_IDS
 from modes.debug_mode.debug_utils import FaultInstance
 
+
 class Model:
     def __init__(self) -> None:
         self.pinned_data: Dict[int, DebugPlotValue] = {}

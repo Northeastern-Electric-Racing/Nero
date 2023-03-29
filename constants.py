@@ -5,4 +5,3 @@ from modes.pit_lane_mode.pit_lane_mode import PitLaneMode
 from modes.reverse_mode.reverse_mode import ReverseMode
 from modes.speed_mode.speed_mode import SpeedMode
 MODES = (OffMode, PitLaneMode, EfficiencyMode, SpeedMode, ReverseMode, ChargingMode)
-

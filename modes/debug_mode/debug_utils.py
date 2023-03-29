@@ -1,10 +1,13 @@
 from typing import List
 from utils.fault_statuses import FAULTS
+
+
 class DebugPlotValue:
     def __init__(self, name: str, unit: str, data: List[float]):
         self.data = data
         self.name = name
         self.unit = unit
+
 
 class FaultInstance:
     def __init__(self, fault_decimal: int, max_cell_temp: int, max_cell_voltage: int, average_cell_temp: int, average_cell_voltage: int, min_cell_temp: int, min_cell_voltage: int, pack_current: int, dcl: int, ccl: int):

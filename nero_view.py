@@ -20,6 +20,7 @@ if platform.platform()[0:5] == "Linux":
 customtkinter.set_default_color_theme("themes/ner.json")
 MINIMUM_DEBOUNCE_VALUE = 30
 
+
 class NeroView(customtkinter.CTk):
     def __init__(self) -> None:
         super().__init__()

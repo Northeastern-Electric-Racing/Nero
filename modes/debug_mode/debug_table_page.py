@@ -5,6 +5,7 @@ from modes.page import Page
 from models.model import Model
 import time
 
+
 class DebugTableRowFrame(Frame):
     # The frame that holds the label of the row
     def __init__(self, parent: Frame):
