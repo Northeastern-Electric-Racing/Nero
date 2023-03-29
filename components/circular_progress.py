@@ -3,7 +3,7 @@ from tkinter import *
 
 
 class CircularProgressbar(Canvas):
-    def __init__(self, parent, x0: int, y0: int, x1: int, y1: int, width=2, start_ang=0, full_extent=360.):
+    def __init__(self, parent, x0: int, y0: int, x1: int, y1: int, width=2, start_ang=90, full_extent=360.):
         super().__init__(parent, background="black", highlightthickness=0, width=0, height=0)
         self.custom_font = tkFont.Font(family="Helvetica", size=15, weight='bold')
         self.x0, self.y0, self.x1, self.y1 = x0+width, y0+width, x1-width, y1-width
