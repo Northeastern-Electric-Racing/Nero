@@ -4,13 +4,12 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from typing import Dict, List
 from models.model import Model
-from modes.debug_mode.debug_utils import DebugPlotLineData
+from modes.debug_mode.debug_utils import DebugPlotValue
 from modes.page import Page
-import numpy as np
-from modes.debug_mode.debug_table_page import MAX_ITEMS_PINNED
+
 
 class DebugPlotKey(Frame):
-    def __init__(self, key_value: DebugPlotLineData, parent: Frame, width: int):
+    def __init__(self, key_value: DebugPlotValue, parent: Frame, width: int):
         super().__init__(parent, bg="black", highlightbackground='gray', highlightthickness=2)
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -46,10 +45,10 @@ class DebugPlotKey(Frame):
 class DebugPlot(Page):
     def __init__(self, parent: Frame, model: Model):
         super().__init__(parent, model, "Debug Plot")
+        self.data: Dict[int, DebugPlotValue] = model.pinned_data
         self.time_presets = [30, 60, 120, 300, 600]
         self.current_time_index = 0
         self.current_time = self.time_presets[self.current_time_index]
-        self.data: Dict[int, DebugPlotLineData] = self.model.pinned_data
         self.colors = ["red", "green", "blue", "yellow", "orange", "purple"]
 
         self.grid_columnconfigure(0, weight=1, minsize=self.width * 0.3)
@@ -63,9 +62,9 @@ class DebugPlot(Page):
 
         self.key_frames: List[DebugPlotKey] = []
         # Create the keys
-        for i in range(MAX_ITEMS_PINNED):
-            self.key_frame.grid_rowconfigure(i, weight=1, minsize=self.height/MAX_ITEMS_PINNED)
-            self.key_frames.append(DebugPlotKey(DebugPlotLineData("", "", [""]), self.key_frame, self.width * 0.3))
+        for i in range(6):
+            self.key_frame.grid_rowconfigure(i, weight=1, minsize=self.height/6)
+            self.key_frames.append(DebugPlotKey(DebugPlotValue("", "", [""]), self.key_frame, self.width * 0.3))
             self.key_frames[i].grid(row=i, column=0, sticky="nsew")
 
         # the frame that will hold the figure
@@ -104,10 +103,8 @@ class DebugPlot(Page):
                 text=self.data[id].data[0], text_color=self.colors[i])
 
             # plotting the graph
-            transformed_data = self.transform_data_to_time(self.data[id].data)
-            y = np.array(transformed_data)
-            self.ax.plot(y, color=self.colors[i])
-            self.ax.xaxis.set_major_formatter(lambda x, pos: str(int(x / 600 * self.current_time)) + "s")
+            y = self.data[id].data
+            self.ax.plot(y[0: self.current_time] if len(y) > self.current_time else y, color=self.colors[i])
             i += 1
         self.ax.invert_xaxis()
         for j in range(i, 5):
@@ -115,17 +112,3 @@ class DebugPlot(Page):
             self.key_frames[j].unit_label.configure(text="")
             self.key_frames[j].current_value_label.configure(text="")
         self.canvas.draw()
-
-    """Takes in all the data and transforms it to include the indices of the time preset that is currently selected 
-        Args:
-            data: the data that needs to be transformed
-        Returns:
-            the transformed data"""
-    def transform_data_to_time(self, data: List[float]) -> List[float]:
-        transform : List[float] = []
-        for i in range(len(data)):
-            if i % (self.current_time / 600 * 20) == 0:
-                transform.append(data[i])
-            if len(transform) == 600:
-                break
-        return transform
