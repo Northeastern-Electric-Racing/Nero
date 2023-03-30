@@ -1,8 +1,7 @@
 from modes.mode import Mode
 from tkinter import Frame
-from modes.efficiency_mode.home import Home
 from models.model import Model
-
+from modes.home import Home
 
 class EfficiencyMode(Mode):
     def __init__(self, parent: Frame, controller: Frame, model: Model):
