@@ -3,7 +3,7 @@ import customtkinter
 from models.model import Model
 from components.circular_progress import CircularProgressbar
 from PIL.ImageTk import BitmapImage
-
+from color_transformers import precharge_state_color_transformer
 
 class Header(Frame):
     def __init__(self, parent: Frame, model: Model) -> None:
@@ -60,7 +60,7 @@ class Header(Frame):
         self.pack_voltage_label.grid(row=0, column=2, sticky="nsew")
 
         # configure precharge label
-        self.precharge_label = customtkinter.CTkLabel(self, text="Precharge", font=customtkinter.CTkFont(size=25))
+        self.precharge_label = customtkinter.CTkLabel(self, text="N/A", font=customtkinter.CTkFont(size=25))
         self.precharge_label.grid(row=0, column=4, sticky="e", padx=5)
 
     def update(self) -> None:
@@ -86,7 +86,9 @@ class Header(Frame):
             self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="green"))
 
     def update_precharge_label(self) -> None:
-        pass
+        precharge = self.model.get_precharge() if self.model.get_precharge() is not None else "N/A"
+        color = precharge_state_color_transformer(precharge)
+        self.precharge_label.configure(text=precharge, text_color=color)
 
     def update_pack_temp(self) -> None:
         pack_temp_value = self.model.get_pack_temp() if self.model.get_pack_temp() is not None else 0
