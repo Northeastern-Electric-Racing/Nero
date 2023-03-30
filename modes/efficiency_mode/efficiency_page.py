@@ -10,3 +10,6 @@ class Efficiency(Page):
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
+
+        self.thermometer_progress = ThermometerProgress(self, 100, 100, 300, 300)
+        self.thermometer_progress.grid(row=0, column=0, sticky="nsew")

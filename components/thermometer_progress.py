@@ -40,6 +40,10 @@ class ThermometerProgress(Canvas):
 
         self.top_arc = self.create_arc(self.rectangle_starting_x, self.y0 - self.radius, self.rectangle_ending_x, self.y0 + self.radius,
                                        start=0, extent=180, style="arc", outline="white")
+        
+        # Create incremental lines for the thermometer
+        for i in range(7):
+            self.create_line(self.rectangle_starting_x, self.starting_height - (self.starting_height/10) * i, self.rectangle_starting_x + self.radius/2, self.starting_height - (self.starting_height/10) * i, fill="white")
 
     def set(self, value):
         self.value = value if isinstance(value, int) else 0
