@@ -25,7 +25,7 @@ class ThermometerProgress(Canvas):
 
       #   self.rectangle = self.create_rectangle(self.rectangle_starting_x, self.y0,
       #                                          self.rectangle_ending_x, self.rectangle_ending_y, outline="red")
-        self.filler = self.create_rectangle(self.rectangle_starting_x, self.y0,
+        self.filler = self.create_rectangle(self.rectangle_starting_x, self.rectangle_ending_y,
                                             self.rectangle_ending_x, self.rectangle_ending_y, outline="red", fill="red")
 
         self.left_line = self.create_line(self.rectangle_starting_x, self.y0,
