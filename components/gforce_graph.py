@@ -15,27 +15,22 @@ class GForceGraph(FigureCanvasTkAgg):
       self.fig, self.ax = plt.subplots(subplot_kw={'projection': 'polar'})
       self.fig.set_facecolor('black')
       self.ax.set_facecolor('black')
-      # Define coordinates for the ring of circles
-      theta = np.linspace(0, 2*np.pi, 200)
-
-      # Draw ring of circles at every whole number
-      for i in range(int(np.floor(g_mag.min())), int(np.ceil(g_mag.max()))):
-         self.ax.plot(theta, i * np.ones_like(theta), color='gray', linestyle='--')
-
       # Plot direction lines
-      self.ax.plot(g_direction, g_mag, 'o')
+      self.ax.plot(g_direction, g_mag, 'o', color='red')
 
       # Set radial limits
       self.ax.set_rlim(np.floor(g_mag.min())-1, np.ceil(g_mag.max())+1)
-
+      for spine in self.ax.spines.values():
+         spine.set_edgecolor('white')
       # Set axis labels and title
-      self.ax.set_title('G-force Direction')
 
       super().__init__(self.fig, master=parent)
       self.get_tk_widget().configure(background='black')
       self.draw()
 
    def set(self, x: int, y:int):
+      if isinstance(x, str) or isinstance(y, str):
+         return
       self.ax.clear()
       x_accel = x
       y_accel = y
@@ -51,7 +46,4 @@ class GForceGraph(FigureCanvasTkAgg):
       self.ax.set_rlim(np.floor(g_mag.min())-1, np.ceil(g_mag.max())+1)
 
       # Set axis labels and title
-      self.ax.set_xlabel('X G-force direction (radians)')
-      self.ax.set_ylabel('Y G-force direction (radians)')
-      self.ax.set_title('G-force Direction')
       self.draw()

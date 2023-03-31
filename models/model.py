@@ -146,6 +146,15 @@ class Model:
     def get_mode_index(self):
         pass
 
+    def get_gforce_x(self) -> Optional[int]:
+        pass
+
+    def get_gforce_y(self) -> Optional[int]:
+        pass
+
+    def get_gforce_z(self) -> Optional[int]:
+        pass
+
     def update_pack_temp_data(self) -> None:
         if len(self.pack_temp_data) >= 600:
             self.pack_temp_data.pop()
