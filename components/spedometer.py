@@ -2,6 +2,7 @@ import tkinter.font as tkFont
 from tkinter import *
 import math
 
+
 class Spedometer(Canvas):
     def __init__(self, parent, x0: int, y0: int, x1: int, y1: int, width=2, start_ang=0, full_extent=180):
         super().__init__(parent, background="black", highlightthickness=0, width=0, height=0)
@@ -18,7 +19,7 @@ class Spedometer(Canvas):
                                    start=self.start_ang, extent=self.full_extent,
                                    width=self.width, style='arc', outline="white")
 
-        self.value_label = self.create_text(self.tx, (self.y1 - self.y0) / 2 , text=self.extent,
+        self.value_label = self.create_text(self.tx, (self.y1 - self.y0) / 2, text=self.extent,
                                             font=self.value_font, fill="white")
         self.mph_label = self.create_text(self.tx, self.ty, text="MPH",
                                           font=self.label_font, fill="white")
