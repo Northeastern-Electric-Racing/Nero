@@ -49,8 +49,8 @@ class Spedometer(Canvas):
         label = str(value)
         self.itemconfigure(self.value_label, text=label)
 
-        x = self.tx + (self.tx/2 + 30) * math.cos((value / 100 * 180 + 180) * math.pi / 180)
-        y = self.ty + (self.ty/2 + 30) * math.sin((value / 100 * 180 + 180) * math.pi / 180)
-        tick_x = self.tx + (self.tx/2 + 70) * math.cos((value / 100 * 180 + 180) * math.pi / 180)
-        tick_y = self.ty + (self.ty/2 + 70) * math.sin((value / 100 * 180 + 180) * math.pi / 180)
+        x = self.tx + (self.tx/2 + 70) * math.cos((value / 100 * 180 + 180) * math.pi / 180)
+        y = self.ty + (self.ty/2 + 70) * math.sin((value / 100 * 180 + 180) * math.pi / 180)
+        tick_x = self.tx + (self.tx/2 + 100) * math.cos((value / 100 * 180 + 180) * math.pi / 180)
+        tick_y = self.ty + (self.ty/2 + 100) * math.sin((value / 100 * 180 + 180) * math.pi / 180)
         self.coords(self.value_tick, x, y, tick_x, tick_y)

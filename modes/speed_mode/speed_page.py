@@ -4,6 +4,7 @@ from models.model import Model
 from components.gforce_graph import GForceGraph
 from customtkinter import CTkLabel
 from components.thermometer_progress import ThermometerProgress
+from components.spedometer import Spedometer
 import numpy as np
 
 
@@ -66,6 +67,10 @@ class Speed(Page):
         self.spedometer_frame.grid_rowconfigure(0, weight=1)
         self.spedometer_frame.grid_columnconfigure(0, weight=1)
 
+        self.spedometer = Spedometer(self.spedometer_frame, 0, self.height/8, self.width/2, self.height)
+        self.spedometer.grid(row=0, column=0, sticky="nsew")
+        self.spedometer.set(40)
+
         #Create the right frame
         #Create the current frame
         self.current_frame = Frame(self.right_frame, bg="black")
@@ -77,7 +82,7 @@ class Speed(Page):
         self.current_icon.grid(row=0, column=0, sticky="nse")
 
         self.current_label = CTkLabel(self.current_frame, text="N/AA", font=("Helvetica", 80))
-        self.current_label.grid(row=0, column=1, sticky="nse")
+        self.current_label.grid(row=0, column=1, sticky="nse", padx=10)
 
         #Create the dcl frame
         self.dcl_frame = Frame(self.right_frame, bg="black")
@@ -89,7 +94,7 @@ class Speed(Page):
         self.dcl_icon.grid(row=0, column=0, sticky="nse")
 
         self.dcl_label = CTkLabel(self.dcl_frame, text="N/AA", font=("Helvetica", 30))
-        self.dcl_label.grid(row=0, column=1, sticky="nse")
+        self.dcl_label.grid(row=0, column=1, sticky="nse", padx=10)
 
         #Create the max cell frame
         self.max_cell_frame = Frame(self.right_frame)
@@ -144,7 +149,8 @@ class Speed(Page):
         self.update_motor_temp()
 
     def update_speed(self):
-        speed = self.model.get_mph()
+        speed = self.model.get_mph() if self.model.get_mph() is not None else "N/A"
+        self.spedometer.set(speed)
     
     def update_gforce(self):
         gforce_x = self.model.get_gforce_x() if self.model.get_gforce_x() is not None else "N/A"
