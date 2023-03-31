@@ -128,6 +128,15 @@ class RaspberryModel(Model):
 
     def get_ccl(self) -> Optional[int]:
         return self.current_data[90]
+    
+    def get_gforce_x(self) -> Optional[int]:
+        return self.current_data[91]
+    
+    def get_gforce_y(self) -> Optional[int]:
+        return self.current_data[92]
+    
+    def get_gforce_z(self) -> Optional[int]:
+        return self.current_data[93]
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]
