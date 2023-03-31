@@ -7,7 +7,6 @@ from components.circular_progress import CircularProgressbar
 from customtkinter import CTkLabel, CTkFont
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import numpy as np
 
 
 class Efficiency(Page):
@@ -236,20 +235,20 @@ class Efficiency(Page):
         self.ave_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
     def color_transformer(self, value):
+         if isinstance(value, str):
+                return "white"
          if value < 0:
                return "purple"
-         elif value <= 20:
+         if value <= 20:
                return "blue"
-         elif value <= 30:
+         if value <= 30:
                return "green"
-         elif value <= 40:
+         if value <= 40:
                return "yellow"
-         elif value <= 50:
+         if value <= 50:
                return "orange"
-         elif value > 50:
+         if value > 50:
                return "red"
-         else:
-               return "white"
 
     def update(self):
         self.update_fan_cooling()
