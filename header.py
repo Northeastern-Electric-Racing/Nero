@@ -95,7 +95,7 @@ class Header(Frame):
 
     def update_motor_temp(self) -> None:
         motor_temp_value = self.model.get_motor_temp() if self.model.get_motor_temp() is not None else 0
-        color = "purple" if motor_temp_value < 20 else "blue" if motor_temp_value < 40 else "green" if motor_temp_value < 60 else "yellow" if motor_temp_value < 70 else "orange" if motor_temp_value < 85 else "red"
+        color = "purple" if motor_temp_value < 10 else "blue" if motor_temp_value < 20 else "green" if motor_temp_value < 50 else "yellow" if motor_temp_value < 70 else "orange" if motor_temp_value < 85 else "red"
         self.motor_temp_label.configure(image=BitmapImage(file="images/motorTemp.xbm", foreground=color))
 
     def update_pack_voltage(self) -> None:

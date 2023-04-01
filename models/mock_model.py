@@ -12,8 +12,8 @@ class MockModel(Model):
         self.mph = 60
         self.status = True
         self.dir = True
-        self.pack_temp = 47
-        self.motor_temp = 122
+        self.pack_temp = 30
+        self.motor_temp = 40
         self.state_of_charge = 55
         self.lv_battery = 88
         self.current = 7.6
