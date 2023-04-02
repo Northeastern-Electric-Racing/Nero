@@ -17,6 +17,9 @@ class Model:
     def check_can(self) -> None:
         pass
 
+    def get_precharge(self) -> Optional[int]:
+        pass
+
     def get_mph(self) -> Optional[int]:
         pass
 
