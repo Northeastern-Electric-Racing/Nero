@@ -66,7 +66,7 @@ class Fault(Page):
         self.fig = plt.figure(facecolor="black")
         self.ax = self.fig.add_axes([0, 0.1, 0.9, 1])
         self.ax.set_facecolor('black')
-        self.ax.bar(self.currents, [0, 0, 0], color="red")
+        self.ax.bar(self.currents, [1, 2, 3], color="red")
         self.ax.set_xticklabels(self.currents, color="white")
 
         # creating the Tkinter canvas containing the Matplotlib figure
