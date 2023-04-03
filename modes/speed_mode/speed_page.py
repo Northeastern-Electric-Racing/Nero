@@ -105,7 +105,7 @@ class Speed(Page):
         self.max_cell_frame.grid_columnconfigure(1, weight=1, minsize=self.width * 3/16)
         self.max_cell_frame.grid(row=2, column=0, sticky="nsew")
 
-        self.max_cell_thermometer = ThermometerProgress(self.max_cell_frame, -25, 25, 100, 150)
+        self.max_cell_thermometer = ThermometerProgress(self.max_cell_frame, -25, 25, 100, 150, 65, -15)
         self.max_cell_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.max_cell_value_frame = Frame(self.max_cell_frame, bg="black")

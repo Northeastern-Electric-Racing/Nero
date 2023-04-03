@@ -121,7 +121,7 @@ class Efficiency(Page):
         self.max_cell_temp_frame.grid_columnconfigure(0, weight=1)
         self.max_cell_temp_frame.grid_columnconfigure(1, weight=1)
 
-        self.max_cell_temp_thermometer = ThermometerProgress(self.max_cell_temp_frame, 0, 50, 100, 250, high=60, low=-10)
+        self.max_cell_temp_thermometer = ThermometerProgress(self.max_cell_temp_frame, 0, 50, 100, 250, high=65, low=-15)
         self.max_cell_temp_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.max_cell_value_frame = Frame(self.max_cell_temp_frame, background="black")
@@ -181,7 +181,7 @@ class Efficiency(Page):
         self.inverter_temp_frame.grid_columnconfigure(0, weight=1)
         self.inverter_temp_frame.grid_columnconfigure(1, weight=1)
 
-        self.inverter_temp_thermometer = ThermometerProgress(self.inverter_temp_frame, 0, 50, 100, 125)
+        self.inverter_temp_thermometer = ThermometerProgress(self.inverter_temp_frame, 0, 50, 100, 125, -30, 80)
         self.inverter_temp_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.inverter_temp_value_frame = Frame(self.inverter_temp_frame, background="black")

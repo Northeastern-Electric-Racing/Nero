@@ -48,7 +48,7 @@ class Off(Page):
         self.pack_temp_frame.grid_columnconfigure(0, weight=1)
         self.pack_temp_frame.grid(row=0, column=0, sticky="nsew")
 
-        self.pack_temp_thermometer = ThermometerProgress(self.pack_temp_frame, 0, 50, 200, 200)
+        self.pack_temp_thermometer = ThermometerProgress(self.pack_temp_frame, 0, 50, 200, 200, 65, -15)
         self.pack_temp_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.pack_temp_value_frame = Frame(self.pack_temp_frame, bg="black")

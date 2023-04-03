@@ -10,11 +10,11 @@ class BatteryProgress(Canvas):
         self.tx, self.ty = (x1+x0) / 2, (y1+y0) / 2
 
         self.extent = 0
+        self.filling_rectangle = self.create_rectangle(self.x0, self.y1, self.x1, self.y1, fill="yellow")
         self.rectangle_1 = self.create_rectangle(self.x0, self.y0 ,
                                          self.x1, self.y1, outline="white")
         self.rectangle_top = self.create_rectangle(self.tx - (self.tx - x0) /2, self.y0-self.ty/20,
                                                     self.tx + (self.tx - x0) /2, self.y0, outline="white")
-        self.filling_rectangle = self.create_rectangle(self.x0, self.y1, self.x1, self.y1, fill="yellow")
         self.label_id = self.create_text(self.tx, self.ty, text=self.extent,
                                          font=self.custom_font, fill="white")
 
