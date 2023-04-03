@@ -10,7 +10,7 @@ from color_transformers import precharge_state_color_transformer
 class Off(Page):
     def __init__(self, parent: Frame, model: Model) -> None:
         super().__init__(parent, model, "Off Mode")
-        self.label_font = customtkinter.CTkFont(size=80)
+        self.label_font = customtkinter.CTkFont(size=75)
         self.grid_columnconfigure(0, weight=1, minsize=self.width / 3)
         self.grid_columnconfigure(1, weight=1, minsize=self.width / 3)
         self.grid_columnconfigure(2, weight=1, minsize=self.width / 3)
