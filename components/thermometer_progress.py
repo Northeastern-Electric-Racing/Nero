@@ -22,16 +22,15 @@ class ThermometerProgress(Canvas):
         self.rectangle_ending_x = np.cos(np.deg2rad(45)) * self.radius + self.tx
         self.rectangle_ending_y = self.y1 - self.radius
         self.custom_font = tkFont.Font(family="Helvetica", size=int(self.radius), weight='bold')
+        arc_endpoint_y = self.y1 - (self.radius - np.sin(np.deg2rad(45)) * self.radius)
 
-      #   self.rectangle = self.create_rectangle(self.rectangle_starting_x, self.y0,
-      #                                          self.rectangle_ending_x, self.rectangle_ending_y, outline="red")
         self.filler = self.create_rectangle(self.rectangle_starting_x, self.rectangle_ending_y,
                                             self.rectangle_ending_x, self.rectangle_ending_y, outline="red", fill="red")
 
         self.left_line = self.create_line(self.rectangle_starting_x, self.y0,
-                                          self.rectangle_starting_x, self.starting_height + self.starting_height/50, fill="white")
+                                          self.rectangle_starting_x, arc_endpoint_y, fill="white")
         self.right_line = self.create_line(self.rectangle_ending_x, self.y0,
-                                           self.rectangle_ending_x, self.starting_height + self.starting_height/50, fill="white")
+                                           self.rectangle_ending_x, arc_endpoint_y, fill="white")
 
         self.bottom_arc = self.create_arc(self.starting_x, self.starting_height, self.ending_x, self.y1,
                                           start=self.start_ang, extent=270, outline="red", fill="red")
