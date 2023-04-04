@@ -103,7 +103,7 @@ class Home(Page):
         self.kph_label.grid(row=0, column=1, sticky="nw")
 
         self.limit_image = customtkinter.CTkLabel(master=self.top_left_frame, image=BitmapImage(file="images/speedLimitIcon.xbm", foreground="white", background="black"), text="")
-        self.limit_image.place(x=20, y=self.height/2 - 90, relwidth=0.12, relheight=0.3)
+        self.limit_image.place(x=20, y=self.height/2 - 90, relwidth=0.2, relheight=0.3)
 
         # create top right frame
         self.status = customtkinter.CTkLabel(
