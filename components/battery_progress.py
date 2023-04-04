@@ -33,7 +33,7 @@ class BatteryProgress(Canvas):
         elif self.extent > 20:
             color = "orange"
         if self.extent >= 100:
-            self.itemconfigure(self.label_id, font=tkFont.Font(family="Lato", size=int(((self.x1 - self.x0) / 3)), weight='bold'))
+            self.itemconfigure(self.label_id, font=tkFont.Font(family="Lato", size=int(((self.x1 - self.x0) / 4)), weight='bold'))
         self.itemconfigure(self.rectangle_1, outline=color)
         self.itemconfigure(self.rectangle_top, outline=color)
         self.itemconfigure(self.label_id, fill=color)
