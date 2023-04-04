@@ -137,6 +137,9 @@ class RaspberryModel(Model):
     
     def get_gforce_z(self) -> Optional[int]:
         return self.current_data[93]
+    
+    def get_precharge(self) -> Optional[int]:
+        return self.current_data[129]
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]

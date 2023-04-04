@@ -5,7 +5,7 @@ from tkinter import *
 class BatteryProgress(Canvas):
     def __init__(self, parent, x0: int, y0: int, x1: int, y1: int):
         super().__init__(parent, background="black", highlightthickness=0, width=0, height=0)
-        self.custom_font = tkFont.Font(family="Helvetica", size=int(((x1 - x0) / 2) - 5), weight='bold')
+        self.custom_font = tkFont.Font(family="Lato", size=int(((x1 - x0) / 2) - 5), weight='bold')
         self.x0, self.y0, self.x1, self.y1 = x0, y0, x1, y1
         self.tx, self.ty = (x1+x0) / 2, (y1+y0) / 2
 
@@ -33,7 +33,7 @@ class BatteryProgress(Canvas):
         elif self.extent > 20:
             color = "orange"
         if self.extent >= 100:
-            self.itemconfigure(self.label_id, font=tkFont.Font(family="Helvetica", size=int(((self.x1 - self.x0) / 3)), weight='bold'))
+            self.itemconfigure(self.label_id, font=tkFont.Font(family="Lato", size=int(((self.x1 - self.x0) / 3)), weight='bold'))
         self.itemconfigure(self.rectangle_1, outline=color)
         self.itemconfigure(self.rectangle_top, outline=color)
         self.itemconfigure(self.label_id, fill=color)

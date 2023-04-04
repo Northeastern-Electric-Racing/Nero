@@ -21,7 +21,7 @@ class ThermometerProgress(Canvas):
         self.rectangle_starting_x = np.cos(np.deg2rad(135)) * self.radius + self.tx
         self.rectangle_ending_x = np.cos(np.deg2rad(45)) * self.radius + self.tx
         self.rectangle_ending_y = self.y1 - self.radius
-        self.custom_font = tkFont.Font(family="Helvetica", size=int(self.radius), weight='bold')
+        self.custom_font = tkFont.Font(family="Lato", size=int(self.radius), weight='bold')
         arc_endpoint_y = self.starting_height + (self.radius - np.sin(np.deg2rad(45)) * self.radius)
         tick_interval = (arc_endpoint_y - self.y0) / 10
 
@@ -50,5 +50,5 @@ class ThermometerProgress(Canvas):
     def set(self, value):
         self.value = value if isinstance(value, int) else 0
         x0, y0, x1, y1 = self.coords(self.filler)
-        y0 = self.y1 - (self.y1 - self.y0) * (self.value / (self.low + self.high))
+        y0 = self.rectangle_ending_y - (self.y1 - self.y0) * (self.value / (self.low + self.high))
         self.coords(self.filler, x0, y0, x1, y1)
