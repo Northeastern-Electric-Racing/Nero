@@ -139,7 +139,19 @@ class RaspberryModel(Model):
         return self.current_data[93]
     
     def get_precharge(self) -> Optional[int]:
+        return self.current_data[129]
+    
+    def get_segment1_temp(self) -> Optional[int]:
         return self.current_data[125]
+
+    def get_segment2_temp(self) -> Optional[int]:
+        return self.current_data[126]
+
+    def get_segment3_temp(self) -> Optional[int]:
+        return self.current_data[127]
+
+    def get_segment4_temp(self) -> Optional[int]:
+        return self.current_data[128]
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]
