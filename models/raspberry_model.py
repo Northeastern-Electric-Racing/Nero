@@ -131,16 +131,19 @@ class RaspberryModel(Model):
     
     def get_gforce_x(self) -> Optional[int]:
         return self.current_data[91]
-    
+
     def get_gforce_y(self) -> Optional[int]:
         return self.current_data[92]
-    
+
     def get_gforce_z(self) -> Optional[int]:
         return self.current_data[93]
     
-    def get_precharge(self) -> Optional[int]:
-        return self.current_data[129]
+    # def get_precharge(self) -> Optional[int]:
+    #     return self.current_data[129]
     
+    def get_sd_card_status(self) -> Optional[int]:
+        return self.current_data[129]
+
     def get_segment1_temp(self) -> Optional[int]:
         return self.current_data[125]
 
