@@ -313,8 +313,10 @@ class Efficiency(Page):
         temps = self.model.average_cell_temps
         self.ave_temp_ax.clear()
         self.ave_temp_ax.plot(temps, color='red')
+        self.ave_temp_canvas.draw()
 
     def update_state_of_charge_delta(self):
         soc_deltas = self.model.state_of_charge_deltas
         self.soc_delta_ax.clear()
         self.soc_delta_ax.plot(soc_deltas, color='purple')
+        self.soc_delta_ax.draw()
