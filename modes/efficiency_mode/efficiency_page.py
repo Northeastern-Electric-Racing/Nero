@@ -216,6 +216,7 @@ class Efficiency(Page):
         # placing the canvas on the Tkinter window
         self.ave_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
+        # Create the state of charge delta graph frame
         self.state_of_charge_delta_graph_frame = Frame(self.graphs_frame)
         self.state_of_charge_delta_graph_frame.grid(row=0, column=1, sticky="nsew")
         self.state_of_charge_delta_graph_frame.grid_rowconfigure(0, weight=1)
@@ -228,11 +229,11 @@ class Efficiency(Page):
         self.soc_delta_ax.tick_params(labelcolor='white')
 
         # creating the Tkinter canvas containing the Matplotlib figure
-        self.ave_temp_canvas = FigureCanvasTkAgg(self.soc_delta_fig, master=self.state_of_charge_delta_graph_frame)
-        self.ave_temp_canvas.draw()
+        self.soc_delta_canvas = FigureCanvasTkAgg(self.soc_delta_fig, master=self.state_of_charge_delta_graph_frame)
+        self.soc_delta_canvas.draw()
 
         # placing the canvas on the Tkinter window
-        self.ave_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
+        self.soc_delta_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
     def color_transformer(self, value):
         if isinstance(value, str):
@@ -319,4 +320,4 @@ class Efficiency(Page):
         soc_deltas = self.model.state_of_charge_deltas
         self.soc_delta_ax.clear()
         self.soc_delta_ax.plot(soc_deltas, color='purple')
-        self.soc_delta_ax.draw()
+        self.soc_delta_canvas.draw()
