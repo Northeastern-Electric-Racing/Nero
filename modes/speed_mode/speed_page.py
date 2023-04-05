@@ -159,12 +159,12 @@ class Speed(Page):
         gforce_x = self.model.get_gforce_x() if self.model.get_gforce_x() is not None else "N/A"
         gforce_y = self.model.get_gforce_y() if self.model.get_gforce_y() is not None else "N/A"
         gforce_z = self.model.get_gforce_z() if self.model.get_gforce_z() is not None else "N/A"
-        self.gforce_graph.set(gforce_x, gforce_z)
+        self.gforce_graph.set(gforce_x, gforce_y)
         self.gforce_x_label.configure(text=f"x: {gforce_x}G")
         self.gforce_y_label.configure(text=f"y: {gforce_y}G")
         self.gforce_z_label.configure(text=f"z: {gforce_z}G")
-        if (isinstance(gforce_x, int) and isinstance(gforce_z, int)):
-            self.gforce_label.configure(text=f"{round(np.sqrt(np.square(gforce_x) + np.square(gforce_z)))}G")
+        if (isinstance(gforce_x, int) and isinstance(gforce_y, int)):
+            self.gforce_label.configure(text=f"{round(np.sqrt(np.square(gforce_x) + np.square(gforce_y)))}G")
 
     def update_current(self):
         current = -self.model.get_current() if self.model.get_current() is not None else "N/A"
