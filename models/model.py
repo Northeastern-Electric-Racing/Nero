@@ -1,6 +1,7 @@
 from typing import List, Optional, Dict
 from modes.debug_mode.debug_utils import DebugPlotValue
 from ner_processing.master_mapping import DATA_IDS
+from modes.debug_mode.debug_utils import FaultInstance
 
 
 class Model:
@@ -8,6 +9,7 @@ class Model:
         self.pinned_data: Dict[int, DebugPlotValue] = {}
         self.current_data: List[Optional[int]] = []
         self.pack_temp_data: List[Optional[int]] = []
+        self.fault_instances: List[FaultInstance] = []
         self.page_height = 540
         self.page_width = 1024
         pass
@@ -48,16 +50,46 @@ class Model:
     def get_pack_voltage(self) -> Optional[int]:
         pass
 
+    def get_max_cell_temp(self) -> Optional[int]:
+        pass
+
+    def get_max_cell_temp_chip_number(self) -> Optional[int]:
+        pass
+
+    def get_max_cell_temp_cell_number(self) -> Optional[int]:
+        pass
+
     def get_max_cell_voltage(self) -> Optional[int]:
         pass
 
-    def get_max_cell_id(self) -> Optional[int]:
+    def get_max_cell_voltage_chip_number(self) -> Optional[int]:
+        pass
+
+    def get_max_cell_voltage_cell_number(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_temp(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_temp_chip_number(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_temp_cell_number(self) -> Optional[int]:
         pass
 
     def get_min_cell_voltage(self) -> Optional[int]:
         pass
 
-    def get_min_cell_id(self) -> Optional[int]:
+    def get_min_cell_voltage_chip_number(self) -> Optional[int]:
+        pass
+
+    def get_min_cell_voltage_cell_number(self) -> Optional[int]:
+        pass
+
+    def get_ave_cell_temp(self) -> Optional[int]:
+        pass
+
+    def get_ave_cell_voltage(self) -> Optional[int]:
         pass
 
     def get_cell_delta(self) -> Optional[int]:
@@ -73,6 +105,15 @@ class Model:
         pass
 
     def get_MPU_fault(self) -> Optional[int]:
+        pass
+
+    def get_dcl(self) -> Optional[int]:
+        pass
+
+    def get_ccl(self) -> Optional[int]:
+        pass
+
+    def get_pack_current(self) -> Optional[int]:
         pass
 
     def get_by_id(self, id: int) -> Optional[int]:

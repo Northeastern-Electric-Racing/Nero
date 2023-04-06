@@ -5,7 +5,7 @@ from tkinter import *
 class CircularProgressbar(Canvas):
     def __init__(self, parent, x0: int, y0: int, x1: int, y1: int, width=2, start_ang=90, full_extent=360.):
         super().__init__(parent, background="black", highlightthickness=0, width=0, height=0)
-        self.custom_font = tkFont.Font(family="Helvetica", size=15, weight='bold')
+        self.custom_font = tkFont.Font(family="Helvetica", size=int(((x1 - x0) / 2) - 10), weight='bold')
         self.x0, self.y0, self.x1, self.y1 = x0+width, y0+width, x1-width, y1-width
         self.tx, self.ty = (x1+x0) / 2, (y1+y0) / 2
         self.width = width
@@ -15,14 +15,14 @@ class CircularProgressbar(Canvas):
         self.extent = 0
 
         self.oval_id1 = self.create_oval(self.x0-w2, self.y0-w2,
-                                                self.x1+w2, self.y1+w2, outline="white")
+                                         self.x1+w2, self.y1+w2, outline="white")
         self.oval_id2 = self.create_oval(self.x0+w2, self.y0+w2,
                                          self.x1-w2, self.y1-w2, outline="white")
         self.arc_id = self.create_arc(self.x0, self.y0, self.x1, self.y1,
-                                             start=self.start_ang, extent=self.extent,
+                                      start=self.start_ang, extent=self.extent,
                                       width=self.width, style='arc', outline="white")
         self.label_id = self.create_text(self.tx, self.ty, text=self.extent,
-                                                font=self.custom_font, fill="white")
+                                         font=self.custom_font, fill="white")
 
     def set(self, value):
         self.extent = value if isinstance(value, int) else 0
