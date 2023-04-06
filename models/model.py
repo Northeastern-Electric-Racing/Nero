@@ -10,6 +10,8 @@ class Model:
         self.current_data: List[Optional[int]] = []
         self.pack_temp_data: List[Optional[int]] = []
         self.fault_instances: List[FaultInstance] = []
+        self.average_cell_temps: List[Optional[int]] = []
+        self.state_of_charge_deltas: List[Optional[int]] = []
         self.page_height = 540
         self.page_width = 1024
         pass
@@ -98,6 +100,21 @@ class Model:
     def get_burning_cells(self) -> Optional[int]:
         pass
 
+    def get_inverter_temp(self) -> Optional[int]:
+        pass
+
+    def get_motor_power(self) -> Optional[int]:
+        pass
+
+    def get_fan_power(self) -> Optional[int]:
+        pass
+
+    def get_torque_power(self) -> Optional[int]:
+        pass
+
+    def get_regen_power(self) -> Optional[int]:
+        pass
+
     def get_BMS_state(self) -> Optional[int]:
         pass
 
@@ -155,6 +172,18 @@ class Model:
     def get_gforce_z(self) -> Optional[int]:
         pass
 
+    def get_segment1_temp(self) -> Optional[int]:
+        pass
+
+    def get_segment2_temp(self) -> Optional[int]:
+        pass
+
+    def get_segment3_temp(self) -> Optional[int]:
+        pass
+
+    def get_segment4_temp(self) -> Optional[int]:
+        pass
+
     def update_pack_temp_data(self) -> None:
         if len(self.pack_temp_data) >= 600:
             self.pack_temp_data.pop()
@@ -173,3 +202,14 @@ class Model:
                 self.pinned_data[id].data.pop()
             self.pinned_data[id].data.insert(0, round(self.current_data[id], 1)
                                              if self.current_data[id] is not None else self.current_data[id])
+
+    def update_average_cell_temps(self) -> None:
+        if len(self.average_cell_temps) >= 30:
+            self.average_cell_temps.pop()
+        self.average_cell_temps.insert(0, self.get_ave_cell_temp())
+
+    def update_state_of_charge_deltas(self) -> None:
+        if len(self.state_of_charge_deltas) >= 30:
+            self.state_of_charge_deltas.pop()
+        self.state_of_charge_deltas.insert(0, self.get_cell_delta())
+

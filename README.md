@@ -36,14 +36,16 @@ You can click the play button in VSCode when you're in the `main.py` file or you
    Increment Mode -> Right Arrow
    Decrement Mode -> Left Arrow
    Increment Page -> Right Shift
-   Decrement Page -> Left Shift
+   Debug Mode -> Left Shift
    Up -> Up Arrow
    Down -> Down Arrow
    Enter -> Enter Key
-   
+
 Notes:
 - Enter on the plot page changes the time frame
 - Press up and down on the debug table to move between values, press enter to select one for plotting
+- You may have to brew install python-tk if on mac or linux if you get a _tkinter module not found error
+- You may have to install requirements on your machine if virtualenv is not working
 
 ### Learning
 

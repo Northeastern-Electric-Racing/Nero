@@ -1,7 +1,7 @@
 from tkinter import Frame
 from modes.page import Page
 from models.model import Model
-from modes.efficiency_mode.home import Home
+from modes.home import Home
 
 
 class Off(Home):
