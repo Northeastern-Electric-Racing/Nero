@@ -6,6 +6,7 @@ import can
 import os
 from modes.debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
+from modes.debug_mode.debug_utils import FaultInstance
 
 
 class RaspberryModel(Model):
@@ -40,7 +41,7 @@ class RaspberryModel(Model):
 
     def get_mph(self) -> Optional[int]:
         mph = self.current_data[101]
-        return mph
+        return (round(mph) if mph is not None else mph)
 
     def get_kph(self) -> Optional[int]:
         kph = self.current_data[101]
@@ -74,14 +75,44 @@ class RaspberryModel(Model):
     def get_max_cell_voltage(self) -> Optional[int]:
         return self.current_data[13]
 
-    def get_max_cell_id(self) -> Optional[int]:
-        return self.current_data[14]
+    def get_max_cell_voltage_chip_number(self) -> Optional[int]:
+        return self.current_data[121]
+
+    def get_max_cell_voltage_cell_number(self) -> Optional[int]:
+        return self.current_data[122]
+
+    def get_max_cell_temp(self) -> Optional[int]:
+        return self.current_data[114]
+
+    def get_max_cell_temp_chip_number(self) -> Optional[int]:
+        return self.current_data[115]
+
+    def get_max_cell_temp_cell_number(self) -> Optional[int]:
+        return self.current_data[116]
 
     def get_min_cell_voltage(self) -> Optional[int]:
         return self.current_data[15]
 
-    def get_min_cell_id(self) -> Optional[int]:
-        return self.current_data[16]
+    def get_min_cell_voltage_chip_number(self) -> Optional[int]:
+        return self.current_data[123]
+
+    def get_min_cell_voltage_cell_number(self) -> Optional[int]:
+        return self.current_data[124]
+
+    def get_min_cell_temp(self) -> Optional[int]:
+        return self.current_data[117]
+
+    def get_min_cell_temp_chip_number(self) -> Optional[int]:
+        return self.current_data[118]
+
+    def get_min_cell_temp_cell_number(self) -> Optional[int]:
+        return self.current_data[119]
+
+    def get_ave_cell_temp(self) -> Optional[int]:
+        return self.current_data[120]
+
+    def get_ave_cell_voltage(self) -> Optional[int]:
+        return self.current_data[17]
 
     def get_pack_voltage(self) -> Optional[int]:
         return self.current_data[1]
@@ -89,7 +120,29 @@ class RaspberryModel(Model):
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
 
+    def get_pack_current(self) -> Optional[int]:
+        return self.current_data[2]
+
+    def get_dcl(self) -> Optional[int]:
+        return self.current_data[89]
+
+    def get_ccl(self) -> Optional[int]:
+        return self.current_data[90]
+    
+    def get_gforce_x(self) -> Optional[int]:
+        return self.current_data[91]
+    
+    def get_gforce_y(self) -> Optional[int]:
+        return self.current_data[92]
+    
+    def get_gforce_z(self) -> Optional[int]:
+        return self.current_data[93]
+
     def get_BMS_fault(self) -> Optional[int]:
+        fault_status = self.current_data[107]
+        if fault_status is not None and fault_status > 0:
+            self.fault_instances.append(FaultInstance(fault_status, self.get_max_cell_temp(), self.get_max_cell_voltage(), self.get_ave_cell_temp(
+            ), self.get_ave_cell_voltage(), self.get_min_cell_temp(), self.get_min_cell_voltage(), self.get_pack_current(), self.get_dcl(), self.get_ccl()))
         return self.current_data[107]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:

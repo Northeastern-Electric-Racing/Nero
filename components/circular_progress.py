@@ -15,14 +15,14 @@ class CircularProgressbar(Canvas):
         self.extent = 0
 
         self.oval_id1 = self.create_oval(self.x0-w2, self.y0-w2,
-                                                self.x1+w2, self.y1+w2, outline="white")
+                                         self.x1+w2, self.y1+w2, outline="white")
         self.oval_id2 = self.create_oval(self.x0+w2, self.y0+w2,
                                          self.x1-w2, self.y1-w2, outline="white")
         self.arc_id = self.create_arc(self.x0, self.y0, self.x1, self.y1,
-                                             start=self.start_ang, extent=self.extent,
+                                      start=self.start_ang, extent=self.extent,
                                       width=self.width, style='arc', outline="white")
         self.label_id = self.create_text(self.tx, self.ty, text=self.extent,
-                                                font=self.custom_font, fill="white")
+                                         font=self.custom_font, fill="white")
 
     def set(self, value):
         self.extent = value if isinstance(value, int) else 0
