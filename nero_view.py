@@ -110,6 +110,8 @@ class NeroView(customtkinter.CTk):
         if time.time() - self.last_pinned_update_time >= 1:
             self.model.update_pinned_data()
             self.model.update_pack_temp_data()
+            self.model.update_average_cell_temps()
+            self.model.update_state_of_charge_deltas()
             self.last_pinned_update_time = time.time()
         self.after(100, self.update_pinned_data)
 
