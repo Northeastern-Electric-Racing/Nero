@@ -4,6 +4,7 @@ import math
 import numpy as np
 
 
+
 class Spedometer(Canvas):
     def __init__(self, parent, x0: int, y0: int, width: int, height: int, start_ang=0, full_extent=180):
         super().__init__(parent, background="black", highlightthickness=0, width=0, height=0)

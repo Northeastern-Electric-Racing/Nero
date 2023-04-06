@@ -163,6 +163,15 @@ class Model:
     def get_mode_index(self):
         pass
 
+    def get_gforce_x(self) -> Optional[int]:
+        pass
+
+    def get_gforce_y(self) -> Optional[int]:
+        pass
+
+    def get_gforce_z(self) -> Optional[int]:
+        pass
+
     def get_segment1_temp(self) -> Optional[int]:
         pass
 

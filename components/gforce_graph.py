@@ -2,56 +2,49 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-class GForceGraph(FigureCanvasTkAgg): 
-   def __init__(self, parent):
-      x_accel = 0
-      y_accel = 0
 
-      # Calculate G-force magnitude and direction
-      g_mag = np.sqrt(x_accel**2 + y_accel**2)
-      g_direction = np.arctan2(y_accel, x_accel)
+class GForceGraph(FigureCanvasTkAgg):
+    def __init__(self, parent):
+        x_accel = 0
+        z_accel = 0
 
-      # Create polar plot
-      self.fig, self.ax = plt.subplots(subplot_kw={'projection': 'polar'})
-      self.fig.set_facecolor('black')
-      self.ax.set_facecolor('black')
-      # Define coordinates for the ring of circles
-      theta = np.linspace(0, 2*np.pi, 200)
+        # Calculate G-force magnitude and direction
+        g_mag = np.sqrt(x_accel**2 + z_accel**2)
+        g_direction = np.arctan2(z_accel, x_accel)
 
-      # Draw ring of circles at every whole number
-      for i in range(int(np.floor(g_mag.min())), int(np.ceil(g_mag.max()))):
-         self.ax.plot(theta, i * np.ones_like(theta), color='gray', linestyle='--')
+        # Create polar plot
+        self.fig, self.ax = plt.subplots(subplot_kw={'projection': 'polar'})
+        self.fig.set_facecolor('black')
+        self.ax.set_facecolor('black')
+        # Plot direction lines
+        self.ax.plot(g_direction, g_mag, 'o', color='red')
 
-      # Plot direction lines
-      self.ax.plot(g_direction, g_mag, 'o')
+        # Set radial limits
+        self.ax.set_rlim(np.floor(g_mag.min())-1, np.ceil(g_mag.max())+1)
+        for spine in self.ax.spines.values():
+            spine.set_edgecolor('white')
+        # Set axis labels and title
 
-      # Set radial limits
-      self.ax.set_rlim(np.floor(g_mag.min())-1, np.ceil(g_mag.max())+1)
+        super().__init__(self.fig, master=parent)
+        self.get_tk_widget().configure(background='black')
+        self.draw()
 
-      # Set axis labels and title
-      self.ax.set_title('G-force Direction')
+    def set(self, x: int, z: int):
+        if isinstance(x, str) or isinstance(z, str):
+            return
+        self.ax.clear()
+        x_accel = x
+        z_accel = z
 
-      super().__init__(self.fig, master=parent)
-      self.get_tk_widget().configure(background='black')
-      self.draw()
+        # Calculate G-force magnitude and direction
+        g_mag = np.sqrt(x_accel**2 + z_accel**2)
+        g_direction = np.arctan2(z_accel, x_accel)
 
-   def set(self, x: int, y:int):
-      self.ax.clear()
-      x_accel = x
-      y_accel = y
+        # Plot direction lines
+        self.ax.plot(g_direction, g_mag, 'o')
 
-      # Calculate G-force magnitude and direction
-      g_mag = np.sqrt(x_accel**2 + y_accel**2)
-      g_direction = np.arctan2(y_accel, x_accel)
+        # Set radial limits
+        self.ax.set_rlim(np.floor(g_mag.min())-1, np.ceil(g_mag.max())+1)
 
-      # Plot direction lines
-      self.ax.plot(g_direction, g_mag, 'o')
-
-      # Set radial limits
-      self.ax.set_rlim(np.floor(g_mag.min())-1, np.ceil(g_mag.max())+1)
-
-      # Set axis labels and title
-      self.ax.set_xlabel('X G-force direction (radians)')
-      self.ax.set_ylabel('Y G-force direction (radians)')
-      self.ax.set_title('G-force Direction')
-      self.draw()
+        # Set axis labels and title
+        self.draw()
