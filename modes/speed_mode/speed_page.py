@@ -163,7 +163,7 @@ class Speed(Page):
         self.gforce_x_label.configure(text=f"x: {gforce_x}G")
         self.gforce_y_label.configure(text=f"y: {gforce_y}G")
         self.gforce_z_label.configure(text=f"z: {gforce_z}G")
-        if (isinstance(gforce_x, int) and isinstance(gforce_y, int)):
+        if (isinstance(gforce_x, float) and isinstance(gforce_y, float)):
             self.gforce_label.configure(text=f"{round(np.sqrt(np.square(gforce_x) + np.square(gforce_y)))}G")
 
     def update_current(self):
