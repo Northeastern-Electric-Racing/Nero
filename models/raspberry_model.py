@@ -73,7 +73,8 @@ class RaspberryModel(Model):
         return self.current_data[2]
 
     def get_max_cell_voltage(self) -> Optional[int]:
-        return self.current_data[13]
+        voltage = self.current_data[13]
+        return (round(voltage, 1) if voltage is not None else voltage)
 
     def get_max_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[121]
@@ -82,7 +83,8 @@ class RaspberryModel(Model):
         return self.current_data[122]
 
     def get_max_cell_temp(self) -> Optional[int]:
-        return self.current_data[114]
+        temp = self.current_data[114]
+        return (round(temp) if temp is not None else temp)
 
     def get_max_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[115]
@@ -91,7 +93,8 @@ class RaspberryModel(Model):
         return self.current_data[116]
 
     def get_min_cell_voltage(self) -> Optional[int]:
-        return self.current_data[15]
+        voltage = self.current_data[15]
+        return round(voltage, 1) if voltage is not None else voltage
 
     def get_min_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[123]
@@ -100,7 +103,8 @@ class RaspberryModel(Model):
         return self.current_data[124]
 
     def get_min_cell_temp(self) -> Optional[int]:
-        return self.current_data[117]
+        temp = self.current_data[117]
+        return (round(temp) if temp is not None else temp)
 
     def get_min_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[118]
@@ -109,13 +113,16 @@ class RaspberryModel(Model):
         return self.current_data[119]
 
     def get_ave_cell_temp(self) -> Optional[int]:
-        return self.current_data[120]
+        temp = self.current_data[120]
+        return (round(temp) if temp is not None else temp)
 
     def get_ave_cell_voltage(self) -> Optional[int]:
-        return self.current_data[17]
+        voltage = self.current_data[17]
+        return (round(voltage, 1) if voltage is not None else voltage)
 
     def get_pack_voltage(self) -> Optional[int]:
-        return self.current_data[1]
+        voltage = self.current_data[1]
+        return (round(voltage, 1) if voltage is not None else voltage)
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]

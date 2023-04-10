@@ -111,7 +111,6 @@ class Fault(Page):
     def update_fault_list(self):
         for widget in self.fault_list_frame.winfo_children():
             widget.destroy()
-
         for i, fault in enumerate(self.fault_instance.faults):
             fault_label = CTkLabel(self.fault_list_frame, text=fault,
                                    font=CTkFont(size=30, weight="bold", family="Lato"))
