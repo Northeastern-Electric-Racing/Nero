@@ -130,13 +130,16 @@ class RaspberryModel(Model):
         return self.current_data[90]
     
     def get_gforce_x(self) -> Optional[int]:
-        return self.current_data[91]
+        x_force = self.current_data[91]
+        return (round(x_force, 1) if x_force is not None else x_force)
 
     def get_gforce_y(self) -> Optional[int]:
-        return self.current_data[92]
+        y_force = self.current_data[92]
+        return (round(y_force, 1) if y_force is not None else y_force)
 
     def get_gforce_z(self) -> Optional[int]:
-        return self.current_data[93]
+        z_force = self.current_data[93]
+        return (round(z_force, 1) if z_force is not None else z_force)
     
     # def get_precharge(self) -> Optional[int]:
     #     return self.current_data[129]
