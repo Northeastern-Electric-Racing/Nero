@@ -1,4 +1,5 @@
 import customtkinter
+from tkinter import Frame
 from typing import List
 from modes.debug_mode.debug_mode import DebugMode
 from modes.mode import Mode
@@ -62,42 +63,14 @@ class NeroView(customtkinter.CTk):
         self.debug_screen = DebugMode(parent=self, controller=self, model=self.model)
         self.debug_screen.grid(row=1, column=0, sticky="nsew")
 
-        self.mode_update_time = time.time()
-        self.button_update_time = time.time()
-        self.can_update_time = time.time()
-        self.current_page_update_time = time.time()
-        self.last_pinned_update_time = time.time()
-        self.header_update_time = time.time()
-        # self.update_everything()
-
         self.update_mode()
         self.check_can()
+        self.start_time = time.time()
         self.update_buttons()
         self.update_current_page()
+        self.last_pinned_update_time = time.time()
         self.update_pinned_data()
         self.update_header()
-
-    def update_everything(self):
-        pass
-        # if time.time() - self.mode_update_time >= .001:
-        #     self.update_mode()
-        #     self.mode_update_time = time.time()
-        # if time.time() - self.can_update_time >= .0001:
-        #     self.check_can()
-        #     self.can_update_time = time.time()
-        # if time.time() - self.button_update_time >= .0001:
-        #     self.update_buttons()
-        #     self.button_update_time = time.time()
-        # if time.time() - self.current_page_update_time >= .001:
-        #     self.update_current_page()
-        #     self.current_page_update_time = time.time()
-        # if time.time() - self.last_pinned_update_time >= .001:
-        #     self.update_pinned_data()
-        #     self.last_pinned_update_time = time.time()
-        # if time.time() - self.header_update_time >= .001:
-        #     self.update_header()
-        #     self.header_update_time = time.time()
-        # self.after(10, self.update_everything)
 
     def update_mode(self):
         self.mode_index = self.model.get_mode_index() if self.model.get_mode_index() is not None else self.mode_index
@@ -112,11 +85,11 @@ class NeroView(customtkinter.CTk):
 
     def check_can(self):
         self.model.check_can()
-        self.after(10, self.check_can)
+        self.after(1, self.check_can)
 
     def update_current_page(self):
         self.current_screen.current_page.update()
-        self.after(100, self.update_current_page)
+        self.after(250, self.update_current_page)
 
     def update_header(self):
         self.header.update()
@@ -124,13 +97,13 @@ class NeroView(customtkinter.CTk):
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
-        if time.time() - self.button_update_time >= .001:
+        if time.time() - self.start_time >= .001:
             self.update_enter_button_pressed()
             self.update_up_button_pressed()
             self.update_down_button_pressed()
             self.update_debug_pressed()
             self.update_right_button_pressed()
-            self.button_update_timen = time.time()
+            self.start_time = time.time()
         self.after(1, self.update_buttons)
 
     def update_pinned_data(self):
@@ -140,7 +113,7 @@ class NeroView(customtkinter.CTk):
             self.model.update_average_cell_temps()
             self.model.update_state_of_charge_deltas()
             self.last_pinned_update_time = time.time()
-        self.after(500, self.update_pinned_data)
+        self.after(100, self.update_pinned_data)
 
     def update_right_button_pressed(self):
         value = self.model.get_right_button_pressed()
