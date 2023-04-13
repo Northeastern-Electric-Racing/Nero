@@ -11,7 +11,6 @@ import time
 from models.model import Model
 from header import Header
 import os
-import threading
 
 customtkinter.set_appearance_mode("dark")
 
@@ -83,19 +82,18 @@ class NeroView(customtkinter.CTk):
         self.current_screen.tkraise()
         self.header.tkraise()
         self.after(100, self.update_mode)
-        # threading.Thread(target=(self.update_mode)).start()
 
     def check_can(self):
         self.model.check_can()
-        self.after(10, self.check_can)
+        self.after(1, self.check_can)
 
     def update_current_page(self):
         self.current_screen.current_page.update()
-        self.after(30, self.update_current_page)
+        self.after(250, self.update_current_page)
 
     def update_header(self):
         self.header.update()
-        self.after(250, self.update_header)
+        self.after(100, self.update_header)
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
@@ -106,7 +104,7 @@ class NeroView(customtkinter.CTk):
             self.update_debug_pressed()
             self.update_right_button_pressed()
             self.start_time = time.time()
-        self.after(30, self.update_buttons)
+        self.after(1, self.update_buttons)
 
     def update_pinned_data(self):
         if time.time() - self.last_pinned_update_time >= 1:
@@ -115,7 +113,7 @@ class NeroView(customtkinter.CTk):
             self.model.update_average_cell_temps()
             self.model.update_state_of_charge_deltas()
             self.last_pinned_update_time = time.time()
-        self.after(200, self.update_pinned_data)
+        self.after(100, self.update_pinned_data)
 
     def update_right_button_pressed(self):
         value = self.model.get_right_button_pressed()

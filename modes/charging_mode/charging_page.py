@@ -240,7 +240,7 @@ class Charging(Page):
         self.pack_voltage_value.configure(text=str(pack_voltage) + "V")
 
     def update_current_value_and_battery_image(self):
-        current = self.model.get_current() if self.model.get_current() is not None else "N/A"
+        current = -self.model.get_current() if self.model.get_current() is not None else "N/A"
         self.current_value.configure(text=str(current) + "A")
         self.charging_label.configure(image=BitmapImage(file="images/largeBatteryHorizontal.xbm",
                                                         foreground="yellow") if current <= -0.7 else BitmapImage(file="images/largeBatteryHorizontal.xbm", foreground="white"))
