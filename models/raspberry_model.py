@@ -165,6 +165,18 @@ class RaspberryModel(Model):
 
     def get_segment4_temp(self) -> Optional[int]:
         return self.current_data[128]
+    
+    def get_motor_power(self) -> Optional[int]:
+        return self.current_data[131]
+
+    def get_fan_power(self) -> Optional[int]:
+        return self.current_data[130]
+
+    def get_torque_power(self) -> Optional[int]:
+        return self.current_data[132]
+
+    def get_regen_power(self) -> Optional[int]:
+        return self.current_data[133]
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]
