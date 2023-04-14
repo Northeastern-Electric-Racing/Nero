@@ -103,16 +103,16 @@ class Efficiency(Page):
         self.segment_temperature_bar_graph_frame.grid_columnconfigure(0, weight=1)
         self.segment_temperature_bar_graph_frame.grid(row=0, column=0, sticky="nsew")
 
-        # self.segments = ["1", "2", "3", "4"]
-        # self.segment_temp_fig = plt.figure(facecolor="black")
-        # self.segment_temp_ax = self.segment_temp_fig.add_axes([0, 0.2, 0.8, 1])
-        # self.segment_temp_ax.set_facecolor('black')
-        # self.segment_temp_ax.bar(self.segments, [0, 0, 0, 0], color=["red", "orange", "yellow", "green"])
-        # self.segment_temp_ax.set_xticklabels(self.segments, color="white")
+        self.segments = ["1", "2", "3", "4"]
+        self.segment_temp_fig = plt.figure(facecolor="black")
+        self.segment_temp_ax = self.segment_temp_fig.add_axes([0, 0.2, 0.8, 1])
+        self.segment_temp_ax.set_facecolor('black')
+        self.segment_temp_ax.bar(self.segments, [0, 0, 0, 0], color=["red", "orange", "yellow", "green"])
+        self.segment_temp_ax.set_xticklabels(self.segments, color="white")
 
-        # self.segment_temp_canvas = FigureCanvasTkAgg(self.segment_temp_fig, master=self.segment_temperature_bar_graph_frame)
-        # self.segment_temp_canvas.draw()
-        # self.segment_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
+        self.segment_temp_canvas = FigureCanvasTkAgg(self.segment_temp_fig, master=self.segment_temperature_bar_graph_frame)
+        self.segment_temp_canvas.draw()
+        self.segment_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
         # configure the max cell temperature frame
         self.max_cell_temp_frame = Frame(self.temperatures_frame)
@@ -197,43 +197,43 @@ class Efficiency(Page):
                                             text="Inverter Temp", font=CTkFont(size=25), wraplength=self.width/8)
         self.inverter_temp_label.grid(row=1, column=0, sticky="new")
 
-        # # Configure the graphs frame
-        # self.ave_cell_temp_graph_frame = Frame(self.graphs_frame)
-        # self.ave_cell_temp_graph_frame.grid(row=0, column=0, sticky="nsew")
-        # self.ave_cell_temp_graph_frame.grid_rowconfigure(0, weight=1)
-        # self.ave_cell_temp_graph_frame.grid_columnconfigure(0, weight=1)
+        # Configure the graphs frame
+        self.ave_cell_temp_graph_frame = Frame(self.graphs_frame)
+        self.ave_cell_temp_graph_frame.grid(row=0, column=0, sticky="nsew")
+        self.ave_cell_temp_graph_frame.grid_rowconfigure(0, weight=1)
+        self.ave_cell_temp_graph_frame.grid_columnconfigure(0, weight=1)
 
-        # self.ave_temp_fig, self.ave_temp_ax = plt.subplots(facecolor="black", dpi=100)
-        # self.ave_temp_ax.set_facecolor('black')
-        # self.ave_temp_fig.suptitle('Average Cell Temp', color='white', fontsize=6)
-        # self.ave_temp_ax.set_xlabel('Time [s]', color='white')
-        # self.ave_temp_ax.tick_params(labelcolor='white')
+        self.ave_temp_fig, self.ave_temp_ax = plt.subplots(facecolor="black", dpi=100)
+        self.ave_temp_ax.set_facecolor('black')
+        self.ave_temp_fig.suptitle('Average Cell Temp', color='white', fontsize=6)
+        self.ave_temp_ax.set_xlabel('Time [s]', color='white')
+        self.ave_temp_ax.tick_params(labelcolor='white')
 
-        # # creating the Tkinter canvas containing the Matplotlib figure
-        # self.ave_temp_canvas = FigureCanvasTkAgg(self.ave_temp_fig, master=self.ave_cell_temp_graph_frame)
-        # self.ave_temp_canvas.draw()
+        # creating the Tkinter canvas containing the Matplotlib figure
+        self.ave_temp_canvas = FigureCanvasTkAgg(self.ave_temp_fig, master=self.ave_cell_temp_graph_frame)
+        self.ave_temp_canvas.draw()
 
-        # # placing the canvas on the Tkinter window
-        # self.ave_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
+        # placing the canvas on the Tkinter window
+        self.ave_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
-        # # Create the state of charge delta graph frame
-        # self.state_of_charge_delta_graph_frame = Frame(self.graphs_frame)
-        # self.state_of_charge_delta_graph_frame.grid(row=0, column=1, sticky="nsew")
-        # self.state_of_charge_delta_graph_frame.grid_rowconfigure(0, weight=1)
-        # self.state_of_charge_delta_graph_frame.grid_columnconfigure(0, weight=1)
+        # Create the state of charge delta graph frame
+        self.state_of_charge_delta_graph_frame = Frame(self.graphs_frame)
+        self.state_of_charge_delta_graph_frame.grid(row=0, column=1, sticky="nsew")
+        self.state_of_charge_delta_graph_frame.grid_rowconfigure(0, weight=1)
+        self.state_of_charge_delta_graph_frame.grid_columnconfigure(0, weight=1)
 
-        # self.soc_delta_fig, self.soc_delta_ax = plt.subplots(facecolor="black", dpi=100)
-        # self.soc_delta_ax.set_facecolor('black')
-        # self.soc_delta_fig.suptitle('Change in State of Charge', color='white', fontsize=6)
-        # self.soc_delta_ax.set_xlabel('Time [s]', color='white')
-        # self.soc_delta_ax.tick_params(labelcolor='white')
+        self.soc_delta_fig, self.soc_delta_ax = plt.subplots(facecolor="black", dpi=100)
+        self.soc_delta_ax.set_facecolor('black')
+        self.soc_delta_fig.suptitle('Change in State of Charge', color='white', fontsize=6)
+        self.soc_delta_ax.set_xlabel('Time [s]', color='white')
+        self.soc_delta_ax.tick_params(labelcolor='white')
 
-        # # creating the Tkinter canvas containing the Matplotlib figure
-        # self.soc_delta_canvas = FigureCanvasTkAgg(self.soc_delta_fig, master=self.state_of_charge_delta_graph_frame)
-        # self.soc_delta_canvas.draw()
+        # creating the Tkinter canvas containing the Matplotlib figure
+        self.soc_delta_canvas = FigureCanvasTkAgg(self.soc_delta_fig, master=self.state_of_charge_delta_graph_frame)
+        self.soc_delta_canvas.draw()
 
-        # # placing the canvas on the Tkinter window
-        # self.soc_delta_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
+        # placing the canvas on the Tkinter window
+        self.soc_delta_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
     def color_transformer(self, value):
         if isinstance(value, str):
@@ -260,9 +260,9 @@ class Efficiency(Page):
         self.update_max_cell_temp()
         self.update_state_of_charge()
         self.update_inverter_temp()
-        # self.update_ave_cell_temp()
-        # self.update_state_of_charge_delta()
-        # self.update_pack_segments()
+        self.update_ave_cell_temp()
+        self.update_state_of_charge_delta()
+        self.update_pack_segments()
 
     def update_fan_cooling(self):
         percentage = self.model.get_fan_power() if self.model.get_fan_power() is not None else "N/A"
