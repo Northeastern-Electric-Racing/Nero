@@ -112,6 +112,7 @@ class Fault(Page):
         for widget in self.fault_list_frame.winfo_children():
             widget.destroy()
         for i, fault in enumerate(self.fault_instance.faults):
+            self.fault_list_frame.grid_rowconfigure(i, weight=1)
             fault_label = CTkLabel(self.fault_list_frame, text=fault,
                                    font=CTkFont(size=30, weight="bold", family="Lato"))
             fault_label.grid(row=i, column=0, sticky="nsew")

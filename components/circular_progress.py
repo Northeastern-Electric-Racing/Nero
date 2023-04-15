@@ -39,7 +39,7 @@ class CircularProgressbar(Canvas):
         elif self.extent > 20:
             color = "orange"
         if self.extent >= 100:
-            self.itemconfigure(self.label_id, font=tkFont.Font(family="Lato", size=int(((self.x1 - self.x0) / 3)), weight='bold'))
+            self.itemconfigure(self.label_id, font=tkFont.Font(family="Lato", size=int(((self.x1 - self.x0) / 3) - 10), weight='bold'))
         self.itemconfigure(self.oval_id2, outline=color)
         self.itemconfigure(self.arc_id, outline=color)
         self.itemconfigure(self.oval_id1, outline=color)

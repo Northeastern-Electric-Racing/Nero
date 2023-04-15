@@ -183,14 +183,14 @@ class RaspberryModel(Model):
         if fault_status is not None and fault_status > 0:
             self.fault_instances.append(FaultInstance(fault_status, self.get_max_cell_temp(), self.get_max_cell_voltage(), self.get_ave_cell_temp(
             ), self.get_ave_cell_voltage(), self.get_min_cell_temp(), self.get_min_cell_voltage(), self.get_pack_current(), self.get_dcl(), self.get_ccl()))
-        return self.current_data[107]
+        return fault_status
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         table: List[DebugTableRowValue] = []
         for i in range(0, len(self.current_data)):
             value = self.current_data[i]
             table.append(DebugTableRowValue(i, DATA_IDS[i]["name"],
-                         value if value is not None else "N/A", DATA_IDS[i]["units"]))
+                         round(value, 3) if value is not None else "N/A", DATA_IDS[i]["units"]))
         return table
 
     # The way we get button data is by separating the data into binary and then parsing the bit that represents each button out,
