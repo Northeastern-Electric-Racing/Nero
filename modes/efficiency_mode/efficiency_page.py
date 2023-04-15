@@ -43,7 +43,7 @@ class Efficiency(Page):
         # Configure the power control frame
         # configure the fan speed control frame
         self.accumulator_power_control = Frame(self.power_control_frame, bg="black")
-        self.accumulator_power_control.grid(row=0, column=0, sticky="nsew")
+        self.accumulator_power_control.grid(row=0, column=1, sticky="nsew")
         self.accumulator_power_control.grid_rowconfigure(0, weight=1)
         self.accumulator_power_control.grid_columnconfigure(0, weight=2)
         self.accumulator_power_control.grid_columnconfigure(2, weight=1)
@@ -57,7 +57,7 @@ class Efficiency(Page):
 
         # Configure the torque frame
         self.torque_power_control = Frame(self.power_control_frame, bg="black")
-        self.torque_power_control.grid(row=0, column=1, sticky="nsew")
+        self.torque_power_control.grid(row=0, column=0, sticky="nsew")
         self.torque_power_control.grid_rowconfigure(0, weight=1)
         self.torque_power_control.grid_columnconfigure(0, weight=2)
         self.torque_power_control.grid_columnconfigure(2, weight=1)
@@ -71,7 +71,7 @@ class Efficiency(Page):
 
         # Configure the regen frame
         self.regen_power_control = Frame(self.power_control_frame, bg="black")
-        self.regen_power_control.grid(row=0, column=2, sticky="nsew")
+        self.regen_power_control.grid(row=0, column=3, sticky="nsew")
         self.regen_power_control.grid_rowconfigure(0, weight=1)
         self.regen_power_control.grid_columnconfigure(0, weight=2)
         self.regen_power_control.grid_columnconfigure(2, weight=1)
@@ -85,7 +85,7 @@ class Efficiency(Page):
 
         # configure the motor cooling frame
         self.motor_power_control = Frame(self.power_control_frame, bg="black")
-        self.motor_power_control.grid(row=0, column=3, sticky="nsew")
+        self.motor_power_control.grid(row=0, column=2, sticky="nsew")
         self.motor_power_control.grid_rowconfigure(0, weight=1)
         self.motor_power_control.grid_columnconfigure(0, weight=2)
         self.motor_power_control.grid_columnconfigure(2, weight=1)
