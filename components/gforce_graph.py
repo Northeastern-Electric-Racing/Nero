@@ -44,7 +44,7 @@ class GForceGraph(FigureCanvasTkAgg):
         self.ax.plot(g_direction, g_mag, 'o')
 
         # Set radial limits
-        self.ax.set_rlim(-2, 2)
+        self.ax.set_rlim(-3, 3)
 
         # Set axis labels and title
         self.draw()
