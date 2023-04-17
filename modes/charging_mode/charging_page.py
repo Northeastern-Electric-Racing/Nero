@@ -243,7 +243,7 @@ class Charging(Page):
         current = self.model.get_current() if self.model.get_current() is not None else "N/A"
         self.current_value.configure(text=str(current) + "A")
         self.charging_label.configure(image=BitmapImage(file="images/largeBatteryHorizontal.xbm",
-                                                        foreground="yellow") if isinstance(current, int) and current <= -0.7 else BitmapImage(file="images/largeBatteryHorizontal.xbm", foreground="white"))
+                                                        foreground="yellow") if isinstance(current, float) and current <= -0.7 else BitmapImage(file="images/largeBatteryHorizontal.xbm", foreground="white"))
 
     def update_pack_temp_graph(self):
         # plotting the graph
