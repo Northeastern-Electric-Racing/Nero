@@ -167,7 +167,7 @@ class Speed(Page):
             self.gforce_label.configure(text=f"{round(np.sqrt(np.square(gforce_x) + np.square(gforce_y)))}G")
 
     def update_current(self):
-        current = -self.model.get_current() if self.model.get_current() is not None else "N/A"
+        current = self.model.get_current() if self.model.get_current() is not None else "N/A"
         self.current_label.configure(text=f"{current}A")
 
     def update_dcl(self):
