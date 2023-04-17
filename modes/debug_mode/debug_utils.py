@@ -12,10 +12,10 @@ class DebugPlotValue:
 class FaultInstance:
     def __init__(self, fault_decimal: int, max_cell_temp: int, max_cell_voltage: int, average_cell_temp: int, average_cell_voltage: int, min_cell_temp: int, min_cell_voltage: int, pack_current: int, dcl: int, ccl: int):
         self.faults: List[str] = []
-        fault_bin = bin(fault_decimal)[2:]
+        fault_bin = bin(fault_decimal)[2:][::-1]
         for i in range(0, len(fault_bin)):
             if fault_bin[i] == '1':
-                self.faults.append(FAULTS[i + 1])
+                self.faults.append(FAULTS[i])
         self.max_cell_temp = max_cell_temp if max_cell_temp is not None else "N/A"
         self.max_cell_voltage = max_cell_voltage if max_cell_voltage is not None else "N/A"
         self.average_cell_temp = average_cell_temp if average_cell_temp is not None else "N/A"
