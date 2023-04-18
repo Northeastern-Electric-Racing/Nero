@@ -24,8 +24,7 @@ MINIMUM_DEBOUNCE_VALUE = 30
 class NeroView(customtkinter.CTk):
     def __init__(self) -> None:
         super().__init__()
-        # self.isLinux = platform.platform()[0:5] == "Linux"
-        self.isLinux = False
+        self.isLinux = platform.platform()[0:5] == "Linux"
         self.model: Model = RaspberryModel() if self.isLinux else MockModel()
 
         self.is_debug = False
