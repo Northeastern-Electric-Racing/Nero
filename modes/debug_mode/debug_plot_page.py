@@ -94,7 +94,8 @@ class DebugPlot(Page):
         self.current_time = self.time_presets[self.current_time_index]
 
     def update(self):
-        if (self.update_time - time.time()) > 1:
+        if (time.time() - self.update_time) >= 1:
+            print("test")
             self.ax.clear()
             i = 0
             for id in self.data:
@@ -114,3 +115,4 @@ class DebugPlot(Page):
                 self.key_frames[j].unit_label.configure(text="")
                 self.key_frames[j].current_value_label.configure(text="")
             self.canvas.draw()
+            self.update_time = time.time()
