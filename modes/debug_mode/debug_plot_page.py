@@ -6,7 +6,7 @@ from typing import Dict, List
 from models.model import Model
 from modes.debug_mode.debug_utils import DebugPlotValue
 from modes.page import Page
-
+import time
 
 class DebugPlotKey(Frame):
     def __init__(self, key_value: DebugPlotValue, parent: Frame, width: int):
@@ -50,6 +50,7 @@ class DebugPlot(Page):
         self.current_time_index = 0
         self.current_time = self.time_presets[self.current_time_index]
         self.colors = ["red", "green", "blue", "yellow", "orange", "purple"]
+        self.update_time = time.time()
 
         self.grid_columnconfigure(0, weight=1, minsize=self.width * 0.3)
         self.grid_columnconfigure(1, weight=1, minsize=self.width * 0.7)
@@ -93,22 +94,23 @@ class DebugPlot(Page):
         self.current_time = self.time_presets[self.current_time_index]
 
     def update(self):
-        self.ax.clear()
-        i = 0
-        for id in self.data:
-            # creating key frame
-            self.key_frames[i].name_label.configure(text=self.data[id].name)
-            self.key_frames[i].unit_label.configure(text=self.data[id].unit)
-            self.key_frames[i].current_value_label.configure(
-                text=self.data[id].data[0], text_color=self.colors[i])
+        if (self.update_time - time.time()) > 1:
+            self.ax.clear()
+            i = 0
+            for id in self.data:
+                # creating key frame
+                self.key_frames[i].name_label.configure(text=self.data[id].name)
+                self.key_frames[i].unit_label.configure(text=self.data[id].unit)
+                self.key_frames[i].current_value_label.configure(
+                    text=self.data[id].data[0], text_color=self.colors[i])
 
-            # plotting the graph
-            y = self.data[id].data
-            self.ax.plot(y[0: self.current_time] if len(y) > self.current_time else y, color=self.colors[i])
-            i += 1
-        self.ax.invert_xaxis()
-        for j in range(i, 5):
-            self.key_frames[j].name_label.configure(text="")
-            self.key_frames[j].unit_label.configure(text="")
-            self.key_frames[j].current_value_label.configure(text="")
-        self.canvas.draw()
+                # plotting the graph
+                y = self.data[id].data
+                self.ax.plot(y[0: self.current_time] if len(y) > self.current_time else y, color=self.colors[i])
+                i += 1
+            self.ax.invert_xaxis()
+            for j in range(i, 5):
+                self.key_frames[j].name_label.configure(text="")
+                self.key_frames[j].unit_label.configure(text="")
+                self.key_frames[j].current_value_label.configure(text="")
+            self.canvas.draw()
