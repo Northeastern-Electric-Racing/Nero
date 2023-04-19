@@ -85,7 +85,7 @@ class NeroView(customtkinter.CTk):
 
     def check_can(self):
         self.model.check_can()
-        self.after(10, self.check_can)
+        self.after(1, self.check_can)
 
     def update_current_page(self):
         self.current_screen.current_page.update()
