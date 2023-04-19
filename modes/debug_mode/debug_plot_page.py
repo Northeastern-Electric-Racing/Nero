@@ -95,7 +95,6 @@ class DebugPlot(Page):
 
     def update(self):
         if (time.time() - self.update_time) >= 1:
-            print("test")
             self.ax.clear()
             i = 0
             for id in self.data:
