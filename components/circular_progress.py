@@ -43,3 +43,24 @@ class CircularProgressbar(Canvas):
         self.itemconfigure(self.oval_id2, outline=color)
         self.itemconfigure(self.arc_id, outline=color)
         self.itemconfigure(self.oval_id1, outline=color)
+
+    def setSettingValue(self, value, numSettings=3):
+        self.extent = value if isinstance(value, int) else 0
+        percent = self.extent / numSettings
+        self.itemconfigure(self.arc_id, extent=((percent * self.full_extent) - 1))
+        # Update percentage value displayed.
+        self.itemconfigure(self.label_id, text=str(value))
+
+        color = "red"
+        if percent > 80:
+            color = "green"
+        elif percent > 50:
+            color = "yellow"
+        elif percent > 20:
+            color = "orange"
+        if percent >= 100:
+            self.itemconfigure(self.label_id, font=tkFont.Font(
+                family="Lato", size=int(((self.x1 - self.x0) / 3) - 10), weight='bold'))
+        self.itemconfigure(self.oval_id2, outline=color)
+        self.itemconfigure(self.arc_id, outline=color)
+        self.itemconfigure(self.oval_id1, outline=color)

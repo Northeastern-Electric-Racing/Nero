@@ -274,7 +274,7 @@ class Efficiency(Page):
 
     def update_regen_power(self):
         percentage = self.model.get_regen_power() if self.model.get_regen_power() is not None else "N/A"
-        self.regen_circular_progress.set(percentage)
+        self.regen_circular_progress.setSettingValue(percentage)
 
     def update_motor_power(self):
         percentage = self.model.get_motor_power() if self.model.get_motor_power() is not None else "N/A"
