@@ -16,6 +16,10 @@ class RaspberryModel(Model):
 
         os.environ.__setitem__('DISPLAY', ':0.0')
 
+        os.system('sudo ifconfig can0 down')
+        os.system('sudo ip link set can0 type can bitrate 1000000')
+        os.system('sudo ifconfig can0 up')
+
         threading.Thread(target=self.connect_to_ipc).start()
         pass
 
