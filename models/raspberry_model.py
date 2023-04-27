@@ -1,12 +1,11 @@
-from ner_processing.master_mapping import DATA_IDS
-from ner_processing.master_mapping import MESSAGE_IDS
-from ner_processing.message import Message
 from typing import Optional, List
-import can
+import socket
 import os
+import sys
 from modes.debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
 from modes.debug_mode.debug_utils import FaultInstance
+from constants.data_ids import DATA_IDS
 
 
 class RaspberryModel(Model):
@@ -17,27 +16,27 @@ class RaspberryModel(Model):
 
         os.environ.__setitem__('DISPLAY', ':0.0')
 
-        os.system('sudo ifconfig can0 down')
-        os.system('sudo ip link set can0 type can bitrate 1000000')
-        os.system('sudo ifconfig can0 up')
+        socket_path = "/tmp/ipc.sock"
 
-        # socketcan_native
-        self.can0 = can.interface.Bus(channel='can0', bustype='socketcan')
+        try:
+            os.unlink(socket_path)
+        except OSError:
+            pass
 
-    def check_can(self) -> None:
-        msg = self.can0.recv(10.0)
+        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        s.bind(socket_path)
 
-        if msg.arbitration_id in MESSAGE_IDS:
-            timestamp = int(float(msg.timestamp)*1000)
-            id = int(msg.arbitration_id)
-            data = [int(x) for x in msg.data]
-            msg = Message(timestamp, id, data)
-            decodedList = msg.decode()
-            for data in decodedList:
-                self.current_data[data.id] = data.value
+        s.listen()
 
-        if msg is None:
-            print('Timeout occurred, no message.')
+        while 1:
+            conn, addr = s.accept()
+            try:
+                while 1:
+                    data = conn.recv(16)
+                    if data:
+                        print("received ", data)
+            finally:
+                conn.close()
 
     def get_mph(self) -> Optional[int]:
         mph = self.current_data[101]

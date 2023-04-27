@@ -1,6 +1,6 @@
 from typing import List, Optional, Dict
 from modes.debug_mode.debug_utils import DebugPlotValue
-from ner_processing.master_mapping import DATA_IDS
+from constants.data_ids import DATA_IDS
 from modes.debug_mode.debug_utils import FaultInstance
 
 

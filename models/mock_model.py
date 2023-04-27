@@ -3,8 +3,10 @@ import random
 from pynput.keyboard import Listener, Key
 from models.model import Model
 from modes.debug_mode.debug_table_page import DebugTableRowValue
-from constants import MODES
-
+from constants.modes import MODES
+import socket
+import os
+import threading
 
 class MockModel(Model):
     def __init__(self) -> None:
@@ -36,7 +38,30 @@ class MockModel(Model):
         self.mode_index = 0
         self.listener = Listener(on_press=self.on_press, on_release=self.on_release)
         self.listener.start()
+        threading.Thread(target=self.connect_to_ipc).start()
         pass
+
+    def connect_to_ipc(self):
+        socket_path = "/tmp/ipc.sock"
+        try:
+            os.unlink(socket_path)
+        except OSError:
+            pass
+
+        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        s.bind(socket_path)
+
+        s.listen()
+
+        while True:
+            conn, addr = s.accept()
+            try:
+                while True:
+                    data = conn.recv(16)
+                    if data:
+                        print("received ", data)
+            finally:
+                conn.close()
 
     def check_can(self) -> None:
         rng = random.randint(0, 10000)

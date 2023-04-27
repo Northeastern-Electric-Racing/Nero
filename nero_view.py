@@ -3,7 +3,7 @@ from tkinter import Frame
 from typing import List
 from modes.debug_mode.debug_mode import DebugMode
 from modes.mode import Mode
-from constants import MODES
+from constants.modes import MODES
 from models.mock_model import MockModel
 from models.raspberry_model import RaspberryModel
 import platform
