@@ -6,7 +6,7 @@ from modes.debug_mode.debug_table_page import DebugTableRowValue
 from models.model import Model
 from modes.debug_mode.debug_utils import FaultInstance
 from constants.data_ids import DATA_IDS
-
+import threading
 
 class RaspberryModel(Model):
     def __init__(self) -> None:
@@ -16,8 +16,11 @@ class RaspberryModel(Model):
 
         os.environ.__setitem__('DISPLAY', ':0.0')
 
-        socket_path = "/tmp/ipc.sock"
+        threading.Thread(target=self.connect_to_ipc).start()
+        pass
 
+    def connect_to_ipc(self):
+        socket_path = "/tmp/ipc.sock"
         try:
             os.unlink(socket_path)
         except OSError:
@@ -28,10 +31,10 @@ class RaspberryModel(Model):
 
         s.listen()
 
-        while 1:
+        while True:
             conn, addr = s.accept()
             try:
-                while 1:
+                while True:
                     data = conn.recv(16)
                     if data:
                         print("received ", data)
