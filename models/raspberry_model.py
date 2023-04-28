@@ -53,11 +53,11 @@ class RaspberryModel(Model):
 
     def get_status(self) -> Optional[int]:
         status: Optional[int] = self.current_data[85]
-        return (status == 1 if status is not None else None)
+        return (int(status) == 1 if status is not None else None)
 
     def get_dir(self) -> Optional[int]:
         dir = self.current_data[84]
-        return (dir == 1 if dir is not None else None)
+        return (int(dir) == 1 if dir is not None else None)
 
     def get_pack_temp(self) -> Optional[int]:
         pack_temp = self.current_data[10]
@@ -144,7 +144,7 @@ class RaspberryModel(Model):
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]
-        if fault_status is not None and fault_status > 0:
+        if fault_status is not None and int(fault_status) > 0:
             self.fault_instances.append(FaultInstance(fault_status, self.get_max_cell_temp(), self.get_max_cell_voltage(), self.get_ave_cell_temp(
             ), self.get_ave_cell_voltage(), self.get_min_cell_temp(), self.get_min_cell_voltage(), self.get_pack_current(), self.get_dcl(), self.get_ccl()))
         return self.current_data[107]
@@ -162,7 +162,7 @@ class RaspberryModel(Model):
     def get_forward_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
-            binary = bin(value)
+            binary = bin(int(value))
             binary = binary[2:][::-1]
             value = binary[6] if len(binary) >= 7 else 0
         return value
@@ -170,7 +170,7 @@ class RaspberryModel(Model):
     def get_backward_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
-            binary = bin(value)
+            binary = bin(int(value))
             binary = binary[2:][::-1]
             value = binary[7] if len(binary) >= 8 else 0
         return value
@@ -178,7 +178,7 @@ class RaspberryModel(Model):
     def get_debug_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
-            binary = bin(value)
+            binary = bin(int(value))
             binary = binary[2:][::-1]
             value = binary[2] if len(binary) >= 3 else 0
         return value
@@ -186,7 +186,7 @@ class RaspberryModel(Model):
     def get_right_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
-            binary = bin(value)
+            binary = bin(int(value))
             binary = binary[2:][::-1]
             value = binary[1] if len(binary) >= 2 else 0
         return value
@@ -194,7 +194,7 @@ class RaspberryModel(Model):
     def get_enter_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
-            binary = bin(value)
+            binary = bin(int(value))
             binary = binary[2:][::-1]
             value = binary[0]
         return value
@@ -202,7 +202,7 @@ class RaspberryModel(Model):
     def get_up_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
-            binary = bin(value)
+            binary = bin(int(value))
             binary = binary[2:][::-1]
             value = binary[5] if len(binary) >= 6 else 0
         return value
@@ -210,10 +210,10 @@ class RaspberryModel(Model):
     def get_down_button_pressed(self) -> Optional[str]:
         value = self.current_data[104]
         if value is not None:
-            binary = bin(value)
+            binary = bin(int(value))
             binary = binary[2:][::-1]
             value = binary[4] if len(binary) >= 5 else 0
         return value
 
-    def get_mode_index(self):
+    def get_mode_index(self) -> Optional[float]:
         return self.current_data[105]
