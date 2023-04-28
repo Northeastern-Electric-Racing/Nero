@@ -8,13 +8,14 @@ from modes.debug_mode.debug_utils import FaultInstance
 from constants.data_ids import DATA_IDS
 import threading
 
+
 class RaspberryModel(Model):
     def __init__(self) -> None:
         super().__init__()
         self.current_data = [None] * len(DATA_IDS)
         os.chdir("/home/ner/Desktop/Nero/")
 
-        os.environ.__setitem__('DISPLAY', ':0.0')
+        os.environ.__setitem__("DISPLAY", ":0.0")
 
         threading.Thread(target=self.connect_to_ipc).start()
         pass
@@ -46,33 +47,36 @@ class RaspberryModel(Model):
                             index = 0
                             value = 0
                         print(index, value)
+                        if index > len(self.current_data):
+                            index = 0
+                            value = 0
                         self.current_data.insert(index, value)
             finally:
                 conn.close()
 
     def get_mph(self) -> Optional[int]:
         mph = self.current_data[101]
-        return (round(mph) if mph is not None else mph)
+        return round(mph) if mph is not None else mph
 
     def get_kph(self) -> Optional[int]:
         kph = self.current_data[101]
-        return (round(kph * 1.601) if kph is not None else kph)
+        return round(kph * 1.601) if kph is not None else kph
 
     def get_status(self) -> Optional[int]:
         status: Optional[int] = self.current_data[85]
-        return (int(status) == 1 if status is not None else None)
+        return int(status) == 1 if status is not None else None
 
     def get_dir(self) -> Optional[int]:
         dir = self.current_data[84]
-        return (int(dir) == 1 if dir is not None else None)
+        return int(dir) == 1 if dir is not None else None
 
     def get_pack_temp(self) -> Optional[int]:
         pack_temp = self.current_data[10]
-        return (round(pack_temp) if pack_temp is not None else pack_temp)
+        return round(pack_temp) if pack_temp is not None else pack_temp
 
     def get_motor_temp(self) -> Optional[int]:
         motor_temp = self.current_data[28]
-        return (round(motor_temp) if motor_temp is not None else motor_temp)
+        return round(motor_temp) if motor_temp is not None else motor_temp
 
     def get_state_of_charge(self) -> Optional[int]:
         return self.current_data[4]
@@ -139,29 +143,47 @@ class RaspberryModel(Model):
 
     def get_ccl(self) -> Optional[int]:
         return self.current_data[90]
-    
+
     def get_gforce_x(self) -> Optional[int]:
         return self.current_data[91]
-    
+
     def get_gforce_y(self) -> Optional[int]:
         return self.current_data[92]
-    
+
     def get_gforce_z(self) -> Optional[int]:
         return self.current_data[93]
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]
         if fault_status is not None and int(fault_status) > 0:
-            self.fault_instances.append(FaultInstance(fault_status, self.get_max_cell_temp(), self.get_max_cell_voltage(), self.get_ave_cell_temp(
-            ), self.get_ave_cell_voltage(), self.get_min_cell_temp(), self.get_min_cell_voltage(), self.get_pack_current(), self.get_dcl(), self.get_ccl()))
+            self.fault_instances.append(
+                FaultInstance(
+                    fault_status,
+                    self.get_max_cell_temp(),
+                    self.get_max_cell_voltage(),
+                    self.get_ave_cell_temp(),
+                    self.get_ave_cell_voltage(),
+                    self.get_min_cell_temp(),
+                    self.get_min_cell_voltage(),
+                    self.get_pack_current(),
+                    self.get_dcl(),
+                    self.get_ccl(),
+                )
+            )
         return self.current_data[107]
 
     def get_debug_table_values(self) -> List[DebugTableRowValue]:
         table: List[DebugTableRowValue] = []
         for i in range(0, len(self.current_data)):
             value = self.current_data[i]
-            table.append(DebugTableRowValue(i, DATA_IDS[i]["name"],
-                         value if value is not None else "N/A", DATA_IDS[i]["units"]))
+            table.append(
+                DebugTableRowValue(
+                    i,
+                    DATA_IDS[i]["name"],
+                    value if value is not None else "N/A",
+                    DATA_IDS[i]["units"],
+                )
+            )
         return table
 
     # The way we get button data is by separating the data into binary and then parsing the bit that represents each button out,
