@@ -37,7 +37,7 @@ class RaspberryModel(Model):
                 while True:
                     data = conn.recv(16)
                     if data:
-                        data = data.decode("utf-8")
+                        data = data.decode()
                         data = data.split(",")
                         try:
                             index = int(data[0])
@@ -45,6 +45,7 @@ class RaspberryModel(Model):
                         except:
                             index = 0
                             value = 0
+                        print(index, value)
                         self.current_data.insert(index, value)
             finally:
                 conn.close()
