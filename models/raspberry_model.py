@@ -37,7 +37,9 @@ class RaspberryModel(Model):
                 while True:
                     data = conn.recv(16)
                     if data:
-                        print(data.split(","))
+                        data = data.decode("utf-8")
+                        data = data.split(",")
+                        self.current_data.insert(int(data[0]), float(data[1]))
             finally:
                 conn.close()
 
