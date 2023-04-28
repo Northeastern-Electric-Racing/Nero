@@ -148,8 +148,9 @@ class RaspberryModel(Model):
         z_force = self.current_data[93]
         return (round(z_force, 1) if z_force is not None else z_force)
     
-    # def get_precharge(self) -> Optional[int]:
-    #     return self.current_data[129]
+    def get_vbat(self) -> Optional[int]:
+        vbat = self.current_data[139]
+        return (round(vbat, 1) if vbat is not None else vbat)
     
     def get_sd_card_status(self) -> Optional[int]:
         return self.current_data[129]
