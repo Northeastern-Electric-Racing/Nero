@@ -36,23 +36,20 @@ class RaspberryModel(Model):
             conn, addr = s.accept()
             try:
                 while True:
-                    data = conn.recv(16)
+                    data = conn.recv(1024)
                     if data:
                         data = data.decode()
                         print("BYTES: ", data)
-                        data = data.split(",")
+                        data = data.split("index:")
                         print("STRING: ", data)
                         try:
-                            index = int(data[0])
-                            value = float(data[1])
+                            for i in range(len(data)):
+                                values = data[i].split(",")
+                                index = int(values[0])
+                                value = float(values[1])
+                                self.current_data.insert(index, value)
                         except:
-                            index = 0
-                            value = 0
-                        if index > len(self.current_data):
-                            index = 0
-                            value = 0
-                        print(index, value)
-                        self.current_data.insert(index, value)
+                            print("ERROR: ", sys.exc_info()[0])
             finally:
                 conn.close()
 
