@@ -39,7 +39,13 @@ class RaspberryModel(Model):
                     if data:
                         data = data.decode("utf-8")
                         data = data.split(",")
-                        self.current_data.insert(int(data[0]), float(data[1]))
+                        try:
+                            index = int(data[0])
+                            value = float(data[1])
+                        except ValueError:
+                            index = 0
+                            value = 0
+                        self.current_data.insert(index, value)
             finally:
                 conn.close()
 
