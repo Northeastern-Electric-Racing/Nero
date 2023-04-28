@@ -39,17 +39,19 @@ class RaspberryModel(Model):
                     data = conn.recv(16)
                     if data:
                         data = data.decode()
+                        print("BYTES: ", data)
                         data = data.split(",")
+                        print("STRING: ", data)
                         try:
                             index = int(data[0])
                             value = float(data[1])
                         except:
                             index = 0
                             value = 0
-                        print(index, value)
                         if index > len(self.current_data):
                             index = 0
                             value = 0
+                        print(index, value)
                         self.current_data.insert(index, value)
             finally:
                 conn.close()
