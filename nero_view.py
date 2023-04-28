@@ -73,6 +73,7 @@ class NeroView(customtkinter.CTk):
         self.update_header()
 
     def update_mode(self):
+        print(self.model.get_mode_index())
         self.mode_index = int(self.model.get_mode_index()) if self.model.get_mode_index() is not None else self.mode_index
         if self.is_debug:
             self.current_screen = self.debug_screen
