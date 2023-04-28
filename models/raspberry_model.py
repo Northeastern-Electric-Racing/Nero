@@ -42,7 +42,7 @@ class RaspberryModel(Model):
                         try:
                             index = int(data[0])
                             value = float(data[1])
-                        except ValueError:
+                        except ValueError or IndexError:
                             index = 0
                             value = 0
                         self.current_data.insert(index, value)
