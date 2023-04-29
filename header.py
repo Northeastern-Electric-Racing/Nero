@@ -106,7 +106,7 @@ class Header(Frame):
         self.pack_voltage_label.configure(image=BitmapImage(file="images/packVoltage.xbm", foreground=color))
 
     def update_soc(self) -> None:
-        self.soc.set(self.model.get_state_of_charge() if self.model.get_state_of_charge() is not None else "N/A")
+        self.soc.set(int(self.model.get_state_of_charge()) if self.model.get_state_of_charge() is not None else "N/A")
 
     def update_current_mode_label(self) -> None:
         self.current_mode_label.configure(text=self.parent.current_mode.name.upper())

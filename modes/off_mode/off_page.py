@@ -102,7 +102,7 @@ class Off(Page):
             self.off_label.configure(text="ACTIVE", text_color="yellow")
 
     def update_state_of_charge(self) -> None:
-        state_of_charge = self.model.get_state_of_charge() if not None else "N/A"
+        state_of_charge = int(self.model.get_state_of_charge()) if self.model.get_state_of_charge() is not None else "N/A"
         self.state_of_charge_battery.set(state_of_charge)
 
     def update_motor_temp(self) -> None:

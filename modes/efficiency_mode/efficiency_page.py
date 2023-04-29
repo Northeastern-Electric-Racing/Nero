@@ -264,19 +264,19 @@ class Efficiency(Page):
         self.update_pack_segments()
 
     def update_fan_cooling(self):
-        percentage = self.model.get_fan_power() if self.model.get_fan_power() is not None else "N/A"
+        percentage = int(self.model.get_fan_power()) if self.model.get_fan_power() is not None else "N/A"
         self.accumulator_circular_progress.set(percentage)
 
     def update_torque_power(self):
-        percentage = self.model.get_torque_power() if self.model.get_torque_power() is not None else "N/A"
+        percentage = int(self.model.get_torque_power()) if self.model.get_torque_power() is not None else "N/A"
         self.torque_circular_progress.set(percentage)
 
     def update_regen_power(self):
-        percentage = self.model.get_regen_power() if self.model.get_regen_power() is not None else "N/A"
+        percentage = int(self.model.get_regen_power()) if self.model.get_regen_power() is not None else "N/A"
         self.regen_circular_progress.set(percentage)
 
     def update_motor_power(self):
-        percentage = self.model.get_motor_power() if self.model.get_motor_power() is not None else "N/A"
+        percentage = int(self.model.get_motor_power()) if self.model.get_motor_power() is not None else "N/A"
         self.motor_circular_progress.set(percentage)
 
     def update_pack_segments(self):
@@ -296,7 +296,7 @@ class Efficiency(Page):
         self.max_cell_temp_value.configure(text=str(temp))
 
     def update_state_of_charge(self):
-        soc = self.model.get_state_of_charge() if self.model.get_state_of_charge() is not None else "N/A"
+        soc = int(self.model.get_state_of_charge()) if self.model.get_state_of_charge() is not None else "N/A"
         self.state_of_charge_battery.set(soc)
 
     def update_inverter_temp(self):
