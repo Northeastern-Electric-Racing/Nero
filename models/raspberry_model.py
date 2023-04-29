@@ -38,8 +38,8 @@ class RaspberryModel(Model):
                 while True:
                     data = conn.recv(1024)
                     if data:
-                        data = data.decode()
                         print("BYTES: ", data)
+                        data = data.decode()
                         data = data.split("index:")
                         print("STRING: ", data)
                         try:
