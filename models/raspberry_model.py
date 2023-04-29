@@ -36,7 +36,7 @@ class RaspberryModel(Model):
             conn, addr = s.accept()
             try:
                 while True:
-                    data = conn.recv(40)
+                    data = conn.recv(1024)
                     if data:
                         # print("BYTES: ", data)
                         data = data.decode()
