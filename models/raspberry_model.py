@@ -91,7 +91,7 @@ class RaspberryModel(Model):
 
     def get_max_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[13]
-        return (round(voltage, 1) if voltage is not None else voltage)
+        return (round(voltage, 3) if voltage is not None else voltage)
 
     def get_max_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[121]
@@ -111,7 +111,7 @@ class RaspberryModel(Model):
 
     def get_min_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[15]
-        return round(voltage, 1) if voltage is not None else voltage
+        return round(voltage, 3) if voltage is not None else voltage
 
     def get_min_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[123]
@@ -135,11 +135,11 @@ class RaspberryModel(Model):
 
     def get_ave_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[17]
-        return (round(voltage, 1) if voltage is not None else voltage)
+        return (round(voltage, 3) if voltage is not None else voltage)
 
     def get_pack_voltage(self) -> Optional[int]:
         voltage = self.current_data[1]
-        return (round(voltage, 1) if voltage is not None else voltage)
+        return (int(voltage) if voltage is not None else voltage)
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]

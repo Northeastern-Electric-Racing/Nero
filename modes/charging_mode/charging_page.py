@@ -221,14 +221,14 @@ class Charging(Page):
 
     def update_max_cell_value(self):
         max_cell = self.model.get_max_cell_voltage() if self.model.get_max_cell_voltage() is not None else "N/A"
-        max_cell_chip_number = self.model.get_max_cell_voltage_chip_number() if self.model.get_max_cell_voltage_chip_number() is not None else "N/A"
-        max_cell_cell_number = self.model.get_max_cell_voltage_cell_number() if self.model.get_max_cell_voltage_cell_number() is not None else "N/A"
+        max_cell_chip_number = int(self.model.get_max_cell_voltage_chip_number()) if self.model.get_max_cell_voltage_chip_number() is not None else "N/A"
+        max_cell_cell_number = int(self.model.get_max_cell_voltage_cell_number()) if self.model.get_max_cell_voltage_cell_number() is not None else "N/A"
         self.max_cell_value.configure(text=str(max_cell) + "V, #" + str(max_cell_chip_number) + "-" + str(max_cell_cell_number))
 
     def update_min_cell_value(self):
         min_cell = self.model.get_min_cell_voltage() if self.model.get_min_cell_voltage() is not None else "N/A"
-        min_cell_chip_number = self.model.get_min_cell_voltage_chip_number() if self.model.get_min_cell_voltage_chip_number() is not None else "N/A"
-        min_cell_cell_number = self.model.get_min_cell_voltage_cell_number() if self.model.get_min_cell_voltage_cell_number() is not None else "N/A"
+        min_cell_chip_number = int(self.model.get_min_cell_voltage_chip_number()) if self.model.get_min_cell_voltage_chip_number() is not None else "N/A"
+        min_cell_cell_number = int(self.model.get_min_cell_voltage_cell_number()) if self.model.get_min_cell_voltage_cell_number() is not None else "N/A"
         self.min_cell_value.configure(text=str(min_cell) + "V, #" + str(min_cell_chip_number) + "-" + str(min_cell_cell_number))
 
     def update_cell_delta_value(self):
