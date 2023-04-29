@@ -32,6 +32,8 @@ class RaspberryModel(Model):
 
         s.listen()
 
+        os.system("/home/ner/Desktop/Ner_Processing/target/release/ner_processing")
+
         while True:
             conn, addr = s.accept()
             try:
