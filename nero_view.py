@@ -90,7 +90,7 @@ class NeroView(customtkinter.CTk):
 
     def update_current_page(self):
         self.current_screen.current_page.update()
-        self.after(100, self.update_current_page)
+        self.after(50, self.update_current_page)
 
     def update_header(self):
         self.header.update()
