@@ -41,7 +41,7 @@ class RaspberryModel(Model):
                         print("BYTES: ", data)
                         data = data.decode()
                         data = data.split("index:")
-                        data = data.remove("")
+                        data.pop(0)
                         print("STRING: ", data)
                         try:
                             for i in range(len(data)):
