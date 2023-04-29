@@ -1,12 +1,15 @@
 from typing import Optional, List
 import random
 from pynput.keyboard import Listener, Key
+from constants.data_ids import DATA_IDS
 from models.model import Model
 from modes.debug_mode.debug_table_page import DebugTableRowValue
 from constants.modes import MODES
 import socket
 import os
 import threading
+
+from modes.debug_mode.debug_utils import FaultInstance
 
 class MockModel(Model):
     def __init__(self) -> None:

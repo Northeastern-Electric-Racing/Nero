@@ -47,7 +47,9 @@ class RaspberryModel(Model):
                             for i in range(len(data)):
                                 values = data[i].split(",")
                                 index = int(values[0])
-                                value = float(values[1].split("}")[0])
+                                split_value = values[1].split("}")
+                                value = float(split_value[0])
+                                test = split_value[1]
                                 self.current_data[index] = value
                         except:
                             print("ERROR: ", sys.exc_info()[0])
