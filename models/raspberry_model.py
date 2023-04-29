@@ -136,6 +136,11 @@ class RaspberryModel(Model):
     def get_ave_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[17]
         return (round(voltage, 3) if voltage is not None else voltage)
+    
+    def get_cell_delta(self) -> Optional[int]:
+        max = self.get_max_cell_voltage()
+        min = self.get_min_cell_voltage()
+        return (round(max - min, 3) if max is not None and min is not None else None)
 
     def get_pack_voltage(self) -> Optional[int]:
         voltage = self.current_data[1]

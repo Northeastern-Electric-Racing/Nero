@@ -203,7 +203,7 @@ class Charging(Page):
         self.update_burning_cells()
 
     def update_progress_bar(self):
-        self.soc = self.model.get_state_of_charge() if self.model.get_state_of_charge() is not None else 0
+        self.soc = int(self.model.get_state_of_charge()) if self.model.get_state_of_charge() is not None else 0
         self.progress_bar["value"] = self.soc
 
     def update_burning_cells(self):
@@ -232,7 +232,7 @@ class Charging(Page):
         self.min_cell_value.configure(text=str(min_cell) + "V, #" + str(min_cell_chip_number) + "-" + str(min_cell_cell_number))
 
     def update_cell_delta_value(self):
-        cell_delta = self.model.get_ave_cell_voltage() if self.model.get_ave_cell_voltage() is not None else "N/A"
+        cell_delta = self.model.get_cell_delta() if self.model.get_ave_cell_voltage() is not None else "N/A"
         self.cell_delta_value.configure(text=str(cell_delta) + "V")
 
     def update_pack_voltage_value(self):
