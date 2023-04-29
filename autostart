@@ -1,7 +1,4 @@
 #!/bin/bash
 
 cd /home/ner/Desktop/Nero
-python3.10 main.py
-sleep 1
-cd /home/ner/Desktop/Ner_Processing
-cargo run --release
+python3.10 main.py & sleep 1 & cd /home/ner/Desktop/Ner_Processing & cargo run
