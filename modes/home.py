@@ -190,7 +190,7 @@ class Home(Page):
     def update_state_charge(self):
         new_charge: Optional[int] = self.model.get_state_of_charge()
 
-        new_charge_text = str(new_charge) + "%" if new_charge is not None else "N/A"
+        new_charge_text = str(int(new_charge)) + "%" if new_charge is not None else "N/A"
 
         self.state_charge.configure(text=new_charge_text)
 
