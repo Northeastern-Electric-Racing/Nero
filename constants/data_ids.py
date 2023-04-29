@@ -1,4 +1,3 @@
-
 # Mapping from data ids to their description (potentially add format information)
 DATA_IDS = {
     0: {
@@ -289,10 +288,7 @@ DATA_IDS = {
         "name": "Inverter Enable Lockout",
         "units": "BIN",
     },
-    72: { 
-        "name": "Direction Command", 
-        "units": "BIN"
-    },
+    72: {"name": "Direction Command", "units": "BIN"},
     73: {
         "name": "BMS Active",
         "units": "BIN",
@@ -421,156 +417,43 @@ DATA_IDS = {
         "name": "Wheel Buttons",
         "units": "BIN",
     },
-    105: {
-        "name": "MPU Mode State",
-        "units": ""
-    },
-    106: {
-        "name": "BMS State",
-        "units": ""
-    },
-    107: {
-        "name": "BMS Faults",
-        "units": "HEX"
-    },
-    108: {
-        "name": "Latitude",
-        "units": "Deg"
-    },
-    109: {
-        "name": "Longitude",
-        "units": "Deg"
-    },
-    110: {
-        "name": "GPS Fix Status",
-        "units": ""
-    },
-    111: {
-        "name": "Altitude",
-        "units": "m"
-    },
-    112: {
-        "name": "Ground Speed",
-        "units": "m/s"
-    },
-    113: {
-        "name": "Heading Direction",
-        "units": "Deg"
-    },
-    114: {
-        "name": "High Cell Temp",
-        "units": "C"
-    },
-    115: {
-        "name": "High Cell Temp Chip Number",
-        "units": ""
-    },
-    116: {
-        "name": "High Cell Temp Cell Number",
-        "units": ""
-    }, 
-    117: {
-        "name": "Low Cell Temp",
-        "units": "C"
-    },
-    118: {
-        "name": "Low Cell Temp Chip Number",
-        "units": ""
-    },
-    119: {
-        "name": "Low Cell Temp Cell Number",
-        "units": ""
-    },
-    120: {
-        "name": "Average Cell Temp",
-        "units": "C"
-    },
-    121: {
-        "name": "High Cell Voltage Chip Number",
-        "units": ""
-    },
-    122: {
-        "name": "High Cell Voltage Cell Number",
-        "units": ""
-    },
-    123: {
-        "name": "Low Cell Voltage Chip Number",
-        "units": ""
-    },
-    124: {
-        "name": "Low Cell Voltage Cell Number",
-        "units": ""
-    },
-    125: {
-        "name": "Segment 1 Average Temperature",
-        "units": "C"
-    },
-    126: {
-        "name": "Segment 2 Average Temperature",
-        "units": "C"
-    },
-    127: {
-        "name": "Segment 3 Average Temperature",
-        "units": "C"
-    },
-    128: {
-        "name": "Segment 4 Average Temperature",
-        "units": "C"
-    },
-    129: {
-        "name": "Logging Status",
-        "units": ""
-    },
-    130: {
-        "name": "Accumulator Fan Percentage",
-        "units": "%"
-    },
-    131: {
-        "name": "Motor Fan Percentage",
-        "units": "%"
-    },
-    132: {
-        "name": "Torque Limit Percentage",
-        "units": "%"
-    },
-    133: {
-        "name": "Regen Strength Value",
-        "units": ""
-    },
-    134: {
-        "name": "Charger State",
-        "units": ""
-    },
-    135: {
-        "name": "Measurement System Valid",
-        "units": ""
-    },
-    136: {
-        "name": "System Status",
-        "units": ""
-    },
-    137: {
-        "name": "Charge Status",
-        "units": ""
-    },
-    138: {
-        "name": "ibat",
-        "units": "A"
-    },
-    139: {
-        "name": "vbat",
-        "units": "V"
-    },
-    140: {
-        "name": "vin",
-        "units": "V"
-    },
-    141: {
-        "name": "vsys",
-        "units": "V"
-    },
-    142: {
-        "name": "iin",
-        "units": "A"
-    }
+    105: {"name": "MPU Mode State", "units": ""},
+    106: {"name": "BMS State", "units": ""},
+    107: {"name": "BMS Faults", "units": "HEX"},
+    108: {"name": "Latitude", "units": "Deg"},
+    109: {"name": "Longitude", "units": "Deg"},
+    110: {"name": "GPS Fix Status", "units": ""},
+    111: {"name": "Altitude", "units": "m"},
+    112: {"name": "Ground Speed", "units": "m/s"},
+    113: {"name": "Heading Direction", "units": "Deg"},
+    114: {"name": "High Cell Temp", "units": "C"},
+    115: {"name": "High Cell Temp Chip Number", "units": ""},
+    116: {"name": "High Cell Temp Cell Number", "units": ""},
+    117: {"name": "Low Cell Temp", "units": "C"},
+    118: {"name": "Low Cell Temp Chip Number", "units": ""},
+    119: {"name": "Low Cell Temp Cell Number", "units": ""},
+    120: {"name": "Average Cell Temp", "units": "C"},
+    121: {"name": "High Cell Voltage Chip Number", "units": ""},
+    122: {"name": "High Cell Voltage Cell Number", "units": ""},
+    123: {"name": "Low Cell Voltage Chip Number", "units": ""},
+    124: {"name": "Low Cell Voltage Cell Number", "units": ""},
+    125: {"name": "Segment 1 Average Temperature", "units": "C"},
+    126: {"name": "Segment 2 Average Temperature", "units": "C"},
+    127: {"name": "Segment 3 Average Temperature", "units": "C"},
+    128: {"name": "Segment 4 Average Temperature", "units": "C"},
+    129: {"name": "Logging Status", "units": ""},
+    130: {"name": "Accumulator Fan Percentage", "units": "%"},
+    131: {"name": "Motor Fan Percentage", "units": "%"},
+    132: {"name": "Torque Limit Percentage", "units": "%"},
+    133: {"name": "Regen Strength Value", "units": ""},
+    134: {"name": "Charger State", "units": ""},
+    135: {"name": "Measurement System Valid", "units": ""},
+    136: {"name": "System Status", "units": ""},
+    137: {"name": "Charge Status", "units": ""},
+    138: {"name": "ibat", "units": "A"},
+    139: {"name": "vbat", "units": "V"},
+    140: {"name": "vin", "units": "V"},
+    141: {"name": "vsys", "units": "V"},
+    142: {"name": "iin", "units": "A"},
+    143: {"name": "Cell Burning Status", "units": ""},
 }

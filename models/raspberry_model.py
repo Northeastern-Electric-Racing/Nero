@@ -174,6 +174,9 @@ class RaspberryModel(Model):
         vbat = self.current_data[139]
         return (round(vbat, 1) if vbat is not None else vbat)
     
+    def get_balancing_cells(self) -> Optional[int]:
+        return self.current_data[143]
+    
     def get_sd_card_status(self) -> Optional[int]:
         return self.current_data[129]
 
