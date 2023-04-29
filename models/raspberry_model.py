@@ -38,12 +38,12 @@ class RaspberryModel(Model):
                 while True:
                     data = conn.recv(1024)
                     if data:
-                        print("BYTES: ", data)
+                        # print("BYTES: ", data)
                         data = data.decode()
                         data = data.split("index:")
                         try:
                             data.pop(0)
-                            print("STRING: ", data)
+                            # print("STRING: ", data)
                             for i in range(len(data)):
                                 values = data[i].split(",")
                                 index = int(values[0])
@@ -189,6 +189,7 @@ class RaspberryModel(Model):
     # The way we get button data is by separating the data into binary and then parsing the bit that represents each button out,
     # if the binary string is too short then we know the button wasnt pressed so we can return 0
     def get_forward_button_pressed(self) -> Optional[str]:
+        print(self.current_data[104])
         value = self.current_data[104]
         if value is not None:
             binary = bin(int(value))
