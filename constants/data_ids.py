@@ -456,4 +456,5 @@ DATA_IDS = {
     141: {"name": "vsys", "units": "V"},
     142: {"name": "iin", "units": "A"},
     143: {"name": "Cell Burning Status", "units": ""},
+    144: {"name": "Traction Control On", "units": ""},
 }

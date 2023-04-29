@@ -203,6 +203,9 @@ class RaspberryModel(Model):
 
     def get_regen_power(self) -> Optional[int]:
         return self.current_data[133]
+    
+    def get_traction_control(self) -> Optional[int]:
+        return self.current_data[144]
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]

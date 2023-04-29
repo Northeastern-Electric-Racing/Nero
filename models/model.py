@@ -103,6 +103,9 @@ class Model:
     def get_burning_cells(self) -> Optional[int]:
         pass
 
+    def get_traction_control(self) -> Optional[int]:
+        pass
+
     def get_inverter_temp(self) -> Optional[int]:
         pass
 
