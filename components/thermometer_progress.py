@@ -21,17 +21,18 @@ class ThermometerProgress(Canvas):
         self.rectangle_starting_x = np.cos(np.deg2rad(135)) * self.radius + self.tx
         self.rectangle_ending_x = np.cos(np.deg2rad(45)) * self.radius + self.tx
         self.rectangle_ending_y = self.y1 - self.radius
-        self.custom_font = tkFont.Font(family="Helvetica", size=int(self.radius), weight='bold')
+        self.custom_font = tkFont.Font(family="Lato", size=int(self.radius), weight='bold')
+        arc_endpoint_y = self.starting_height + (self.radius - np.sin(np.deg2rad(45)) * self.radius)
+        tick_interval = (arc_endpoint_y - self.y0) / 10
 
-      #   self.rectangle = self.create_rectangle(self.rectangle_starting_x, self.y0,
-      #                                          self.rectangle_ending_x, self.rectangle_ending_y, outline="red")
+
         self.filler = self.create_rectangle(self.rectangle_starting_x, self.rectangle_ending_y,
                                             self.rectangle_ending_x, self.rectangle_ending_y, outline="red", fill="red")
 
         self.left_line = self.create_line(self.rectangle_starting_x, self.y0,
-                                          self.rectangle_starting_x, self.starting_height + self.starting_height/50, fill="white")
+                                          self.rectangle_starting_x, arc_endpoint_y, fill="white")
         self.right_line = self.create_line(self.rectangle_ending_x, self.y0,
-                                           self.rectangle_ending_x, self.starting_height + self.starting_height/50, fill="white")
+                                           self.rectangle_ending_x, arc_endpoint_y, fill="white")
 
         self.bottom_arc = self.create_arc(self.starting_x, self.starting_height, self.ending_x, self.y1,
                                           start=self.start_ang, extent=270, outline="red", fill="red")
@@ -43,10 +44,11 @@ class ThermometerProgress(Canvas):
 
         # Create incremental lines for the thermometer
         for i in range(10):
-            self.create_line(self.rectangle_starting_x, self.starting_height - (((self.height - self.radius * 2)/10) * i), self.rectangle_starting_x + self.radius/2, self.starting_height - (((self.height - self.radius * 2) /10) * i), fill="white")
+            self.create_line(self.rectangle_starting_x, arc_endpoint_y - (tick_interval * i),
+                             self.rectangle_starting_x + self.radius/2, arc_endpoint_y - (tick_interval * i), fill="white")
 
     def set(self, value):
         self.value = value if isinstance(value, int) else 0
         x0, y0, x1, y1 = self.coords(self.filler)
-        y0 = self.y1 - (self.y1 - self.y0) * (self.value / (self.low + self.high))
+        y0 = self.rectangle_ending_y - (self.y1 - self.y0) * (self.value / (self.low + self.high))
         self.coords(self.filler, x0, y0, x1, y1)

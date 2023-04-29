@@ -111,10 +111,10 @@ class Fault(Page):
     def update_fault_list(self):
         for widget in self.fault_list_frame.winfo_children():
             widget.destroy()
-
         for i, fault in enumerate(self.fault_instance.faults):
+            self.fault_list_frame.grid_rowconfigure(i, weight=1)
             fault_label = CTkLabel(self.fault_list_frame, text=fault,
-                                   font=CTkFont(size=30, weight="bold", family="Helvetica"))
+                                   font=CTkFont(size=30, weight="bold", family="Lato"))
             fault_label.grid(row=i, column=0, sticky="nsew")
 
     def update_current_graph(self):
@@ -132,7 +132,7 @@ class CellInfoFrame(Frame):
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
 
-        cell_font = CTkFont(size=40, weight="bold", family="Helvetica")
+        cell_font = CTkFont(size=40, weight="bold", family="Lato")
         self.cell_icon = CTkLabel(self, text=icon, font=cell_font)
         self.cell_icon.grid(row=0, column=0, sticky="nsew")
 

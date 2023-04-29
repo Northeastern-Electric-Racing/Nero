@@ -232,7 +232,7 @@ class Charging(Page):
         self.min_cell_value.configure(text=str(min_cell) + "V, #" + str(min_cell_chip_number) + "-" + str(min_cell_cell_number))
 
     def update_cell_delta_value(self):
-        cell_delta = self.model.get_cell_delta() if self.model.get_cell_delta() is not None else "N/A"
+        cell_delta = self.model.get_ave_cell_voltage() if self.model.get_ave_cell_voltage() is not None else "N/A"
         self.cell_delta_value.configure(text=str(cell_delta) + "V")
 
     def update_pack_voltage_value(self):
@@ -240,10 +240,10 @@ class Charging(Page):
         self.pack_voltage_value.configure(text=str(pack_voltage) + "V")
 
     def update_current_value_and_battery_image(self):
-        current = -self.model.get_current() if self.model.get_current() is not None else "N/A"
+        current = self.model.get_current() if self.model.get_current() is not None else "N/A"
         self.current_value.configure(text=str(current) + "A")
         self.charging_label.configure(image=BitmapImage(file="images/largeBatteryHorizontal.xbm",
-                                                        foreground="yellow") if current >= 0.7 else BitmapImage(file="images/largeBatteryHorizontal.xbm", foreground="white"))
+                                                        foreground="yellow") if isinstance(current, float) and current <= -0.7 else BitmapImage(file="images/largeBatteryHorizontal.xbm", foreground="white"))
 
     def update_pack_temp_graph(self):
         # plotting the graph

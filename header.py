@@ -60,14 +60,14 @@ class Header(Frame):
         self.pack_voltage_label.grid(row=0, column=2, sticky="nsew")
 
         # configure precharge label
-        self.precharge_label = customtkinter.CTkLabel(self, text="N/A", font=customtkinter.CTkFont(size=25))
-        self.precharge_label.grid(row=0, column=4, sticky="e", padx=5)
+        self.vbat_label = customtkinter.CTkLabel(self, text="N/A", font=customtkinter.CTkFont(size=25))
+        self.vbat_label.grid(row=0, column=4, sticky="e", padx=5)
 
     def update(self) -> None:
         self.update_soc()
         self.update_mpu_image()
         self.update_bms_image()
-        self.update_precharge_label()
+        self.update_vbat_label()
         self.update_current_mode_label()
         self.update_pack_temp()
         self.update_motor_temp()
@@ -85,10 +85,9 @@ class Header(Frame):
         else:
             self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="green"))
 
-    def update_precharge_label(self) -> None:
-        precharge = self.model.get_precharge() if self.model.get_precharge() is not None else "N/A"
-        color = precharge_state_color_transformer(precharge)
-        self.precharge_label.configure(text=precharge, text_color=color)
+    def update_vbat_label(self) -> None:
+        vbat = self.model.get_vbat() if self.model.get_vbat() is not None else "N/A"
+        self.vbat_label.configure(text=str(vbat))
 
     def update_pack_temp(self) -> None:
         pack_temp_value = self.model.get_pack_temp() if self.model.get_pack_temp() is not None else 0

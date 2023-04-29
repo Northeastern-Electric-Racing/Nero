@@ -43,7 +43,7 @@ class Efficiency(Page):
         # Configure the power control frame
         # configure the fan speed control frame
         self.accumulator_power_control = Frame(self.power_control_frame, bg="black")
-        self.accumulator_power_control.grid(row=0, column=0, sticky="nsew")
+        self.accumulator_power_control.grid(row=0, column=1, sticky="nsew")
         self.accumulator_power_control.grid_rowconfigure(0, weight=1)
         self.accumulator_power_control.grid_columnconfigure(0, weight=2)
         self.accumulator_power_control.grid_columnconfigure(2, weight=1)
@@ -57,7 +57,7 @@ class Efficiency(Page):
 
         # Configure the torque frame
         self.torque_power_control = Frame(self.power_control_frame, bg="black")
-        self.torque_power_control.grid(row=0, column=1, sticky="nsew")
+        self.torque_power_control.grid(row=0, column=0, sticky="nsew")
         self.torque_power_control.grid_rowconfigure(0, weight=1)
         self.torque_power_control.grid_columnconfigure(0, weight=2)
         self.torque_power_control.grid_columnconfigure(2, weight=1)
@@ -71,7 +71,7 @@ class Efficiency(Page):
 
         # Configure the regen frame
         self.regen_power_control = Frame(self.power_control_frame, bg="black")
-        self.regen_power_control.grid(row=0, column=2, sticky="nsew")
+        self.regen_power_control.grid(row=0, column=3, sticky="nsew")
         self.regen_power_control.grid_rowconfigure(0, weight=1)
         self.regen_power_control.grid_columnconfigure(0, weight=2)
         self.regen_power_control.grid_columnconfigure(2, weight=1)
@@ -85,7 +85,7 @@ class Efficiency(Page):
 
         # configure the motor cooling frame
         self.motor_power_control = Frame(self.power_control_frame, bg="black")
-        self.motor_power_control.grid(row=0, column=3, sticky="nsew")
+        self.motor_power_control.grid(row=0, column=2, sticky="nsew")
         self.motor_power_control.grid_rowconfigure(0, weight=1)
         self.motor_power_control.grid_columnconfigure(0, weight=2)
         self.motor_power_control.grid_columnconfigure(2, weight=1)
@@ -121,7 +121,7 @@ class Efficiency(Page):
         self.max_cell_temp_frame.grid_columnconfigure(0, weight=1)
         self.max_cell_temp_frame.grid_columnconfigure(1, weight=1)
 
-        self.max_cell_temp_thermometer = ThermometerProgress(self.max_cell_temp_frame, 0, 50, 100, 250, high=60, low=-10)
+        self.max_cell_temp_thermometer = ThermometerProgress(self.max_cell_temp_frame, 0, 50, 100, 250, high=65, low=-15)
         self.max_cell_temp_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.max_cell_value_frame = Frame(self.max_cell_temp_frame, background="black")
@@ -181,7 +181,7 @@ class Efficiency(Page):
         self.inverter_temp_frame.grid_columnconfigure(0, weight=1)
         self.inverter_temp_frame.grid_columnconfigure(1, weight=1)
 
-        self.inverter_temp_thermometer = ThermometerProgress(self.inverter_temp_frame, 0, 50, 100, 125)
+        self.inverter_temp_thermometer = ThermometerProgress(self.inverter_temp_frame, 0, 50, 100, 125, -30, 80)
         self.inverter_temp_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.inverter_temp_value_frame = Frame(self.inverter_temp_frame, background="black")
@@ -216,6 +216,7 @@ class Efficiency(Page):
         # placing the canvas on the Tkinter window
         self.ave_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
+        # Create the state of charge delta graph frame
         self.state_of_charge_delta_graph_frame = Frame(self.graphs_frame)
         self.state_of_charge_delta_graph_frame.grid(row=0, column=1, sticky="nsew")
         self.state_of_charge_delta_graph_frame.grid_rowconfigure(0, weight=1)
@@ -228,27 +229,27 @@ class Efficiency(Page):
         self.soc_delta_ax.tick_params(labelcolor='white')
 
         # creating the Tkinter canvas containing the Matplotlib figure
-        self.ave_temp_canvas = FigureCanvasTkAgg(self.soc_delta_fig, master=self.state_of_charge_delta_graph_frame)
-        self.ave_temp_canvas.draw()
+        self.soc_delta_canvas = FigureCanvasTkAgg(self.soc_delta_fig, master=self.state_of_charge_delta_graph_frame)
+        self.soc_delta_canvas.draw()
 
         # placing the canvas on the Tkinter window
-        self.ave_temp_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
+        self.soc_delta_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
     def color_transformer(self, value):
-         if isinstance(value, str):
-                return "white"
-         if value < 0:
-               return "purple"
-         if value <= 20:
-               return "blue"
-         if value <= 30:
-               return "green"
-         if value <= 40:
-               return "yellow"
-         if value <= 50:
-               return "orange"
-         if value > 50:
-               return "red"
+        if isinstance(value, str):
+            return "white"
+        if value < 0:
+            return "purple"
+        if value <= 20:
+            return "blue"
+        if value <= 30:
+            return "green"
+        if value <= 40:
+            return "yellow"
+        if value <= 50:
+            return "orange"
+        if value > 50:
+            return "red"
 
     def update(self):
         self.update_fan_cooling()
@@ -273,7 +274,7 @@ class Efficiency(Page):
 
     def update_regen_power(self):
         percentage = int(self.model.get_regen_power()) if self.model.get_regen_power() is not None else "N/A"
-        self.regen_circular_progress.set(percentage)
+        self.regen_circular_progress.setSettingValue(percentage)
 
     def update_motor_power(self):
         percentage = int(self.model.get_motor_power()) if self.model.get_motor_power() is not None else "N/A"
@@ -286,7 +287,7 @@ class Efficiency(Page):
         segment4_temp = self.model.get_segment4_temp() if self.model.get_segment4_temp() is not None else "N/A"
         self.segment_temp_ax.clear()
         self.segment_temp_ax.bar(self.segments, [segment1_temp,
-                                 segment2_temp,segment3_temp,segment4_temp], color=[self.color_transformer(segment1_temp), self.color_transformer(segment2_temp), self.color_transformer(segment3_temp), self.color_transformer(segment4_temp)])
+                                 segment2_temp, segment3_temp, segment4_temp], color=[self.color_transformer(segment1_temp), self.color_transformer(segment2_temp), self.color_transformer(segment3_temp), self.color_transformer(segment4_temp)])
         self.segment_temp_ax.set_xticklabels(self.segments, color="white")
         self.segment_temp_canvas.draw()
 
@@ -313,8 +314,10 @@ class Efficiency(Page):
         temps = self.model.average_cell_temps
         self.ave_temp_ax.clear()
         self.ave_temp_ax.plot(temps, color='red')
+        self.ave_temp_canvas.draw()
 
     def update_state_of_charge_delta(self):
         soc_deltas = self.model.state_of_charge_deltas
         self.soc_delta_ax.clear()
         self.soc_delta_ax.plot(soc_deltas, color='purple')
+        self.soc_delta_canvas.draw()

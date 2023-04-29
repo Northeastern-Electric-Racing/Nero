@@ -88,7 +88,8 @@ class RaspberryModel(Model):
         return self.current_data[2]
 
     def get_max_cell_voltage(self) -> Optional[int]:
-        return self.current_data[13]
+        voltage = self.current_data[13]
+        return (round(voltage, 1) if voltage is not None else voltage)
 
     def get_max_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[121]
@@ -97,7 +98,8 @@ class RaspberryModel(Model):
         return self.current_data[122]
 
     def get_max_cell_temp(self) -> Optional[int]:
-        return self.current_data[114]
+        temp = self.current_data[114]
+        return (round(temp) if temp is not None else temp)
 
     def get_max_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[115]
@@ -106,7 +108,8 @@ class RaspberryModel(Model):
         return self.current_data[116]
 
     def get_min_cell_voltage(self) -> Optional[int]:
-        return self.current_data[15]
+        voltage = self.current_data[15]
+        return round(voltage, 1) if voltage is not None else voltage
 
     def get_min_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[123]
@@ -115,7 +118,8 @@ class RaspberryModel(Model):
         return self.current_data[124]
 
     def get_min_cell_temp(self) -> Optional[int]:
-        return self.current_data[117]
+        temp = self.current_data[117]
+        return (round(temp) if temp is not None else temp)
 
     def get_min_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[118]
@@ -124,13 +128,16 @@ class RaspberryModel(Model):
         return self.current_data[119]
 
     def get_ave_cell_temp(self) -> Optional[int]:
-        return self.current_data[120]
+        temp = self.current_data[120]
+        return (round(temp) if temp is not None else temp)
 
     def get_ave_cell_voltage(self) -> Optional[int]:
-        return self.current_data[17]
+        voltage = self.current_data[17]
+        return (round(voltage, 1) if voltage is not None else voltage)
 
     def get_pack_voltage(self) -> Optional[int]:
-        return self.current_data[1]
+        voltage = self.current_data[1]
+        return (round(voltage, 1) if voltage is not None else voltage)
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
@@ -145,13 +152,47 @@ class RaspberryModel(Model):
         return self.current_data[90]
 
     def get_gforce_x(self) -> Optional[int]:
-        return self.current_data[91]
+        x_force = self.current_data[91]
+        return (round(x_force, 1) if x_force is not None else x_force)
 
     def get_gforce_y(self) -> Optional[int]:
-        return self.current_data[92]
+        y_force = self.current_data[92]
+        return (round(y_force, 1) if y_force is not None else y_force)
 
     def get_gforce_z(self) -> Optional[int]:
-        return self.current_data[93]
+        z_force = self.current_data[93]
+        return (round(z_force, 1) if z_force is not None else z_force)
+    
+    def get_vbat(self) -> Optional[int]:
+        vbat = self.current_data[139]
+        return (round(vbat, 1) if vbat is not None else vbat)
+    
+    def get_sd_card_status(self) -> Optional[int]:
+        return self.current_data[129]
+
+    def get_segment1_temp(self) -> Optional[int]:
+        return self.current_data[125]
+
+    def get_segment2_temp(self) -> Optional[int]:
+        return self.current_data[126]
+
+    def get_segment3_temp(self) -> Optional[int]:
+        return self.current_data[127]
+
+    def get_segment4_temp(self) -> Optional[int]:
+        return self.current_data[128]
+    
+    def get_motor_power(self) -> Optional[int]:
+        return self.current_data[131]
+
+    def get_fan_power(self) -> Optional[int]:
+        return self.current_data[130]
+
+    def get_torque_power(self) -> Optional[int]:
+        return self.current_data[132]
+
+    def get_regen_power(self) -> Optional[int]:
+        return self.current_data[133]
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[107]
@@ -180,7 +221,7 @@ class RaspberryModel(Model):
                 DebugTableRowValue(
                     i,
                     DATA_IDS[i]["name"],
-                    value if value is not None else "N/A",
+                    round(value, 3) if value is not None else "N/A",
                     DATA_IDS[i]["units"],
                 )
             )
