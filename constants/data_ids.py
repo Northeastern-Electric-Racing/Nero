@@ -289,8 +289,8 @@ DATA_IDS = {
         "name": "Inverter Enable Lockout",
         "units": "BIN",
     },
-    72: {
-        "name": "Direction Command",
+    72: { 
+        "name": "Direction Command", 
         "units": "BIN"
     },
     73: {
@@ -468,7 +468,7 @@ DATA_IDS = {
     116: {
         "name": "High Cell Temp Cell Number",
         "units": ""
-    },
+    }, 
     117: {
         "name": "Low Cell Temp",
         "units": "C"
@@ -521,4 +521,56 @@ DATA_IDS = {
         "name": "Logging Status",
         "units": ""
     },
+    130: {
+        "name": "Accumulator Fan Percentage",
+        "units": "%"
+    },
+    131: {
+        "name": "Motor Fan Percentage",
+        "units": "%"
+    },
+    132: {
+        "name": "Torque Limit Percentage",
+        "units": "%"
+    },
+    133: {
+        "name": "Regen Strength Value",
+        "units": ""
+    },
+    134: {
+        "name": "Charger State",
+        "units": ""
+    },
+    135: {
+        "name": "Measurement System Valid",
+        "units": ""
+    },
+    136: {
+        "name": "System Status",
+        "units": ""
+    },
+    137: {
+        "name": "Charge Status",
+        "units": ""
+    },
+    138: {
+        "name": "ibat",
+        "units": "A"
+    },
+    139: {
+        "name": "vbat",
+        "units": "V"
+    },
+    140: {
+        "name": "vin",
+        "units": "V"
+    },
+    141: {
+        "name": "vsys",
+        "units": "V"
+    },
+    142: {
+        "name": "iin",
+        "units": "A"
+    }
 }
