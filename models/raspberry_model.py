@@ -32,31 +32,29 @@ class RaspberryModel(Model):
 
         s.listen()
 
+        conn, addr = s.accept()
         os.system("/home/ner/Desktop/Ner_Processing/target/release/ner_processing")
-
-        while True:
-            conn, addr = s.accept()
-            try:
-                while True:
-                    data = conn.recv(1024)
-                    if data:
-                        # print("BYTES: ", data)
-                        data = data.decode()
-                        data = data.split("index:")
-                        try:
-                            data.pop(0)
-                            # print("STRING: ", data)
-                            for i in range(len(data)):
-                                values = data[i].split(",")
-                                index = int(values[0])
-                                split_value = values[1].split("}")
-                                value = float(split_value[0])
-                                test = split_value[1]
-                                self.current_data[index] = value
-                        except:
-                            print("ERROR: ", sys.exc_info()[0])
-            finally:
-                conn.close()
+        try:
+            while True:
+                data = conn.recv(1024)
+                if data:
+                    # print("BYTES: ", data)
+                    data = data.decode()
+                    data = data.split("index:")
+                    try:
+                        data.pop(0)
+                        # print("STRING: ", data)
+                        for i in range(len(data)):
+                            values = data[i].split(",")
+                            index = int(values[0])
+                            split_value = values[1].split("}")
+                            value = float(split_value[0])
+                            test = split_value[1]
+                            self.current_data[index] = value
+                    except:
+                        print("ERROR: ", sys.exc_info()[0])
+        finally:
+            conn.close()
 
     def get_mph(self) -> Optional[int]:
         mph = self.current_data[101]
@@ -93,7 +91,7 @@ class RaspberryModel(Model):
 
     def get_max_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[13]
-        return (round(voltage, 3) if voltage is not None else voltage)
+        return round(voltage, 3) if voltage is not None else voltage
 
     def get_max_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[121]
@@ -103,7 +101,7 @@ class RaspberryModel(Model):
 
     def get_max_cell_temp(self) -> Optional[int]:
         temp = self.current_data[114]
-        return (round(temp) if temp is not None else temp)
+        return round(temp) if temp is not None else temp
 
     def get_max_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[115]
@@ -123,7 +121,7 @@ class RaspberryModel(Model):
 
     def get_min_cell_temp(self) -> Optional[int]:
         temp = self.current_data[117]
-        return (round(temp) if temp is not None else temp)
+        return round(temp) if temp is not None else temp
 
     def get_min_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[118]
@@ -133,20 +131,20 @@ class RaspberryModel(Model):
 
     def get_ave_cell_temp(self) -> Optional[int]:
         temp = self.current_data[120]
-        return (round(temp) if temp is not None else temp)
+        return round(temp) if temp is not None else temp
 
     def get_ave_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[17]
-        return (round(voltage, 3) if voltage is not None else voltage)
-    
+        return round(voltage, 3) if voltage is not None else voltage
+
     def get_cell_delta(self) -> Optional[int]:
         max = self.get_max_cell_voltage()
         min = self.get_min_cell_voltage()
-        return (round(max - min, 3) if max is not None and min is not None else None)
+        return round(max - min, 3) if max is not None and min is not None else None
 
     def get_pack_voltage(self) -> Optional[int]:
         voltage = self.current_data[1]
-        return (int(voltage) if voltage is not None else voltage)
+        return int(voltage) if voltage is not None else voltage
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[106]
@@ -162,23 +160,23 @@ class RaspberryModel(Model):
 
     def get_gforce_x(self) -> Optional[int]:
         x_force = self.current_data[91]
-        return (round(x_force, 1) if x_force is not None else x_force)
+        return round(x_force, 1) if x_force is not None else x_force
 
     def get_gforce_y(self) -> Optional[int]:
         y_force = self.current_data[92]
-        return (round(y_force, 1) if y_force is not None else y_force)
+        return round(y_force, 1) if y_force is not None else y_force
 
     def get_gforce_z(self) -> Optional[int]:
         z_force = self.current_data[93]
-        return (round(z_force, 1) if z_force is not None else z_force)
-    
+        return round(z_force, 1) if z_force is not None else z_force
+
     def get_vbat(self) -> Optional[int]:
         vbat = self.current_data[139]
-        return (round(vbat, 1) if vbat is not None else vbat)
-    
+        return round(vbat, 1) if vbat is not None else vbat
+
     def get_balancing_cells(self) -> Optional[int]:
         return self.current_data[143]
-    
+
     def get_sd_card_status(self) -> Optional[int]:
         return self.current_data[129]
 
@@ -193,7 +191,7 @@ class RaspberryModel(Model):
 
     def get_segment4_temp(self) -> Optional[int]:
         return self.current_data[128]
-    
+
     def get_motor_power(self) -> Optional[int]:
         return self.current_data[131]
 
@@ -205,7 +203,7 @@ class RaspberryModel(Model):
 
     def get_regen_power(self) -> Optional[int]:
         return self.current_data[133]
-    
+
     def get_traction_control(self) -> Optional[int]:
         return self.current_data[144]
 
