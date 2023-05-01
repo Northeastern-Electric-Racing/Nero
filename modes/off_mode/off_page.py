@@ -112,7 +112,7 @@ class Off(Page):
         self.motor_temp_thermometer.set(motor_temp)
         self.motor_temp_value.configure(text=f"{motor_temp}°")
     
-    def mapValueToPrecharge(value: int | str) -> str:
+    def mapValueToPrecharge(self, value: int | str) -> str:
         if isinstance(value, int):
             match value:
                 case 0:
