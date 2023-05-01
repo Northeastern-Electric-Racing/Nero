@@ -7,6 +7,7 @@ from models.model import Model
 from modes.debug_mode.debug_utils import FaultInstance
 from constants.data_ids import DATA_IDS
 import threading
+import subprocess
 
 
 class RaspberryModel(Model):
@@ -33,7 +34,7 @@ class RaspberryModel(Model):
         s.listen()
 
         conn, addr = s.accept()
-        os.system("/home/ner/Desktop/Ner_Processing/target/release/ner_processing &")
+        subprocess.Popen(['/home/ner/Desktop/Ner_Processing/target/release/ner_processing'], detached_process=True)
         try:
             while True:
                 data = conn.recv(1024)
