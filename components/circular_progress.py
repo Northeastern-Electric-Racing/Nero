@@ -44,9 +44,13 @@ class CircularProgressbar(Canvas):
         self.itemconfigure(self.arc_id, outline=color)
         self.itemconfigure(self.oval_id1, outline=color)
 
-    def setSettingValue(self, value, numSettings=3):
+    """
+    The value will be represented as a percentage of the number of increments
+    If theres three increments, a value of 1 will be 33% of the circle filled
+    """
+    def setIncrementValue(self, value, numIncrements=3):
         self.extent = value if isinstance(value, int) else 0
-        percent = self.extent / numSettings
+        percent = self.extent / numIncrements
         self.itemconfigure(self.arc_id, extent=((percent * self.full_extent) - 1))
         # Update percentage value displayed.
         self.itemconfigure(self.label_id, text=str(value))
