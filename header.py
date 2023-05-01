@@ -81,9 +81,9 @@ class Header(Frame):
 
     def update_mpu_image(self) -> None:
         if self.model.get_traction_control() is not None and int(self.model.get_traction_control()) > 0:
-            self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="green"))
+            self.mpu_fault_image_label.configure(image=BitmapImage(file="images/tractionControl.xbm", foreground="green"))
         else:
-            self.mpu_fault_image_label.configure(image=BitmapImage(file="images/mpu.xbm", foreground="red"))
+            self.mpu_fault_image_label.configure(image=BitmapImage(file="images/tractionControl.xbm", foreground="red"))
 
     def update_vbat_label(self) -> None:
         vbat = self.model.get_vbat() if self.model.get_vbat() is not None else "N/A"
