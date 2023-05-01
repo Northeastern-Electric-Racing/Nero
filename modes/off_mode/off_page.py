@@ -112,9 +112,9 @@ class Off(Page):
         self.motor_temp_thermometer.set(motor_temp)
         self.motor_temp_value.configure(text=f"{motor_temp}°")
     
-    def mapValueToPrecharge(self, value: int | str) -> str:
-        if isinstance(value, int):
-            match value:
+    def mapValueToPrecharge(self, value: float | str) -> str:
+        if isinstance(value, float):
+            match int(value):
                 case 0:
                     return "GLV ON"
                 case 1:
