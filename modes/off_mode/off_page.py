@@ -98,6 +98,7 @@ class Off(Page):
 
     def update_precharge(self) -> None:
         precharge = self.model.get_precharge() if self.model.get_precharge() is not None else "N/A"
+        precharge = self.mapValueToPrecharge(precharge)
         self.precharge_label.configure(text=precharge, text_color=precharge_state_color_transformer(precharge))
         if precharge == "Ready":
             self.off_label.configure(text="ACTIVE", text_color="yellow")
@@ -110,3 +111,24 @@ class Off(Page):
         motor_temp = self.model.get_motor_temp() if self.model.get_motor_temp() is not None else "N/A"
         self.motor_temp_thermometer.set(motor_temp)
         self.motor_temp_value.configure(text=f"{motor_temp}°")
+    
+    def mapValueToPrecharge(value: int | str) -> str:
+        if isinstance(value, int):
+            match value:
+                case 0:
+                    return "GLV ON"
+                case 1:
+                    return "PRECHARGING"
+                case 2:
+                    return "TSMS ON"
+                case 3:
+                    return "PRECHARGING"
+                case 4: 
+                    return "READY"
+                case 5:
+                    return "FAULTED"
+        else:
+            return value
+
+
+

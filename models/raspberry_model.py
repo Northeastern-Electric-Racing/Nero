@@ -82,6 +82,9 @@ class RaspberryModel(Model):
 
     def get_state_of_charge(self) -> Optional[int]:
         return self.current_data[4]
+    
+    def get_precharge(self) -> Optional[int]:
+        return self.current_data[145]
 
     def get_lv_battery(self) -> Optional[int]:
         return self.current_data[63]

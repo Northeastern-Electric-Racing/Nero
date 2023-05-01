@@ -457,4 +457,5 @@ DATA_IDS = {
     142: {"name": "iin", "units": "A"},
     143: {"name": "Cell Burning Status", "units": ""},
     144: {"name": "Traction Control On", "units": ""},
+    145: {"name": "Precharge State", "units": ""}
 }
