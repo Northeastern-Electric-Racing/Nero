@@ -118,14 +118,12 @@ class Off(Page):
                 case 0:
                     return "GLV ON"
                 case 1:
-                    return "PRECHARGING"
-                case 2:
                     return "TSMS ON"
-                case 3:
+                case 2:
                     return "PRECHARGING"
-                case 4: 
+                case 3:
                     return "READY"
-                case 5:
+                case 4: 
                     return "FAULTED"
         else:
             return value
