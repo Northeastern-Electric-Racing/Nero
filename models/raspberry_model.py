@@ -33,7 +33,7 @@ class RaspberryModel(Model):
         s.listen()
 
         conn, addr = s.accept()
-        #os.system("/home/ner/Desktop/Ner_Processing/target/release/ner_processing")
+        os.system("/home/ner/Desktop/Ner_Processing/target/release/ner_processing &")
         try:
             while True:
                 data = conn.recv(1024)
