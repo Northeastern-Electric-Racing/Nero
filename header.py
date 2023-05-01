@@ -44,7 +44,6 @@ class Header(Frame):
         self.summary_frame.grid_rowconfigure(0, weight=1)
         self.summary_frame.grid_columnconfigure(0, weight=1)
         self.summary_frame.grid_columnconfigure(1, weight=1)
-        self.summary_frame.grid_columnconfigure(2, weight=1)
         self.summary_frame.grid(row=0, column=3, sticky="nsew")
 
         self.pack_temp_image = BitmapImage(file="images/packTemp.xbm", foreground="white")
@@ -54,10 +53,6 @@ class Header(Frame):
         self.motor_temp_image = BitmapImage(file="images/motorTemp.xbm", foreground="white")
         self.motor_temp_label = customtkinter.CTkLabel(self.summary_frame, image=self.motor_temp_image, text="")
         self.motor_temp_label.grid(row=0, column=1, sticky="nsew")
-
-        self.pack_voltage_image = BitmapImage(file="images/packVoltage.xbm", foreground="white")
-        self.pack_voltage_label = customtkinter.CTkLabel(self.summary_frame, image=self.pack_voltage_image, text="")
-        self.pack_voltage_label.grid(row=0, column=2, sticky="nsew")
 
         # configure precharge label
         self.vbat_label = customtkinter.CTkLabel(self, text="N/A", font=customtkinter.CTkFont(size=25))
@@ -71,7 +66,6 @@ class Header(Frame):
         self.update_current_mode_label()
         self.update_pack_temp()
         self.update_motor_temp()
-        self.update_pack_voltage()
 
     def update_bms_image(self) -> None:
         if self.model.get_BMS_fault() is not None and self.model.get_BMS_fault() > 0:
@@ -98,11 +92,6 @@ class Header(Frame):
         motor_temp_value = self.model.get_motor_temp() if self.model.get_motor_temp() is not None else 0
         color = "purple" if motor_temp_value < 10 else "blue" if motor_temp_value < 20 else "green" if motor_temp_value < 50 else "yellow" if motor_temp_value < 70 else "orange" if motor_temp_value < 85 else "red"
         self.motor_temp_label.configure(image=BitmapImage(file="images/motorTemp.xbm", foreground=color))
-
-    def update_pack_voltage(self) -> None:
-        pack_voltage_value = self.model.get_pack_voltage() if self.model.get_pack_voltage() is not None else 0
-        color = "red" if pack_voltage_value < 200 else "orange" if pack_voltage_value < 240 else "yellow" if pack_voltage_value < 280 else "green"
-        self.pack_voltage_label.configure(image=BitmapImage(file="images/packVoltage.xbm", foreground=color))
 
     def update_soc(self) -> None:
         self.soc.set(int(self.model.get_state_of_charge()) if self.model.get_state_of_charge() is not None else "N/A")
