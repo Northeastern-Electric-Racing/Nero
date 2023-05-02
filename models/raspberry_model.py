@@ -32,30 +32,31 @@ class RaspberryModel(Model):
         s.bind(socket_path)
 
         s.listen()
-        os.system('/home/ner/Desktop/Ner_Processing/target/release/ner_processing')
-        conn, addr = s.accept()
+        os.system('/home/ner/Desktop/Ner_Processing/target/release/ner_processing &')
         
-        try:
-            while True:
-                data = conn.recv(1024)
-                if data:
-                    # print("BYTES: ", data)
-                    data = data.decode()
-                    data = data.split("index:")
-                    try:
-                        data.pop(0)
-                        # print("STRING: ", data)
-                        for i in range(len(data)):
-                            values = data[i].split(",")
-                            index = int(values[0])
-                            split_value = values[1].split("}")
-                            value = float(split_value[0])
-                            test = split_value[1]
-                            self.current_data[index] = value
-                    except:
-                        print("ERROR: ", sys.exc_info()[0])
-        finally:
-            conn.close()
+        while True:
+            conn, addr = s.accept()
+            try:
+                while True:
+                    data = conn.recv(1024)
+                    if data:
+                        # print("BYTES: ", data)
+                        data = data.decode()
+                        data = data.split("index:")
+                        try:
+                            data.pop(0)
+                            # print("STRING: ", data)
+                            for i in range(len(data)):
+                                values = data[i].split(",")
+                                index = int(values[0])
+                                split_value = values[1].split("}")
+                                value = float(split_value[0])
+                                test = split_value[1]
+                                self.current_data[index] = value
+                        except:
+                            print("ERROR: ", sys.exc_info()[0])
+            finally:
+                conn.close()
 
     def get_mph(self) -> Optional[int]:
         mph = self.current_data[101]
