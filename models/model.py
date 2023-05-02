@@ -187,6 +187,12 @@ class Model:
     def get_segment4_temp(self) -> Optional[int]:
         pass
 
+    def get_sd_card_status(self) -> Optional[int]:
+        pass
+
+    def get_vbat(self) -> Optional[int]:
+        pass
+
     def update_pack_temp_data(self) -> None:
         if len(self.pack_temp_data) >= 600:
             self.pack_temp_data.pop()

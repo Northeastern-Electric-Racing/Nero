@@ -49,16 +49,16 @@ class Speed(Page):
         self.gforce_graph = GForceGraph(self.left_frame)
         self.gforce_graph.get_tk_widget().grid(row=0, column=0, sticky="nsew")
 
-        self.gforce_label = CTkLabel(self.left_frame, text="N/AG", font=("Helvetica", 50))
+        self.gforce_label = CTkLabel(self.left_frame, text="N/AG", font=("Lato", 50))
         self.gforce_label.grid(row=1, column=0, sticky="nsew")
 
-        self.gforce_x_label = CTkLabel(self.left_frame, text="X: N/A", font=("Helvetica", 30))
+        self.gforce_x_label = CTkLabel(self.left_frame, text="X: N/A", font=("Lato", 30))
         self.gforce_x_label.grid(row=2, column=0, sticky="nsw", padx=10)
 
-        self.gforce_y_label = CTkLabel(self.left_frame, text="Y: N/A", font=("Helvetica", 30))
+        self.gforce_y_label = CTkLabel(self.left_frame, text="Y: N/A", font=("Lato", 30))
         self.gforce_y_label.grid(row=3, column=0, sticky="nsw", padx=10)
 
-        self.gforce_z_label = CTkLabel(self.left_frame, text="Z: N/A", font=("Helvetica", 30))
+        self.gforce_z_label = CTkLabel(self.left_frame, text="Z: N/A", font=("Lato", 30))
         self.gforce_z_label.grid(row=4, column=0, sticky="nsw", padx=10)
 
         # Create the middle frame
@@ -82,7 +82,7 @@ class Speed(Page):
             file="images/lightningBolt.xbm", foreground="yellow"))
         self.current_icon.grid(row=0, column=0, sticky="nse")
 
-        self.current_label = CTkLabel(self.current_frame, text="N/AA", font=("Helvetica", 80))
+        self.current_label = CTkLabel(self.current_frame, text="N/AA", font=("Lato", 80))
         self.current_label.grid(row=0, column=1, sticky="nse", padx=10)
 
         # Create the dcl frame
@@ -95,7 +95,7 @@ class Speed(Page):
             file="images/limitIcon.xbm", foreground="yellow"))
         self.dcl_icon.grid(row=0, column=0, sticky="nse")
 
-        self.dcl_label = CTkLabel(self.dcl_frame, text="N/AA", font=("Helvetica", 30))
+        self.dcl_label = CTkLabel(self.dcl_frame, text="N/AA", font=("Lato", 30))
         self.dcl_label.grid(row=0, column=1, sticky="nse", padx=10)
 
         # Create the max cell frame
@@ -105,7 +105,7 @@ class Speed(Page):
         self.max_cell_frame.grid_columnconfigure(1, weight=1, minsize=self.width * 3/16)
         self.max_cell_frame.grid(row=2, column=0, sticky="nsew")
 
-        self.max_cell_thermometer = ThermometerProgress(self.max_cell_frame, -25, 25, 100, 150)
+        self.max_cell_thermometer = ThermometerProgress(self.max_cell_frame, -25, 25, 100, 150, 65, -15)
         self.max_cell_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.max_cell_value_frame = Frame(self.max_cell_frame, bg="black")
@@ -114,11 +114,11 @@ class Speed(Page):
         self.max_cell_value_frame.grid_columnconfigure(0, weight=1)
         self.max_cell_value_frame.grid(row=0, column=1, sticky="nsew")
 
-        self.max_cell_value = CTkLabel(self.max_cell_value_frame, text="N/A°", font=("Helvetica", 50))
+        self.max_cell_value = CTkLabel(self.max_cell_value_frame, text="N/A°", font=("Lato", 50))
         self.max_cell_value.grid(row=0, column=0, sticky="sew")
 
         self.max_cell_label = CTkLabel(self.max_cell_value_frame, text="Max Cell",
-                                       font=("Helvetica", 40), wraplength=self.width/4)
+                                       font=("Lato", 40), wraplength=self.width/4)
         self.max_cell_label.grid(row=1, column=0, sticky="new")
 
         # Create the Motor Temp Frame
@@ -137,10 +137,10 @@ class Speed(Page):
         self.motor_temp_value_frame.grid_rowconfigure(1, weight=1)
         self.motor_temp_value_frame.grid_columnconfigure(0, weight=1)
 
-        self.motor_temp_value = CTkLabel(self.motor_temp_value_frame, text="N/A°", font=("Helvetica", 50))
+        self.motor_temp_value = CTkLabel(self.motor_temp_value_frame, text="N/A°", font=("Lato", 50))
         self.motor_temp_value.grid(row=0, column=0, sticky="sew")
 
-        self.motor_temp_label = CTkLabel(self.motor_temp_value_frame, text="Motor", font=("Helvetica", 40))
+        self.motor_temp_label = CTkLabel(self.motor_temp_value_frame, text="Motor", font=("Lato", 40))
         self.motor_temp_label.grid(row=1, column=0, sticky="new")
 
     def update(self):
@@ -159,12 +159,12 @@ class Speed(Page):
         gforce_x = self.model.get_gforce_x() if self.model.get_gforce_x() is not None else "N/A"
         gforce_y = self.model.get_gforce_y() if self.model.get_gforce_y() is not None else "N/A"
         gforce_z = self.model.get_gforce_z() if self.model.get_gforce_z() is not None else "N/A"
-        self.gforce_graph.set(gforce_x, gforce_z)
+        self.gforce_graph.set(gforce_x, gforce_y)
         self.gforce_x_label.configure(text=f"x: {gforce_x}G")
         self.gforce_y_label.configure(text=f"y: {gforce_y}G")
         self.gforce_z_label.configure(text=f"z: {gforce_z}G")
-        if (isinstance(gforce_x, int) and isinstance(gforce_y, int)):
-            self.gforce_label.configure(text=f"{np.sqrt(np.square(gforce_x) + np.square(gforce_y))}G")
+        if (isinstance(gforce_x, float) and isinstance(gforce_y, float)):
+            self.gforce_label.configure(text=f"{round(np.sqrt(np.square(gforce_x) + np.square(gforce_y)))}G")
 
     def update_current(self):
         current = self.model.get_current() if self.model.get_current() is not None else "N/A"

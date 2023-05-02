@@ -53,7 +53,7 @@ class DebugTableRow(Frame):
         self.value_label = DebugTableRowLabel(self.value_frame, str(values.value), "e")
 
         self.value_frame.grid(row=0, column=2, sticky="nsew")
-        self.value_label.grid(row=0, column=0, sticky="nsew")
+        self.value_label.grid(row=0, column=0, sticky="nsew", padx=(10, 0))
 
         self.unit_frame = DebugTableRowFrame(self)
         self.unit_label = DebugTableRowLabel(self.unit_frame, str(values.unit), "w")
