@@ -163,6 +163,12 @@ class RaspberryModel(Model):
     def get_ccl(self) -> Optional[int]:
         return self.current_data[90]
 
+    def get_inverter_temp(self) -> Optional[int]:
+        moduleATemp = self.current_data[18]
+        moduleBTemp = self.current_data[19]
+        moduleCTemp = self.current_data[20]
+        return ((moduleATemp + moduleBTemp + moduleCTemp) / 3) if moduleATemp is not None and moduleBTemp is not None and moduleCTemp is not None else None
+
     def get_gforce_x(self) -> Optional[int]:
         x_force = self.current_data[91]
         return round(x_force, 1) if x_force is not None else x_force
