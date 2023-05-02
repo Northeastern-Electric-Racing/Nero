@@ -32,7 +32,7 @@ class RaspberryModel(Model):
         s.bind(socket_path)
 
         s.listen()
-        subprocess.Popen(['/home/ner/Desktop/Ner_Processing/target/release/ner_processing'], detached_process=True)
+        os.system('/home/ner/Desktop/Ner_Processing/target/release/ner_processing &')
         conn, addr = s.accept()
         print("TEST")
         
