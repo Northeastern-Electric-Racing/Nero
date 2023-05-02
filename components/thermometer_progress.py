@@ -50,5 +50,5 @@ class ThermometerProgress(Canvas):
     def set(self, value):
         self.value = value if isinstance(value, int) else 0
         x0, y0, x1, y1 = self.coords(self.filler)
-        y0 = self.rectangle_ending_y - (self.y1 - self.y0) * (self.value / (self.low + self.high))
+        y0 = self.rectangle_ending_y - (self.y1 - self.y0) * (self.value / (self.high - self.low))
         self.coords(self.filler, x0, y0, x1, y1)

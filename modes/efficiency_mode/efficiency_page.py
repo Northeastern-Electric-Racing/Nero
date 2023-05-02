@@ -181,7 +181,7 @@ class Efficiency(Page):
         self.inverter_temp_frame.grid_columnconfigure(0, weight=1)
         self.inverter_temp_frame.grid_columnconfigure(1, weight=1)
 
-        self.inverter_temp_thermometer = ThermometerProgress(self.inverter_temp_frame, 0, 50, 100, 125, -30, 80)
+        self.inverter_temp_thermometer = ThermometerProgress(self.inverter_temp_frame, 0, 50, 100, 125, 80, -30)
         self.inverter_temp_thermometer.grid(row=0, column=0, sticky="nsew")
 
         self.inverter_temp_value_frame = Frame(self.inverter_temp_frame, background="black")
