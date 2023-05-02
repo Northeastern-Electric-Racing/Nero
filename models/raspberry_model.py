@@ -32,9 +32,10 @@ class RaspberryModel(Model):
         s.bind(socket_path)
 
         s.listen()
-
-        conn, addr = s.accept()
         subprocess.Popen(['/home/ner/Desktop/Ner_Processing/target/release/ner_processing'], detached_process=True)
+        conn, addr = s.accept()
+        print("TEST")
+        
         try:
             while True:
                 data = conn.recv(1024)
