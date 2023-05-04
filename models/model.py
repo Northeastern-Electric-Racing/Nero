@@ -232,8 +232,8 @@ class Model:
 
     def update_average_cell_temps(self) -> None:
         if len(self.average_cell_temps) >= 30:
-            self.average_cell_temps.pop()
-        self.average_cell_temps.insert(0, self.get_ave_cell_temp())
+            self.average_cell_temps.pop(0)
+        self.average_cell_temps.append(self.get_ave_cell_temp())
 
     def update_state_of_charge_deltas(self) -> None:
         if len(self.state_of_charge_deltas) >= 30:
