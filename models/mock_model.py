@@ -11,6 +11,7 @@ import threading
 
 from modes.debug_mode.debug_utils import FaultInstance
 
+
 class MockModel(Model):
     def __init__(self) -> None:
         super().__init__()
@@ -45,9 +46,9 @@ class MockModel(Model):
         self.pack_current = 4.6
         self.dcl = 280
         self.ccl = 300
-        self.gforce_x = .5
+        self.gforce_x = 0.5
         self.gforce_y = -1
-        self.gforce_z = .5
+        self.gforce_z = 0.5
         self.sd_card_status = 4
         self.segement1_temp = 30
         self.segement2_temp = 50
@@ -60,8 +61,53 @@ class MockModel(Model):
         self.mode_index = 0
         self.state_of_charge_delta = -1
         self.inverter_temp = 30
-        self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
-                             self.motor_temp, self.state_of_charge, self.lv_battery, self.current, self.bms_faults, self.mpu_faults, self.mode_index, self.max_cell_voltage, self.max_cell_voltage_chip_number, self.max_cell_voltage_cell_number, self.max_cell_temp, self.max_cell_temp_chip_number, self.max_cell_temp_cell_number, self.min_cell_voltage, self.min_cell_voltage_chip_number, self.min_cell_voltage_cell_number, self.min_cell_temp, self.min_cell_temp_chip_number, self.min_cell_temp_cell_number, self.average_cell_voltage, self.average_cell_temp, self.pack_voltage, self.bms_state, self.pack_current, self.dcl, self.ccl, self.gforce_x, self.gforce_y, self.gforce_z, self.sd_card_status, self.segement1_temp, self.segement2_temp, self.segement3_temp, self.segement4_temp, self.motor_power, self.fan_power, self.torque_power, self.regen_power, self.is_burning, self.state_of_charge_delta, self.inverter_temp]
+        self.current_data = [
+            self.mph,
+            self.status,
+            self.dir,
+            self.pack_temp,
+            self.motor_temp,
+            self.state_of_charge,
+            self.lv_battery,
+            self.current,
+            self.bms_faults,
+            self.mpu_faults,
+            self.mode_index,
+            self.max_cell_voltage,
+            self.max_cell_voltage_chip_number,
+            self.max_cell_voltage_cell_number,
+            self.max_cell_temp,
+            self.max_cell_temp_chip_number,
+            self.max_cell_temp_cell_number,
+            self.min_cell_voltage,
+            self.min_cell_voltage_chip_number,
+            self.min_cell_voltage_cell_number,
+            self.min_cell_temp,
+            self.min_cell_temp_chip_number,
+            self.min_cell_temp_cell_number,
+            self.average_cell_voltage,
+            self.average_cell_temp,
+            self.pack_voltage,
+            self.bms_state,
+            self.pack_current,
+            self.dcl,
+            self.ccl,
+            self.gforce_x,
+            self.gforce_y,
+            self.gforce_z,
+            self.sd_card_status,
+            self.segement1_temp,
+            self.segement2_temp,
+            self.segement3_temp,
+            self.segement4_temp,
+            self.motor_power,
+            self.fan_power,
+            self.torque_power,
+            self.regen_power,
+            self.is_burning,
+            self.state_of_charge_delta,
+            self.inverter_temp,
+        ]
         self.forward = 0
         self.backward = 0
         self.enter = 0
@@ -141,9 +187,9 @@ class MockModel(Model):
             self.lv_battery -= 1
 
         if rng > 80 and rng < 85:
-            self.current += .2
+            self.current += 0.2
         if rng > 90 and rng < 95:
-            self.current -= .3
+            self.current -= 0.3
 
         if rng > 100 and rng < 105:
             self.bms_faults = random.randint(0, 65536)  # 2^16
@@ -277,8 +323,53 @@ class MockModel(Model):
         if rng > 600 and rng < 605:
             self.inverter_temp -= 1
 
-        self.current_data = [self.mph, self.status, self.dir, self.pack_temp,
-                             self.motor_temp, self.state_of_charge, self.lv_battery, self.current, self.bms_faults, self.mpu_faults, self.mode_index, self.max_cell_voltage, self.max_cell_voltage_chip_number, self.max_cell_voltage_cell_number, self.max_cell_temp, self.max_cell_temp_chip_number, self.max_cell_temp_cell_number, self.min_cell_voltage, self.min_cell_voltage_chip_number, self.min_cell_voltage_cell_number, self.min_cell_temp, self.min_cell_temp_chip_number, self.min_cell_temp_cell_number, self.average_cell_voltage, self.average_cell_temp, self.pack_voltage, self.bms_state, self.pack_current, self.dcl, self.ccl, self.gforce_x, self.gforce_y, self.gforce_z, self.sd_card_status, self.segement1_temp, self.segement2_temp, self.segement3_temp, self.segement4_temp, self.motor_power, self.fan_power, self.torque_power, self.regen_power, self.is_burning, self.state_of_charge_delta, self.inverter_temp]
+        self.current_data = [
+            self.mph,
+            self.status,
+            self.dir,
+            self.pack_temp,
+            self.motor_temp,
+            self.state_of_charge,
+            self.lv_battery,
+            self.current,
+            self.bms_faults,
+            self.mpu_faults,
+            self.mode_index,
+            self.max_cell_voltage,
+            self.max_cell_voltage_chip_number,
+            self.max_cell_voltage_cell_number,
+            self.max_cell_temp,
+            self.max_cell_temp_chip_number,
+            self.max_cell_temp_cell_number,
+            self.min_cell_voltage,
+            self.min_cell_voltage_chip_number,
+            self.min_cell_voltage_cell_number,
+            self.min_cell_temp,
+            self.min_cell_temp_chip_number,
+            self.min_cell_temp_cell_number,
+            self.average_cell_voltage,
+            self.average_cell_temp,
+            self.pack_voltage,
+            self.bms_state,
+            self.pack_current,
+            self.dcl,
+            self.ccl,
+            self.gforce_x,
+            self.gforce_y,
+            self.gforce_z,
+            self.sd_card_status,
+            self.segement1_temp,
+            self.segement2_temp,
+            self.segement3_temp,
+            self.segement4_temp,
+            self.motor_power,
+            self.fan_power,
+            self.torque_power,
+            self.regen_power,
+            self.is_burning,
+            self.state_of_charge_delta,
+            self.inverter_temp,
+        ]
 
     def on_press(self, key):
         match key:
@@ -286,10 +377,14 @@ class MockModel(Model):
                 self.enter = 1
             case Key.right:
                 self.forward = 1
-                self.mode_index = (self.mode_index + 1) if self.mode_index < len(MODES) - 1 else 0
+                self.mode_index = (
+                    (self.mode_index + 1) if self.mode_index < len(MODES) - 1 else 0
+                )
             case Key.left:
                 self.backward = 1
-                self.mode_index = (self.mode_index - 1) if self.mode_index > 0 else len(MODES) - 1
+                self.mode_index = (
+                    (self.mode_index - 1) if self.mode_index > 0 else len(MODES) - 1
+                )
             case Key.up:
                 self.up = 1
             case Key.down:
@@ -342,13 +437,25 @@ class MockModel(Model):
 
     def get_current(self) -> Optional[float]:
         current = self.current_data[7]
-        return (round(current, 1) if current is not None else current)
+        return round(current, 1) if current is not None else current
 
     def get_BMS_fault(self) -> Optional[int]:
         fault_status = self.current_data[8]
         if fault_status is not None and fault_status > 0:
-            self.fault_instances.append(FaultInstance(fault_status, self.get_max_cell_temp(), self.get_max_cell_voltage(), self.get_ave_cell_temp(
-            ), self.get_ave_cell_voltage(), self.get_min_cell_temp(), self.get_min_cell_voltage(), self.get_pack_current(), self.get_dcl(), self.get_ccl()))
+            self.fault_instances.append(
+                FaultInstance(
+                    fault_status,
+                    self.get_max_cell_temp(),
+                    self.get_max_cell_voltage(),
+                    self.get_ave_cell_temp(),
+                    self.get_ave_cell_voltage(),
+                    self.get_min_cell_temp(),
+                    self.get_min_cell_voltage(),
+                    self.get_pack_current(),
+                    self.get_dcl(),
+                    self.get_ccl(),
+                )
+            )
         return fault_status
 
     def get_MPU_fault(self) -> Optional[int]:
@@ -359,7 +466,7 @@ class MockModel(Model):
 
     def get_max_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[11]
-        return (round(voltage, 1) if voltage is not None else voltage)
+        return round(voltage, 1) if voltage is not None else voltage
 
     def get_max_cell_voltage_chip_number(self) -> Optional[int]:
         return self.current_data[12]
@@ -369,7 +476,7 @@ class MockModel(Model):
 
     def get_max_cell_temp(self) -> Optional[int]:
         temp = self.current_data[14]
-        return (round(temp) if temp is not None else temp)
+        return round(temp) if temp is not None else temp
 
     def get_max_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[15]
@@ -389,7 +496,7 @@ class MockModel(Model):
 
     def get_min_cell_temp(self) -> Optional[int]:
         temp = self.current_data[20]
-        return (round(temp) if temp is not None else temp)
+        return round(temp) if temp is not None else temp
 
     def get_min_cell_temp_chip_number(self) -> Optional[int]:
         return self.current_data[21]
@@ -399,15 +506,15 @@ class MockModel(Model):
 
     def get_ave_cell_temp(self) -> Optional[int]:
         temp = self.current_data[23]
-        return (round(temp) if temp is not None else temp)
+        return round(temp) if temp is not None else temp
 
     def get_ave_cell_voltage(self) -> Optional[int]:
         voltage = self.current_data[24]
-        return (round(voltage, 1) if voltage is not None else voltage)
+        return round(voltage, 1) if voltage is not None else voltage
 
     def get_pack_voltage(self) -> Optional[int]:
         voltage = self.current_data[25]
-        return (round(voltage, 1) if voltage is not None else voltage)
+        return round(voltage, 1) if voltage is not None else voltage
 
     def get_BMS_state(self) -> Optional[int]:
         return self.current_data[26]
@@ -423,15 +530,15 @@ class MockModel(Model):
 
     def get_gforce_x(self) -> Optional[int]:
         x_force = self.current_data[30]
-        return (round(x_force, 1) if x_force is not None else x_force)
+        return round(x_force, 1) if x_force is not None else x_force
 
     def get_gforce_y(self) -> Optional[int]:
         y_force = self.current_data[31]
-        return (round(y_force, 1) if y_force is not None else y_force)
+        return round(y_force, 1) if y_force is not None else y_force
 
     def get_gforce_z(self) -> Optional[int]:
         z_force = self.current_data[32]
-        return (round(z_force, 1) if z_force is not None else z_force)
+        return round(z_force, 1) if z_force is not None else z_force
 
     def get_sd_card_status(self) -> Optional[int]:
         return self.current_data[33]
@@ -475,8 +582,14 @@ class MockModel(Model):
         table: List[DebugTableRowValue] = []
         for i in range(0, len(self.current_data)):
             value = self.current_data[i]
-            table.append(DebugTableRowValue(i, DATA_IDS[i]["name"],
-                         round(value, 3) if value is not None else "N/A", DATA_IDS[i]["units"]))
+            table.append(
+                DebugTableRowValue(
+                    i,
+                    DATA_IDS[i]["name"],
+                    round(value, 3) if value is not None else "N/A",
+                    DATA_IDS[i]["units"],
+                )
+            )
         return table
 
     def get_forward_button_pressed(self) -> int:

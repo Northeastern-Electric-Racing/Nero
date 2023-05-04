@@ -205,8 +205,15 @@ class Model:
         self.pack_temp_data.insert(0, self.get_pack_temp())
 
     def add_pinned_data(self, id: int) -> None:
-        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'],
-                                              data=[round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]], unit=DATA_IDS[id]['units'])
+        self.pinned_data[id] = DebugPlotValue(
+            name=DATA_IDS[id]["name"],
+            data=[
+                round(self.current_data[id], 1)
+                if self.current_data[id] is not None
+                else self.current_data[id]
+            ],
+            unit=DATA_IDS[id]["units"],
+        )
 
     def remove_pinned_data(self, id: int) -> None:
         del self.pinned_data[id]
@@ -215,8 +222,12 @@ class Model:
         for id in self.pinned_data:
             if len(self.pinned_data[id].data) >= 600:
                 self.pinned_data[id].data.pop()
-            self.pinned_data[id].data.insert(0, round(self.current_data[id], 1)
-                                             if self.current_data[id] is not None else self.current_data[id])
+            self.pinned_data[id].data.insert(
+                0,
+                round(self.current_data[id], 1)
+                if self.current_data[id] is not None
+                else self.current_data[id],
+            )
 
     def update_average_cell_temps(self) -> None:
         if len(self.average_cell_temps) >= 30:
@@ -227,9 +238,14 @@ class Model:
         try:
             prev_soc = self.state_of_charge_deltas[len(self.state_of_charge_deltas)]
         except:
-            prev_soc = self.get_state_of_charge() if self.get_state_of_charge() is not None else 0
+            prev_soc = (
+                self.get_state_of_charge()
+                if self.get_state_of_charge() is not None
+                else 0
+            )
         if len(self.state_of_charge_deltas) >= 30:
             self.state_of_charge_deltas.pop()
-        soc = self.get_state_of_charge() if self.get_state_of_charge() is not None else 0
+        soc = (
+            self.get_state_of_charge() if self.get_state_of_charge() is not None else 0
+        )
         self.state_of_charge_deltas.insert(0, soc - prev_soc)
-

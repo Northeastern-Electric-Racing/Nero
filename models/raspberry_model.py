@@ -32,8 +32,8 @@ class RaspberryModel(Model):
         s.bind(socket_path)
 
         s.listen()
-        os.system('/home/ner/Desktop/Ner_Processing/target/release/ner_processing &')
-        
+        os.system("/home/ner/Desktop/Ner_Processing/target/release/ner_processing &")
+
         while True:
             conn, addr = s.accept()
             try:
@@ -84,7 +84,7 @@ class RaspberryModel(Model):
 
     def get_state_of_charge(self) -> Optional[int]:
         return self.current_data[4]
-    
+
     def get_precharge(self) -> Optional[int]:
         return self.current_data[145]
 
@@ -167,7 +167,13 @@ class RaspberryModel(Model):
         moduleATemp = self.current_data[18]
         moduleBTemp = self.current_data[19]
         moduleCTemp = self.current_data[20]
-        return ((moduleATemp + moduleBTemp + moduleCTemp) / 3) if moduleATemp is not None and moduleBTemp is not None and moduleCTemp is not None else None
+        return (
+            (round((moduleATemp + moduleBTemp + moduleCTemp) / 3))
+            if moduleATemp is not None
+            and moduleBTemp is not None
+            and moduleCTemp is not None
+            else None
+        )
 
     def get_gforce_x(self) -> Optional[int]:
         x_force = self.current_data[91]
@@ -217,7 +223,7 @@ class RaspberryModel(Model):
 
     def get_traction_control(self) -> Optional[int]:
         return self.current_data[144]
-    
+
     def get_bms_prefault(self) -> Optional[int]:
         return self.current_data[146]
 

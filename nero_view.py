@@ -74,7 +74,12 @@ class NeroView(customtkinter.CTk):
 
     def update_mode(self):
         # print(self.model.get_mode_index())
-        self.mode_index = int(self.model.get_mode_index()) if self.model.get_mode_index() is not None and self.model.get_mode_index() < 6 else self.mode_index
+        self.mode_index = (
+            int(self.model.get_mode_index())
+            if self.model.get_mode_index() is not None
+            and self.model.get_mode_index() < 6
+            else self.mode_index
+        )
         if self.is_debug:
             self.current_screen = self.debug_screen
         else:
@@ -98,7 +103,7 @@ class NeroView(customtkinter.CTk):
 
     # Check for button inputs with debouncing / consistent time calls
     def update_buttons(self):
-        if time.time() - self.start_time >= .001:
+        if time.time() - self.start_time >= 0.001:
             self.update_enter_button_pressed()
             self.update_up_button_pressed()
             self.update_down_button_pressed()
@@ -142,7 +147,9 @@ class NeroView(customtkinter.CTk):
             self.current_screen.up_button_pressed()
             self.debounce_up_value = self.up_debounce_max_value
             # As you continue to hold the button, the debounce time decreases until the minimum of MINIMUM_DEBOUNCE_VALUE
-            self.up_debounce_max_value -= 10 if self.up_debounce_max_value - 10 > MINIMUM_DEBOUNCE_VALUE else 0
+            self.up_debounce_max_value -= (
+                10 if self.up_debounce_max_value - 10 > MINIMUM_DEBOUNCE_VALUE else 0
+            )
         elif value is not None and int(value) == 0:
             self.debounce_up_value = 0
             self.up_debounce_max_value = 125
@@ -155,7 +162,9 @@ class NeroView(customtkinter.CTk):
             self.current_screen.down_button_pressed()
             self.debounce_down_value = self.down_debounce_max_value
             # As you continue to hold the button, the debounce time decreases until the minimum of MINIMUM_DEBOUNCE_VALUE
-            self.down_debounce_max_value -= 10 if self.down_debounce_max_value - 10 > MINIMUM_DEBOUNCE_VALUE else 0
+            self.down_debounce_max_value -= (
+                10 if self.down_debounce_max_value - 10 > MINIMUM_DEBOUNCE_VALUE else 0
+            )
         elif value is not None and int(value) == 0:
             self.debounce_down_value = 0
             self.down_debounce_max_value = 125
@@ -173,7 +182,7 @@ class NeroView(customtkinter.CTk):
             self.debounce_enter_value -= 1
 
     def run(self):
-        if (self.isLinux):
-            self.attributes('-fullscreen', True)
+        if self.isLinux:
+            self.attributes("-fullscreen", True)
 
         self.mainloop()

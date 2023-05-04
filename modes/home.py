@@ -11,8 +11,8 @@ class Home(Page):
 
         # configure the grid (configure is responsible for configuring
         # a specific row or column at the given index)
-        self.grid_rowconfigure(0, weight=1, minsize=self.height/2)
-        self.grid_rowconfigure(1, weight=1, minsize=self.height/2)
+        self.grid_rowconfigure(0, weight=1, minsize=self.height / 2)
+        self.grid_rowconfigure(1, weight=1, minsize=self.height / 2)
         self.grid_columnconfigure(0, weight=1, minsize=self.width)
 
         # create top and bottom frames
@@ -24,19 +24,21 @@ class Home(Page):
 
         # Configure grids for top and bottom frames
         self.top_frame.grid_rowconfigure(0, weight=1)
-        self.top_frame.grid_columnconfigure(0, weight=1, minsize=self.width/2)
-        self.top_frame.grid_columnconfigure(1, weight=1, minsize=self.width/2)
+        self.top_frame.grid_columnconfigure(0, weight=1, minsize=self.width / 2)
+        self.top_frame.grid_columnconfigure(1, weight=1, minsize=self.width / 2)
 
         self.bottom_frame.grid_rowconfigure(0, weight=1)
-        self.bottom_frame.grid_columnconfigure(0, weight=1, minsize=self.width/3)
-        self.bottom_frame.grid_columnconfigure(1, weight=1, minsize=self.width/3)
-        self.bottom_frame.grid_columnconfigure(2, weight=1, minsize=self.width/3)
+        self.bottom_frame.grid_columnconfigure(0, weight=1, minsize=self.width / 3)
+        self.bottom_frame.grid_columnconfigure(1, weight=1, minsize=self.width / 3)
+        self.bottom_frame.grid_columnconfigure(2, weight=1, minsize=self.width / 3)
 
         # create the top two frames
-        self.top_right_frame = Frame(self.top_frame,
-                                     highlightbackground="gray", bg="black", highlightthickness=1)
-        self.top_left_frame = Frame(self.top_frame,
-                                    highlightbackground="gray", highlightthickness=1)
+        self.top_right_frame = Frame(
+            self.top_frame, highlightbackground="gray", bg="black", highlightthickness=1
+        )
+        self.top_left_frame = Frame(
+            self.top_frame, highlightbackground="gray", highlightthickness=1
+        )
 
         self.top_right_frame.grid(row=0, column=1, sticky="nsew")
         self.top_left_frame.grid(row=0, column=0, sticky="nsew")
@@ -51,10 +53,23 @@ class Home(Page):
 
         # create the bottom three frames
         self.bottom_right_frame = Frame(
-            self.bottom_frame, highlightbackground="gray", bg="black", highlightthickness=1)
-        self.bottom_left_frame = Frame(self.bottom_frame, highlightbackground="gray", bg="black", highlightthickness=1)
+            self.bottom_frame,
+            highlightbackground="gray",
+            bg="black",
+            highlightthickness=1,
+        )
+        self.bottom_left_frame = Frame(
+            self.bottom_frame,
+            highlightbackground="gray",
+            bg="black",
+            highlightthickness=1,
+        )
         self.bottom_middle_frame = Frame(
-            self.bottom_frame, highlightbackground="gray", bg="black", highlightthickness=1)
+            self.bottom_frame,
+            highlightbackground="gray",
+            bg="black",
+            highlightthickness=1,
+        )
 
         self.bottom_left_frame.grid(row=0, column=0, sticky="nsew")
         self.bottom_middle_frame.grid(row=0, column=1, sticky="nsew")
@@ -79,10 +94,14 @@ class Home(Page):
         self.mph_frame.grid_columnconfigure(1, weight=1)
 
         self.mph = customtkinter.CTkLabel(
-            master=self.mph_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.mph_frame,
+            text="N/A",
+            font=customtkinter.CTkFont(size=150, weight="bold"),
+        )
 
         self.mph_label = customtkinter.CTkLabel(
-            master=self.mph_frame, text=" mph", font=customtkinter.CTkFont(size=20))
+            master=self.mph_frame, text=" mph", font=customtkinter.CTkFont(size=20)
+        )
 
         self.mph_frame.grid(row=0, column=0, sticky="nsew")
         self.mph.grid(row=0, column=0, sticky="se")
@@ -94,50 +113,84 @@ class Home(Page):
         self.kph_frame.grid_columnconfigure(1, weight=1)
 
         self.kph = customtkinter.CTkLabel(
-            master=self.kph_frame, text="N/A", font=customtkinter.CTkFont(size=20))
+            master=self.kph_frame, text="N/A", font=customtkinter.CTkFont(size=20)
+        )
         self.kph_label = customtkinter.CTkLabel(
-            master=self.kph_frame, text=" kmph", font=customtkinter.CTkFont(size=20))
+            master=self.kph_frame, text=" kmph", font=customtkinter.CTkFont(size=20)
+        )
 
         self.kph_frame.grid(row=1, column=0, sticky="nsew")
         self.kph.grid(row=0, column=0, sticky="ne")
         self.kph_label.grid(row=0, column=1, sticky="nw")
 
-        self.limit_image = customtkinter.CTkLabel(master=self.top_left_frame, image=BitmapImage(file="images/speedLimitIcon.xbm", foreground="white", background="black"), text="")
-        self.limit_image.place(x=20, y=self.height/2 - 90, relwidth=0.15, relheight=0.3)
+        self.limit_image = customtkinter.CTkLabel(
+            master=self.top_left_frame,
+            image=BitmapImage(
+                file="images/speedLimitIcon.xbm", foreground="white", background="black"
+            ),
+            text="",
+        )
+        self.limit_image.place(
+            x=20, y=self.height / 2 - 90, relwidth=0.15, relheight=0.3
+        )
 
         # create top right frame
         self.status = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=100, weight="bold"))
+            master=self.top_right_frame,
+            text="N/A",
+            font=customtkinter.CTkFont(size=100, weight="bold"),
+        )
 
         self.dir = customtkinter.CTkLabel(
-            master=self.top_right_frame, text="N/A", font=customtkinter.CTkFont(size=75, weight="bold"))
+            master=self.top_right_frame,
+            text="N/A",
+            font=customtkinter.CTkFont(size=75, weight="bold"),
+        )
 
         self.status.grid(row=0, column=0, sticky="sew")
         self.dir.grid(row=1, column=0, sticky="new")
 
         # create bottom left frame
         self.pack_temp = customtkinter.CTkLabel(
-            master=self.bottom_left_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_left_frame,
+            text="N/A",
+            font=customtkinter.CTkFont(size=150, weight="bold"),
+        )
         self.pack_temp_label = customtkinter.CTkLabel(
-            master=self.bottom_left_frame, text="Pack Temperature", font=customtkinter.CTkFont(size=20))
+            master=self.bottom_left_frame,
+            text="Pack Temperature",
+            font=customtkinter.CTkFont(size=20),
+        )
 
         self.pack_temp.grid(row=0, column=0, sticky="s")
         self.pack_temp_label.grid(row=1, column=0, sticky="n")
 
         # create bottom middle frame
         self.motor_temp = customtkinter.CTkLabel(
-            master=self.bottom_middle_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_middle_frame,
+            text="N/A",
+            font=customtkinter.CTkFont(size=150, weight="bold"),
+        )
         self.motor_temp_label = customtkinter.CTkLabel(
-            master=self.bottom_middle_frame, text="Motor Temperature", font=customtkinter.CTkFont(size=20))
+            master=self.bottom_middle_frame,
+            text="Motor Temperature",
+            font=customtkinter.CTkFont(size=20),
+        )
 
         self.motor_temp.grid(row=0, column=0, sticky="s")
         self.motor_temp_label.grid(row=1, column=0, sticky="n")
 
         # create bottom right frame
         self.state_charge = customtkinter.CTkLabel(
-            master=self.bottom_right_frame, text="N/A", font=customtkinter.CTkFont(size=150, weight="bold"))
+            master=self.bottom_right_frame,
+            text="N/A",
+            font=customtkinter.CTkFont(size=150, weight="bold"),
+        )
         self.state_charge_label = customtkinter.CTkLabel(
-            master=self.bottom_right_frame, text="State of Charge", font=customtkinter.CTkFont(size=20))
+            master=self.bottom_right_frame,
+            text="State of Charge",
+            font=customtkinter.CTkFont(size=20),
+        )
 
         self.state_charge.grid(row=0, column=0, sticky="s")
         self.state_charge_label.grid(row=1, column=0, sticky="n")
@@ -176,21 +229,27 @@ class Home(Page):
     def update_pack_temp(self):
         new_pack_temp: Optional[int] = self.model.get_pack_temp()
 
-        new_pack_temp_text = str(new_pack_temp) + "°" if new_pack_temp is not None else "N/A"
+        new_pack_temp_text = (
+            str(new_pack_temp) + "°" if new_pack_temp is not None else "N/A"
+        )
 
         self.pack_temp.configure(text=new_pack_temp_text)
 
     def update_motor_temp(self):
         new_motor_temp: Optional[int] = self.model.get_motor_temp()
 
-        new_motor_temp_text = str(new_motor_temp) + "°" if new_motor_temp is not None else "N/A"
+        new_motor_temp_text = (
+            str(new_motor_temp) + "°" if new_motor_temp is not None else "N/A"
+        )
 
         self.motor_temp.configure(text=new_motor_temp_text)
 
     def update_state_charge(self):
         new_charge: Optional[int] = self.model.get_state_of_charge()
 
-        new_charge_text = str(int(new_charge)) + "%" if new_charge is not None else "N/A"
+        new_charge_text = (
+            str(int(new_charge)) + "%" if new_charge is not None else "N/A"
+        )
 
         self.state_charge.configure(text=new_charge_text)
 
