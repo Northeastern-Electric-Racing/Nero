@@ -570,11 +570,6 @@ class MockModel(Model):
     def get_burning_cells(self) -> Optional[int]:
         return self.current_data[42]
 
-    def update_state_of_charge_deltas(self) -> None:
-        self.state_of_charge_deltas.append(self.current_data[43])
-        if len(self.state_of_charge_deltas) > 30:
-            self.state_of_charge_deltas.pop(0)
-
     def get_inverter_temp(self) -> Optional[int]:
         return self.current_data[44]
 

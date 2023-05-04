@@ -14,6 +14,7 @@ class Model:
         self.state_of_charge_deltas: List[Optional[int]] = []
         self.page_height = 540
         self.page_width = 1024
+        self.prev_soc = 0
         pass
 
     def check_can(self) -> None:
@@ -235,17 +236,11 @@ class Model:
         self.average_cell_temps.insert(0, self.get_ave_cell_temp())
 
     def update_state_of_charge_deltas(self) -> None:
-        try:
-            prev_soc = self.state_of_charge_deltas[len(self.state_of_charge_deltas)]
-        except:
-            prev_soc = (
-                self.get_state_of_charge()
-                if self.get_state_of_charge() is not None
-                else 0
-            )
         if len(self.state_of_charge_deltas) >= 30:
-            self.state_of_charge_deltas.pop()
+            self.state_of_charge_deltas.pop(0)
+        prev_soc = self.prev_soc
         soc = (
             self.get_state_of_charge() if self.get_state_of_charge() is not None else 0
         )
-        self.state_of_charge_deltas.insert(0, soc - prev_soc)
+        self.state_of_charge_deltas.append(soc - prev_soc)
+        self.prev_soc = soc
