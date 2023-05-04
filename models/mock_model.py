@@ -505,11 +505,11 @@ class MockModel(Model):
         return self.current_data[22]
 
     def get_ave_cell_temp(self) -> Optional[int]:
-        temp = self.current_data[23]
+        temp = self.current_data[24]
         return round(temp) if temp is not None else temp
 
     def get_ave_cell_voltage(self) -> Optional[int]:
-        voltage = self.current_data[24]
+        voltage = self.current_data[23]
         return round(voltage, 1) if voltage is not None else voltage
 
     def get_pack_voltage(self) -> Optional[int]:

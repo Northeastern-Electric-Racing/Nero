@@ -326,7 +326,7 @@ class Charging(Page):
     def update_cell_delta_value(self):
         cell_delta = (
             self.model.get_cell_delta()
-            if self.model.get_ave_cell_voltage() is not None
+            if self.model.get_cell_delta() is not None
             else "N/A"
         )
         self.cell_delta_value.configure(text=str(cell_delta) + "V")
