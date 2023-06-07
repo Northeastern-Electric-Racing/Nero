@@ -4,7 +4,14 @@ from typing import List
 
 
 class Mode(Frame):
-    def __init__(self, parent: Frame, controller: Frame, model, name: str, page_classes: List[Page]) -> None:
+    def __init__(
+        self,
+        parent: Frame,
+        controller: Frame,
+        model,
+        name: str,
+        page_classes: List[Page],
+    ) -> None:
         super().__init__(parent)
         self.controller = controller
         self.name = name
@@ -39,7 +46,7 @@ class Mode(Frame):
 
     def increment_page(self):
         self.page_index += 1
-        if (self.page_index >= len(self.pages)):
+        if self.page_index >= len(self.pages):
             self.page_index = 0
         self.update_page()
 

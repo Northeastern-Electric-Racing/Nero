@@ -1,6 +1,6 @@
 from typing import List, Optional, Dict
 from modes.debug_mode.debug_utils import DebugPlotValue
-from ner_processing.master_mapping import DATA_IDS
+from constants.data_ids import DATA_IDS
 from modes.debug_mode.debug_utils import FaultInstance
 
 
@@ -14,6 +14,7 @@ class Model:
         self.state_of_charge_deltas: List[Optional[int]] = []
         self.page_height = 540
         self.page_width = 1024
+        self.prev_soc = 0
         pass
 
     def check_can(self) -> None:
@@ -101,6 +102,9 @@ class Model:
         pass
 
     def get_burning_cells(self) -> Optional[int]:
+        pass
+
+    def get_traction_control(self) -> Optional[int]:
         pass
 
     def get_inverter_temp(self) -> Optional[int]:
@@ -193,14 +197,24 @@ class Model:
     def get_vbat(self) -> Optional[int]:
         pass
 
+    def get_bms_prefault(self) -> Optional[int]:
+        pass
+
     def update_pack_temp_data(self) -> None:
         if len(self.pack_temp_data) >= 600:
             self.pack_temp_data.pop()
         self.pack_temp_data.insert(0, self.get_pack_temp())
 
     def add_pinned_data(self, id: int) -> None:
-        self.pinned_data[id] = DebugPlotValue(name=DATA_IDS[id]['name'],
-                                              data=[round(self.current_data[id], 1) if self.current_data[id] is not None else self.current_data[id]], unit=DATA_IDS[id]['units'])
+        self.pinned_data[id] = DebugPlotValue(
+            name=DATA_IDS[id]["name"],
+            data=[
+                round(self.current_data[id], 1)
+                if self.current_data[id] is not None
+                else self.current_data[id]
+            ],
+            unit=DATA_IDS[id]["units"],
+        )
 
     def remove_pinned_data(self, id: int) -> None:
         del self.pinned_data[id]
@@ -209,16 +223,24 @@ class Model:
         for id in self.pinned_data:
             if len(self.pinned_data[id].data) >= 600:
                 self.pinned_data[id].data.pop()
-            self.pinned_data[id].data.insert(0, round(self.current_data[id], 1)
-                                             if self.current_data[id] is not None else self.current_data[id])
+            self.pinned_data[id].data.insert(
+                0,
+                round(self.current_data[id], 1)
+                if self.current_data[id] is not None
+                else self.current_data[id],
+            )
 
     def update_average_cell_temps(self) -> None:
         if len(self.average_cell_temps) >= 30:
-            self.average_cell_temps.pop()
-        self.average_cell_temps.insert(0, self.get_ave_cell_temp())
+            self.average_cell_temps.pop(0)
+        self.average_cell_temps.append(self.get_ave_cell_temp())
 
     def update_state_of_charge_deltas(self) -> None:
         if len(self.state_of_charge_deltas) >= 30:
-            self.state_of_charge_deltas.pop()
-        self.state_of_charge_deltas.insert(0, self.get_cell_delta())
-
+            self.state_of_charge_deltas.pop(0)
+        prev_soc = self.prev_soc
+        soc = (
+            self.get_state_of_charge() if self.get_state_of_charge() is not None else 0
+        )
+        self.state_of_charge_deltas.append(soc - prev_soc)
+        self.prev_soc = soc
