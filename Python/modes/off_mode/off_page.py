@@ -4,7 +4,7 @@ from models.model import Model
 from components.battery_progress import BatteryProgress
 from components.thermometer_progress import ThermometerProgress
 import customtkinter
-from color_transformers import precharge_state_color_transformer
+from Python.color_transformers import precharge_state_color_transformer
 
 
 class Off(Page):
