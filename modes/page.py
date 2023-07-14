@@ -1,4 +1,4 @@
-from tkinter import Frame
+from tkinter import Frame, Label
 from models.model import Model
 
 

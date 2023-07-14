@@ -3,7 +3,7 @@
 import sys
 import os
 sys.path.append(os.path.dirname(__file__) + "/ner_processing")
-from Python.nero_view import NeroView
+from nero_view import NeroView
 
 if __name__ == "__main__":
     controller = NeroView()

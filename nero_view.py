@@ -9,7 +9,7 @@ from models.raspberry_model import RaspberryModel
 import platform
 import time
 from models.model import Model
-from Python.header import Header
+from header import Header
 import os
 
 customtkinter.set_appearance_mode("dark")
