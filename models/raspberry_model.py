@@ -47,19 +47,14 @@ class RaspberryModel(Model):
                         data = data.split("index:")
                         try:
                             data.pop(0)
-                            print("STRING: ", data)
+                            # print("STRING: ", data)
                             for i in range(len(data)):
                                 values = data[i].split(",")
-                                print("VALUES: ", values[0])
                                 index = int(values[0])
-                                print("INDEX: ", index)
                                 split_value = values[1].split("}")
-                                print("SPLIT VALUE: ", split_value[0])
                                 value_split = split_value[0].split(":")
                                 value = float(value_split[1])
-                                print(value)
                                 self.current_data[index] = value
-                                print("successfully updated data")
                         except:
                             print("ERROR: ", sys.exc_info()[0])
             finally:
