@@ -50,8 +50,9 @@ class RaspberryModel(Model):
                             print("STRING: ", data)
                             for i in range(len(data)):
                                 values = data[i].split(",")
+                                print("VALUES: ", values[0])
                                 index = int(values[0])
-                                print(index)
+                                print("INDEX: ", index)
                                 split_value = values[1].split("}")
                                 value = float(split_value[0])
                                 print(value)
