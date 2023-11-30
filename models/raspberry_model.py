@@ -32,7 +32,9 @@ class RaspberryModel(Model):
         s.bind(socket_path)
 
         s.listen()
-        os.system("/home/ner/Desktop/Ner_Processing/target/release/ner_processing &")
+        os.system(
+            "/home/ner/Desktop/Calypso/target/release/calypso ipc /tmp/ipc.sock &"
+        )
 
         while True:
             conn, addr = s.accept()
