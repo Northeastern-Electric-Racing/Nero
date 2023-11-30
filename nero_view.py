@@ -4,7 +4,6 @@ from typing import List
 from modes.debug_mode.debug_mode import DebugMode
 from modes.mode import Mode
 from constants.modes import MODES
-from models.mock_model import MockModel
 from models.raspberry_model import RaspberryModel
 import platform
 import time
@@ -16,6 +15,8 @@ customtkinter.set_appearance_mode("dark")
 
 if platform.platform()[0:5] == "Linux":
     os.chdir("/home/ner/Desktop/Nero/")
+else:
+    from models.mock_model import MockModel
 
 customtkinter.set_default_color_theme("themes/ner.json")
 MINIMUM_DEBOUNCE_VALUE = 30
