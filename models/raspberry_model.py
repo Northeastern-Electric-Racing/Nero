@@ -54,7 +54,9 @@ class RaspberryModel(Model):
                                 index = int(values[0])
                                 print("INDEX: ", index)
                                 split_value = values[1].split("}")
-                                value = float(split_value[0])
+                                print("SPLIT VALUE: ", split_value[0])
+                                value_split = split_value[0].split(":")
+                                value = float(value_split[1])
                                 print(value)
                                 self.current_data[index] = value
                                 print("successfully updated data")
