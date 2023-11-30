@@ -51,9 +51,12 @@ class RaspberryModel(Model):
                             for i in range(len(data)):
                                 values = data[i].split(",")
                                 index = int(values[0])
+                                print(index)
                                 split_value = values[1].split("}")
                                 value = float(split_value[0])
+                                print(value)
                                 self.current_data[index] = value
+                                print("successfully updated data")
                         except:
                             print("ERROR: ", sys.exc_info()[0])
             finally:
